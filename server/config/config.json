@@ -1,0 +1,16 @@
+{
+    "port" : 1337,
+
+    "mongoose": {
+        "uri": "mongodb://localhost/test"
+    },
+
+    "gcm" : {
+    	"id" : "AIzaSyDQMPaMJJwUWCidjaZJ7eo3HXwBM34LjDY"
+    },
+	
+    "facebook" : {
+        "app_id" :"591449964316321",
+        "app_secret": "2eb29e1265532ecb9492d8cf48ab363a"
+    }
+}

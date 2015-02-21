@@ -1,0 +1,12 @@
+# Generated files
+node_modules/
+logs/
+
+# SVN
+.svn/
+
+# Windows junk files
+[Tt]humbs.db
+.DS_Store
+
+
