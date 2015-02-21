@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.weproov.app.views.FourThirdView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+        <RelativeLayout
+                android:id="@+id/root_view"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loading_camera"
+                    android:id="@+id/textView"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_set_flash"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_flash_on_holo_light"
+                    android:layout_marginTop="35dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="35dp"/>
+
+        </RelativeLayout>
+    </com.weproov.app.views.FourThirdView>
+
+    <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/btn_camera"
+            android:background="@drawable/btn_shutter_bottom_bar">
+
+        <ImageView
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:duplicateParentState="true"
+                android:layout_width="match_parent"
+                android:scaleType="fitCenter"
+                android:layout_height="match_parent"
+                android:layout_margin="24dp"
+                android:maxWidth="56dp"
+                android:maxHeight="56dp"
+                android:id="@+id/ic_camera"
+                android:src="@drawable/ic_camera"
+                android:layout_gravity="center"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:visibility="gone"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:text="Saving picture..."
+                android:id="@+id/saving_picture_textview"
+                android:layout_gravity="center"/>
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.weproov.app">
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <!-- Notify the playstore that we use the camera and any device requires a camera to run the app. -->
+    <uses-feature android:name="android.hardware.camera"/>
+
+    <application
+            android:allowBackup="true"
+            android:icon="@drawable/ic_launcher"
+            android:name="com.weproov.app.MyApplication"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
+
+        <meta-data android:name="AA_DB_NAME" android:value="weproov.db" />
+        <meta-data android:name="AA_DB_VERSION" android:value="1" />
+        <meta-data
+                android:name="AA_MODELS"
+                android:value="com.weproov.app.models.User" />
+
+        <activity
+                android:name="com.weproov.app.activities.LandingActivity"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+                android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+                android:name="com.weproov.app.activities.MainActivity"
+                android:label="@string/app_name"/>
+
+        <activity
+                android:name="com.weproov.app.activities.RegisterActivity"
+                android:parentActivityName="com.weproov.app.activities.LandingActivity"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize|stateHidden"
+                android:label="@string/app_name">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.weproov.app.activities.LandingActivity"/>
+
+        </activity>
+
+    </application>
+
+</manifest>

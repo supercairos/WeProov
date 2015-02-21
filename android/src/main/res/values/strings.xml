@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WeProov</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="camera_is_required">This app require a camera</string>
+    <string name="button_clear">Clear</string>
+    <string name="loading_camera">Loading camera\nPlease wait.</string>
+    <string name="or">Or</string>
+    <string name="login">Log me in</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="firstname">Firstname</string>
+    <string name="lastname">Lastname</string>
+    <string name="back">Back</string>
+    <string name="nav_weproov">We Proov</string>
+    <string name="nav_my_documents">My documents</string>
+    <string name="nav_logout">Logout</string>
+    <string name="nav_about">About us</string>
+    <string name="wrong_login">Either your password or login is wrong. Please correct it</string>
+
+</resources>

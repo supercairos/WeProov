@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/action_bar"
+            android:layout_alignParentStart="true"
+            android:id="@+id/scrollView">
+
+    </ScrollView>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/bottom_frame_layout"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <Button
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/back"
+                    android:textColor="@color/primary_dark"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:id="@+id/button_back"/>
+
+            <Button
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:text="@string/register"
+                    android:background="@drawable/btn_default_material"
+                    android:id="@+id/button_register"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:id="@+id/linearLayout2"
+            android:layout_alignTop="@+id/scrollView"
+            android:layout_alignParentStart="true">
+
+        <com.weproov.app.views.FloatLabelLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+            <EditText
+                    android:id="@+id/edit_firstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/firstname"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@+id/edit_lastname"
+                    android:inputType="textEmailAddress"/>
+        </com.weproov.app.views.FloatLabelLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:paddingBottom="4dp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="This is not a valid firstname."
+                android:id="@+id/edit_firstname_error"/>
+
+        <com.weproov.app.views.FloatLabelLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+            <EditText
+                    android:id="@+id/edit_lastname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/lastname"
+                    android:singleLine="true"
+                    android:inputType="textPassword"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@+id/edit_email"/>
+
+        </com.weproov.app.views.FloatLabelLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:paddingBottom="4dp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="This is not a valid lastname."
+                android:id="@+id/edit_lastname_error"/>
+
+        <com.weproov.app.views.FloatLabelLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+            <EditText
+                    android:id="@+id/edit_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@+id/edit_password"/>
+
+        </com.weproov.app.views.FloatLabelLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:paddingBottom="4dp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="Please use a valid email"
+                android:id="@+id/edit_email_error"/>
+
+        <com.weproov.app.views.FloatLabelLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+            <EditText
+                    android:id="@+id/edit_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:singleLine="true"
+                    android:inputType="textPassword"
+                    android:imeOptions="actionDone"/>
+
+        </com.weproov.app.views.FloatLabelLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="Please use a stronger password."
+                android:id="@+id/edit_password_error"/>
+
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+    </LinearLayout>
+
+</RelativeLayout>
