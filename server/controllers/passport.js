@@ -6,7 +6,6 @@ var crypto                  = require('crypto');
 var User                    = require('../models/User.js');
 var BasicStrategy           = require('passport-http').BasicStrategy;
 var BearerStrategy          = require('passport-http-bearer').Strategy;
-var FacebookTokenStrategy   = require('passport-facebook-token').Strategy;
 
 passport.use(new BasicStrategy(
     function(userid, password, done) {
@@ -56,26 +55,6 @@ passport.use(new BearerStrategy(
 
             log.info("Login success for user : " + user.username);
             return done(null, user);
-        });
-    }
-));
-
-passport.use(new FacebookTokenStrategy({
-        clientID: config.get("facebook:app_id"),
-        clientSecret: config.get("facebook:app_secret")
-    }, function(accessToken, refreshToken, profile, done) {
-        log.info("Found profile : %s", profile.id);
-
-        var infos = {
-            username: profile.displayName,
-            email: profile.emails[0]['value'],
-            facebook_id: profile.id.toString(),
-            token: crypto.randomBytes(256).toString('hex')
-        };
-
-        User.findOneAndUpdate({ 'facebook_id' : profile.id.toString() }, infos, { multi: true, upsert: true }, function(err, doc){
-            if(err){ log.error(err); }
-            return done(err, doc);
         });
     }
 ));

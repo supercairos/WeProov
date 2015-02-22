@@ -1,5 +1,6 @@
 var User = require('../models/User.js');
-//var NetworkException = require('../models/NetworkException.js');
+var NetworkException = require('../models/NetworkException.js');
+
 var log = require('../libs/logger.js');
 
 var GcmSender = require('../libs/gcm.js');
@@ -116,15 +117,6 @@ module.exports = function(app) {
 		}
 	);
 
-	app.get('/users/facebook/login',
-		passport.authenticate('facebook-token', {
-			session: false
-		}),
-		function(req, res) {
-			res.status(200).json( req.user ).end();
-		}
-	);
-
 	app.get('/users/autocomplete', 
 		function(req, res) {
 			log.info("Looking for an username starting by %s", req.query.q);
@@ -143,6 +135,4 @@ module.exports = function(app) {
 			}
 		}
 	);
-	
-
 }

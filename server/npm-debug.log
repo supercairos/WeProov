@@ -1,0 +1,1002 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install' ]
+2 info using npm@2.5.1
+3 info using node@v0.12.0
+4 verbose node symlink C:\Program Files\nodejs\\node.exe
+5 warn package.json weproov@1.0.0 No repository field.
+6 warn package.json weproov@1.0.0 No README data
+7 warn package.json weproov@1.0.0 homepage field must start with a protocol.
+8 verbose install where, deps [ 'C:\\Users\\Romain\\Documents\\Git\\weproov\\server',
+8 verbose install   [ 'express',
+8 verbose install     'body-parser',
+8 verbose install     'mongodb',
+8 verbose install     'mongoose',
+8 verbose install     'node-gcm',
+8 verbose install     'bcrypt',
+8 verbose install     'winston',
+8 verbose install     'nconf',
+8 verbose install     'passport',
+8 verbose install     'passport-http',
+8 verbose install     'passport-http-bearer',
+8 verbose install     'passport-facebook-token' ] ]
+9 verbose install where, peers [ 'C:\\Users\\Romain\\Documents\\Git\\weproov\\server', [] ]
+10 info preinstall weproov@1.0.0
+11 silly cache add args [ 'mongoose@latest', null ]
+12 verbose cache add spec mongoose@latest
+13 silly cache add args [ 'node-gcm@latest', null ]
+14 verbose cache add spec node-gcm@latest
+15 silly cache add args [ 'bcrypt@latest', null ]
+16 verbose cache add spec bcrypt@latest
+17 silly cache add parsed spec { raw: 'mongoose@latest',
+17 silly cache add   scope: null,
+17 silly cache add   name: 'mongoose',
+17 silly cache add   rawSpec: 'latest',
+17 silly cache add   spec: 'latest',
+17 silly cache add   type: 'tag' }
+18 verbose addNamed mongoose@latest
+19 silly addNamed semver.valid null
+20 silly addNamed semver.validRange null
+21 info addNameTag [ 'mongoose', 'latest' ]
+22 silly mapToRegistry name mongoose
+23 silly mapToRegistry using default registry
+24 silly mapToRegistry registry https://registry.npmjs.org/
+25 silly mapToRegistry uri https://registry.npmjs.org/mongoose
+26 verbose addNameTag registry:https://registry.npmjs.org/mongoose not in flight; fetching
+27 silly cache add parsed spec { raw: 'node-gcm@latest',
+27 silly cache add   scope: null,
+27 silly cache add   name: 'node-gcm',
+27 silly cache add   rawSpec: 'latest',
+27 silly cache add   spec: 'latest',
+27 silly cache add   type: 'tag' }
+28 verbose addNamed node-gcm@latest
+29 silly addNamed semver.valid null
+30 silly addNamed semver.validRange null
+31 info addNameTag [ 'node-gcm', 'latest' ]
+32 silly mapToRegistry name node-gcm
+33 silly mapToRegistry using default registry
+34 silly mapToRegistry registry https://registry.npmjs.org/
+35 silly mapToRegistry uri https://registry.npmjs.org/node-gcm
+36 verbose addNameTag registry:https://registry.npmjs.org/node-gcm not in flight; fetching
+37 silly cache add args [ 'winston@latest', null ]
+38 verbose cache add spec winston@latest
+39 silly cache add args [ 'nconf@latest', null ]
+40 verbose cache add spec nconf@latest
+41 silly cache add args [ 'passport@latest', null ]
+42 verbose cache add spec passport@latest
+43 silly cache add args [ 'passport-http@latest', null ]
+44 verbose cache add spec passport-http@latest
+45 silly cache add args [ 'passport-http-bearer@latest', null ]
+46 verbose cache add spec passport-http-bearer@latest
+47 silly cache add parsed spec { raw: 'bcrypt@latest',
+47 silly cache add   scope: null,
+47 silly cache add   name: 'bcrypt',
+47 silly cache add   rawSpec: 'latest',
+47 silly cache add   spec: 'latest',
+47 silly cache add   type: 'tag' }
+48 verbose addNamed bcrypt@latest
+49 silly addNamed semver.valid null
+50 silly addNamed semver.validRange null
+51 info addNameTag [ 'bcrypt', 'latest' ]
+52 silly mapToRegistry name bcrypt
+53 silly mapToRegistry using default registry
+54 silly mapToRegistry registry https://registry.npmjs.org/
+55 silly mapToRegistry uri https://registry.npmjs.org/bcrypt
+56 verbose addNameTag registry:https://registry.npmjs.org/bcrypt not in flight; fetching
+57 silly cache add parsed spec { raw: 'winston@latest',
+57 silly cache add   scope: null,
+57 silly cache add   name: 'winston',
+57 silly cache add   rawSpec: 'latest',
+57 silly cache add   spec: 'latest',
+57 silly cache add   type: 'tag' }
+58 verbose addNamed winston@latest
+59 silly addNamed semver.valid null
+60 silly addNamed semver.validRange null
+61 info addNameTag [ 'winston', 'latest' ]
+62 silly mapToRegistry name winston
+63 silly mapToRegistry using default registry
+64 silly mapToRegistry registry https://registry.npmjs.org/
+65 silly mapToRegistry uri https://registry.npmjs.org/winston
+66 verbose addNameTag registry:https://registry.npmjs.org/winston not in flight; fetching
+67 silly cache add parsed spec { raw: 'nconf@latest',
+67 silly cache add   scope: null,
+67 silly cache add   name: 'nconf',
+67 silly cache add   rawSpec: 'latest',
+67 silly cache add   spec: 'latest',
+67 silly cache add   type: 'tag' }
+68 verbose addNamed nconf@latest
+69 silly addNamed semver.valid null
+70 silly addNamed semver.validRange null
+71 info addNameTag [ 'nconf', 'latest' ]
+72 silly mapToRegistry name nconf
+73 silly mapToRegistry using default registry
+74 silly mapToRegistry registry https://registry.npmjs.org/
+75 silly mapToRegistry uri https://registry.npmjs.org/nconf
+76 verbose addNameTag registry:https://registry.npmjs.org/nconf not in flight; fetching
+77 silly cache add parsed spec { raw: 'passport@latest',
+77 silly cache add   scope: null,
+77 silly cache add   name: 'passport',
+77 silly cache add   rawSpec: 'latest',
+77 silly cache add   spec: 'latest',
+77 silly cache add   type: 'tag' }
+78 verbose addNamed passport@latest
+79 silly addNamed semver.valid null
+80 silly addNamed semver.validRange null
+81 info addNameTag [ 'passport', 'latest' ]
+82 silly mapToRegistry name passport
+83 silly mapToRegistry using default registry
+84 silly mapToRegistry registry https://registry.npmjs.org/
+85 silly mapToRegistry uri https://registry.npmjs.org/passport
+86 verbose addNameTag registry:https://registry.npmjs.org/passport not in flight; fetching
+87 silly cache add parsed spec { raw: 'passport-http@latest',
+87 silly cache add   scope: null,
+87 silly cache add   name: 'passport-http',
+87 silly cache add   rawSpec: 'latest',
+87 silly cache add   spec: 'latest',
+87 silly cache add   type: 'tag' }
+88 verbose addNamed passport-http@latest
+89 silly addNamed semver.valid null
+90 silly addNamed semver.validRange null
+91 info addNameTag [ 'passport-http', 'latest' ]
+92 silly mapToRegistry name passport-http
+93 silly mapToRegistry using default registry
+94 silly mapToRegistry registry https://registry.npmjs.org/
+95 silly mapToRegistry uri https://registry.npmjs.org/passport-http
+96 verbose addNameTag registry:https://registry.npmjs.org/passport-http not in flight; fetching
+97 silly cache add args [ 'passport-facebook-token@latest', null ]
+98 verbose cache add spec passport-facebook-token@latest
+99 silly cache add args [ 'express@latest', null ]
+100 verbose cache add spec express@latest
+101 silly cache add args [ 'body-parser@latest', null ]
+102 verbose cache add spec body-parser@latest
+103 silly cache add parsed spec { raw: 'passport-http-bearer@latest',
+103 silly cache add   scope: null,
+103 silly cache add   name: 'passport-http-bearer',
+103 silly cache add   rawSpec: 'latest',
+103 silly cache add   spec: 'latest',
+103 silly cache add   type: 'tag' }
+104 verbose addNamed passport-http-bearer@latest
+105 silly addNamed semver.valid null
+106 silly addNamed semver.validRange null
+107 info addNameTag [ 'passport-http-bearer', 'latest' ]
+108 silly mapToRegistry name passport-http-bearer
+109 silly mapToRegistry using default registry
+110 silly mapToRegistry registry https://registry.npmjs.org/
+111 silly mapToRegistry uri https://registry.npmjs.org/passport-http-bearer
+112 verbose addNameTag registry:https://registry.npmjs.org/passport-http-bearer not in flight; fetching
+113 silly cache add parsed spec { raw: 'passport-facebook-token@latest',
+113 silly cache add   scope: null,
+113 silly cache add   name: 'passport-facebook-token',
+113 silly cache add   rawSpec: 'latest',
+113 silly cache add   spec: 'latest',
+113 silly cache add   type: 'tag' }
+114 verbose addNamed passport-facebook-token@latest
+115 silly addNamed semver.valid null
+116 silly addNamed semver.validRange null
+117 info addNameTag [ 'passport-facebook-token', 'latest' ]
+118 silly mapToRegistry name passport-facebook-token
+119 silly mapToRegistry using default registry
+120 silly mapToRegistry registry https://registry.npmjs.org/
+121 silly mapToRegistry uri https://registry.npmjs.org/passport-facebook-token
+122 verbose addNameTag registry:https://registry.npmjs.org/passport-facebook-token not in flight; fetching
+123 silly cache add parsed spec { raw: 'express@latest',
+123 silly cache add   scope: null,
+123 silly cache add   name: 'express',
+123 silly cache add   rawSpec: 'latest',
+123 silly cache add   spec: 'latest',
+123 silly cache add   type: 'tag' }
+124 verbose addNamed express@latest
+125 silly addNamed semver.valid null
+126 silly addNamed semver.validRange null
+127 info addNameTag [ 'express', 'latest' ]
+128 silly mapToRegistry name express
+129 silly mapToRegistry using default registry
+130 silly mapToRegistry registry https://registry.npmjs.org/
+131 silly mapToRegistry uri https://registry.npmjs.org/express
+132 verbose addNameTag registry:https://registry.npmjs.org/express not in flight; fetching
+133 silly cache add args [ 'mongodb@latest', null ]
+134 verbose cache add spec mongodb@latest
+135 silly cache add parsed spec { raw: 'body-parser@latest',
+135 silly cache add   scope: null,
+135 silly cache add   name: 'body-parser',
+135 silly cache add   rawSpec: 'latest',
+135 silly cache add   spec: 'latest',
+135 silly cache add   type: 'tag' }
+136 verbose addNamed body-parser@latest
+137 silly addNamed semver.valid null
+138 silly addNamed semver.validRange null
+139 info addNameTag [ 'body-parser', 'latest' ]
+140 silly mapToRegistry name body-parser
+141 silly mapToRegistry using default registry
+142 silly mapToRegistry registry https://registry.npmjs.org/
+143 silly mapToRegistry uri https://registry.npmjs.org/body-parser
+144 verbose addNameTag registry:https://registry.npmjs.org/body-parser not in flight; fetching
+145 silly cache add parsed spec { raw: 'mongodb@latest',
+145 silly cache add   scope: null,
+145 silly cache add   name: 'mongodb',
+145 silly cache add   rawSpec: 'latest',
+145 silly cache add   spec: 'latest',
+145 silly cache add   type: 'tag' }
+146 verbose addNamed mongodb@latest
+147 silly addNamed semver.valid null
+148 silly addNamed semver.validRange null
+149 info addNameTag [ 'mongodb', 'latest' ]
+150 silly mapToRegistry name mongodb
+151 silly mapToRegistry using default registry
+152 silly mapToRegistry registry https://registry.npmjs.org/
+153 silly mapToRegistry uri https://registry.npmjs.org/mongodb
+154 verbose addNameTag registry:https://registry.npmjs.org/mongodb not in flight; fetching
+155 verbose request uri https://registry.npmjs.org/node-gcm
+156 verbose request no auth needed
+157 info attempt registry request try #1 at 14:17:45
+158 verbose request id b5d7184f58176621
+159 verbose etag "E2WMY7CUQ625C150G4UZ9UDM9"
+160 http request GET https://registry.npmjs.org/node-gcm
+161 verbose request uri https://registry.npmjs.org/mongoose
+162 verbose request no auth needed
+163 info attempt registry request try #1 at 14:17:45
+164 verbose etag "7FVSR4B7D9ZAQ8AWVDIBO60QU"
+165 http request GET https://registry.npmjs.org/mongoose
+166 verbose request uri https://registry.npmjs.org/bcrypt
+167 verbose request no auth needed
+168 info attempt registry request try #1 at 14:17:45
+169 verbose etag "9F6WXBC44JXQBEQCDH2QSDHWB"
+170 http request GET https://registry.npmjs.org/bcrypt
+171 verbose request uri https://registry.npmjs.org/passport
+172 verbose request no auth needed
+173 info attempt registry request try #1 at 14:17:45
+174 verbose etag "AV4MRP1BPBTB4T6U5BRA99VC0"
+175 http request GET https://registry.npmjs.org/passport
+176 verbose request uri https://registry.npmjs.org/nconf
+177 verbose request no auth needed
+178 info attempt registry request try #1 at 14:17:45
+179 verbose etag "4P273XXC3287VE95YUXTM3Q38"
+180 http request GET https://registry.npmjs.org/nconf
+181 verbose request uri https://registry.npmjs.org/winston
+182 verbose request no auth needed
+183 info attempt registry request try #1 at 14:17:45
+184 verbose etag "AQ0BM37EQ6HW6M8ZYUU56QK67"
+185 http request GET https://registry.npmjs.org/winston
+186 verbose request uri https://registry.npmjs.org/passport-http
+187 verbose request no auth needed
+188 info attempt registry request try #1 at 14:17:45
+189 verbose etag "7BXJ6HN3ETVLO7A3SY2YFNCV0"
+190 http request GET https://registry.npmjs.org/passport-http
+191 verbose request uri https://registry.npmjs.org/passport-http-bearer
+192 verbose request no auth needed
+193 info attempt registry request try #1 at 14:17:45
+194 verbose etag "6M8XVTN1B10AJBR1Q6QU1GRPO"
+195 http request GET https://registry.npmjs.org/passport-http-bearer
+196 verbose request uri https://registry.npmjs.org/passport-facebook-token
+197 verbose request no auth needed
+198 info attempt registry request try #1 at 14:17:45
+199 verbose etag "78FKWZNJ3IKGVY1S20MIDAGCK"
+200 http request GET https://registry.npmjs.org/passport-facebook-token
+201 verbose request uri https://registry.npmjs.org/body-parser
+202 verbose request no auth needed
+203 info attempt registry request try #1 at 14:17:45
+204 verbose etag "EFAJQ81JL5VTXFZCU6A9KTYF0"
+205 http request GET https://registry.npmjs.org/body-parser
+206 verbose request uri https://registry.npmjs.org/express
+207 verbose request no auth needed
+208 info attempt registry request try #1 at 14:17:45
+209 verbose etag "7LVQJTQ9UCEDWSGJFJCDBFE1F"
+210 http request GET https://registry.npmjs.org/express
+211 verbose request uri https://registry.npmjs.org/mongodb
+212 verbose request no auth needed
+213 info attempt registry request try #1 at 14:17:45
+214 verbose etag "604TUHLMW6FELWB4G7SDD5P1Z"
+215 http request GET https://registry.npmjs.org/mongodb
+216 http 304 https://registry.npmjs.org/winston
+217 silly get cb [ 304,
+217 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+217 silly get     server: 'Apache',
+217 silly get     via: '1.1 varnish',
+217 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:21 GMT',
+217 silly get     'cache-control': 'max-age=60',
+217 silly get     etag: '"AQ0BM37EQ6HW6M8ZYUU56QK67"',
+217 silly get     age: '40',
+217 silly get     'x-served-by': 'cache-lcy1124-LCY',
+217 silly get     'x-cache': 'HIT',
+217 silly get     'x-cache-hits': '2',
+217 silly get     'x-timer': 'S1424611064.641212,VS0,VE0',
+217 silly get     vary: 'Accept',
+217 silly get     'content-length': '0',
+217 silly get     'keep-alive': 'timeout=10, max=50',
+217 silly get     connection: 'Keep-Alive' } ]
+218 verbose etag https://registry.npmjs.org/winston from cache
+219 verbose get saving winston to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\winston\.cache.json
+220 http 304 https://registry.npmjs.org/nconf
+221 silly get cb [ 304,
+221 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+221 silly get     server: 'Apache',
+221 silly get     via: '1.1 varnish',
+221 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:44 GMT',
+221 silly get     'cache-control': 'max-age=60',
+221 silly get     etag: '"4P273XXC3287VE95YUXTM3Q38"',
+221 silly get     age: '35',
+221 silly get     'x-served-by': 'cache-lcy1121-LCY',
+221 silly get     'x-cache': 'HIT',
+221 silly get     'x-cache-hits': '1',
+221 silly get     'x-timer': 'S1424611064.641090,VS0,VE0',
+221 silly get     vary: 'Accept',
+221 silly get     'content-length': '0',
+221 silly get     'keep-alive': 'timeout=10, max=50',
+221 silly get     connection: 'Keep-Alive' } ]
+222 verbose etag https://registry.npmjs.org/nconf from cache
+223 verbose get saving nconf to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\nconf\.cache.json
+224 silly addNameTag next cb for nconf with tag latest
+225 verbose addNamed nconf@0.7.1
+226 silly addNamed semver.valid 0.7.1
+227 silly addNamed semver.validRange 0.7.1
+228 silly addNameTag next cb for winston with tag latest
+229 verbose addNamed winston@0.9.0
+230 silly addNamed semver.valid 0.9.0
+231 silly addNamed semver.validRange 0.9.0
+232 silly cache afterAdd nconf@0.7.1
+233 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\nconf\0.7.1\package\package.json not in flight; writing
+234 silly cache afterAdd winston@0.9.0
+235 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\winston\0.9.0\package\package.json not in flight; writing
+236 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\nconf\0.7.1\package\package.json written
+237 info already installed nconf@0.7.1
+238 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\winston\0.9.0\package\package.json written
+239 info already installed winston@0.9.0
+240 http 304 https://registry.npmjs.org/body-parser
+241 silly get cb [ 304,
+241 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+241 silly get     server: 'Apache',
+241 silly get     via: '1.1 varnish',
+241 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:44 GMT',
+241 silly get     'cache-control': 'max-age=60',
+241 silly get     etag: '"EFAJQ81JL5VTXFZCU6A9KTYF0"',
+241 silly get     age: '10',
+241 silly get     'x-served-by': 'cache-lcy1130-LCY',
+241 silly get     'x-cache': 'HIT',
+241 silly get     'x-cache-hits': '1',
+241 silly get     'x-timer': 'S1424611064.664775,VS0,VE0',
+241 silly get     vary: 'Accept',
+241 silly get     'content-length': '0',
+241 silly get     'keep-alive': 'timeout=10, max=50',
+241 silly get     connection: 'Keep-Alive' } ]
+242 verbose etag https://registry.npmjs.org/body-parser from cache
+243 verbose get saving body-parser to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\body-parser\.cache.json
+244 silly addNameTag next cb for body-parser with tag latest
+245 verbose addNamed body-parser@1.12.0
+246 silly addNamed semver.valid 1.12.0
+247 silly addNamed semver.validRange 1.12.0
+248 silly cache afterAdd body-parser@1.12.0
+249 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\body-parser\1.12.0\package\package.json not in flight; writing
+250 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\body-parser\1.12.0\package\package.json written
+251 info already installed body-parser@1.12.0
+252 http 304 https://registry.npmjs.org/mongodb
+253 silly get cb [ 304,
+253 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+253 silly get     server: 'Apache',
+253 silly get     via: '1.1 varnish',
+253 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:44 GMT',
+253 silly get     'cache-control': 'max-age=60',
+253 silly get     etag: '"604TUHLMW6FELWB4G7SDD5P1Z"',
+253 silly get     age: '0',
+253 silly get     'x-served-by': 'cache-lcy1123-LCY',
+253 silly get     'x-cache': 'HIT',
+253 silly get     'x-cache-hits': '1',
+253 silly get     'x-timer': 'S1424611064.660667,VS0,VE84',
+253 silly get     vary: 'Accept',
+253 silly get     'content-length': '0',
+253 silly get     'keep-alive': 'timeout=10, max=50',
+253 silly get     connection: 'Keep-Alive' } ]
+254 verbose etag https://registry.npmjs.org/mongodb from cache
+255 verbose get saving mongodb to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\mongodb\.cache.json
+256 silly addNameTag next cb for mongodb with tag latest
+257 verbose addNamed mongodb@1.4.31
+258 silly addNamed semver.valid 1.4.31
+259 silly addNamed semver.validRange 1.4.31
+260 silly cache afterAdd mongodb@1.4.31
+261 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\mongodb\1.4.31\package\package.json not in flight; writing
+262 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\mongodb\1.4.31\package\package.json written
+263 info already installed mongodb@1.4.31
+264 http 304 https://registry.npmjs.org/mongoose
+265 silly get cb [ 304,
+265 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+265 silly get     server: 'Apache',
+265 silly get     via: '1.1 varnish',
+265 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:44 GMT',
+265 silly get     'cache-control': 'max-age=60',
+265 silly get     etag: '"7FVSR4B7D9ZAQ8AWVDIBO60QU"',
+265 silly get     age: '0',
+265 silly get     'x-served-by': 'cache-lcy1125-LCY',
+265 silly get     'x-cache': 'HIT',
+265 silly get     'x-cache-hits': '1',
+265 silly get     'x-timer': 'S1424611064.641170,VS0,VE151',
+265 silly get     vary: 'Accept',
+265 silly get     'content-length': '0',
+265 silly get     'keep-alive': 'timeout=10, max=50',
+265 silly get     connection: 'Keep-Alive' } ]
+266 verbose etag https://registry.npmjs.org/mongoose from cache
+267 verbose get saving mongoose to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\mongoose\.cache.json
+268 http 304 https://registry.npmjs.org/passport
+269 silly get cb [ 304,
+269 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+269 silly get     server: 'Apache',
+269 silly get     via: '1.1 varnish',
+269 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:44 GMT',
+269 silly get     'cache-control': 'max-age=60',
+269 silly get     etag: '"AV4MRP1BPBTB4T6U5BRA99VC0"',
+269 silly get     age: '0',
+269 silly get     'x-served-by': 'cache-lcy1124-LCY',
+269 silly get     'x-cache': 'HIT',
+269 silly get     'x-cache-hits': '1',
+269 silly get     'x-timer': 'S1424611064.641282,VS0,VE151',
+269 silly get     vary: 'Accept',
+269 silly get     'content-length': '0',
+269 silly get     'keep-alive': 'timeout=10, max=50',
+269 silly get     connection: 'Keep-Alive' } ]
+270 verbose etag https://registry.npmjs.org/passport from cache
+271 verbose get saving passport to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\passport\.cache.json
+272 silly addNameTag next cb for mongoose with tag latest
+273 verbose addNamed mongoose@3.8.23
+274 silly addNamed semver.valid 3.8.23
+275 silly addNamed semver.validRange 3.8.23
+276 silly addNameTag next cb for passport with tag latest
+277 verbose addNamed passport@0.2.1
+278 silly addNamed semver.valid 0.2.1
+279 silly addNamed semver.validRange 0.2.1
+280 silly cache afterAdd mongoose@3.8.23
+281 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\mongoose\3.8.23\package\package.json not in flight; writing
+282 silly cache afterAdd passport@0.2.1
+283 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\passport\0.2.1\package\package.json not in flight; writing
+284 http 304 https://registry.npmjs.org/node-gcm
+285 silly get cb [ 304,
+285 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+285 silly get     server: 'Apache',
+285 silly get     via: '1.1 varnish',
+285 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:44 GMT',
+285 silly get     'cache-control': 'max-age=60',
+285 silly get     etag: '"E2WMY7CUQ625C150G4UZ9UDM9"',
+285 silly get     age: '0',
+285 silly get     'x-served-by': 'cache-lcy1131-LCY',
+285 silly get     'x-cache': 'MISS',
+285 silly get     'x-cache-hits': '0',
+285 silly get     'x-timer': 'S1424611064.624638,VS0,VE179',
+285 silly get     vary: 'Accept',
+285 silly get     'content-length': '0',
+285 silly get     'keep-alive': 'timeout=10, max=50',
+285 silly get     connection: 'Keep-Alive' } ]
+286 verbose etag https://registry.npmjs.org/node-gcm from cache
+287 verbose get saving node-gcm to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\node-gcm\.cache.json
+288 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\mongoose\3.8.23\package\package.json written
+289 info already installed mongoose@3.8.23
+290 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\passport\0.2.1\package\package.json written
+291 info already installed passport@0.2.1
+292 silly addNameTag next cb for node-gcm with tag latest
+293 verbose addNamed node-gcm@0.9.15
+294 silly addNamed semver.valid 0.9.15
+295 silly addNamed semver.validRange 0.9.15
+296 silly cache afterAdd node-gcm@0.9.15
+297 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\node-gcm\0.9.15\package\package.json not in flight; writing
+298 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\node-gcm\0.9.15\package\package.json written
+299 info already installed node-gcm@0.9.15
+300 http 304 https://registry.npmjs.org/passport-facebook-token
+301 silly get cb [ 304,
+301 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+301 silly get     server: 'Apache',
+301 silly get     via: '1.1 varnish',
+301 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:45 GMT',
+301 silly get     'cache-control': 'max-age=60',
+301 silly get     etag: '"78FKWZNJ3IKGVY1S20MIDAGCK"',
+301 silly get     age: '0',
+301 silly get     'x-served-by': 'cache-lcy1133-LCY',
+301 silly get     'x-cache': 'MISS',
+301 silly get     'x-cache-hits': '0',
+301 silly get     'x-timer': 'S1424611064.652539,VS0,VE438',
+301 silly get     vary: 'Accept',
+301 silly get     'content-length': '0',
+301 silly get     'keep-alive': 'timeout=10, max=50',
+301 silly get     connection: 'Keep-Alive' } ]
+302 verbose etag https://registry.npmjs.org/passport-facebook-token from cache
+303 verbose get saving passport-facebook-token to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\passport-facebook-token\.cache.json
+304 silly addNameTag next cb for passport-facebook-token with tag latest
+305 verbose addNamed passport-facebook-token@0.4.0
+306 silly addNamed semver.valid 0.4.0
+307 silly addNamed semver.validRange 0.4.0
+308 silly cache afterAdd passport-facebook-token@0.4.0
+309 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\passport-facebook-token\0.4.0\package\package.json not in flight; writing
+310 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\passport-facebook-token\0.4.0\package\package.json written
+311 info already installed passport-facebook-token@0.4.0
+312 http 304 https://registry.npmjs.org/bcrypt
+313 silly get cb [ 304,
+313 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+313 silly get     server: 'Apache',
+313 silly get     via: '1.1 varnish',
+313 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:45 GMT',
+313 silly get     'cache-control': 'max-age=60',
+313 silly get     etag: '"9F6WXBC44JXQBEQCDH2QSDHWB"',
+313 silly get     age: '0',
+313 silly get     'x-served-by': 'cache-lcy1124-LCY',
+313 silly get     'x-cache': 'MISS',
+313 silly get     'x-cache-hits': '0',
+313 silly get     'x-timer': 'S1424611064.644629,VS0,VE615',
+313 silly get     vary: 'Accept',
+313 silly get     'content-length': '0',
+313 silly get     'keep-alive': 'timeout=10, max=50',
+313 silly get     connection: 'Keep-Alive' } ]
+314 verbose etag https://registry.npmjs.org/bcrypt from cache
+315 verbose get saving bcrypt to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\bcrypt\.cache.json
+316 silly addNameTag next cb for bcrypt with tag latest
+317 verbose addNamed bcrypt@0.8.1
+318 silly addNamed semver.valid 0.8.1
+319 silly addNamed semver.validRange 0.8.1
+320 silly cache afterAdd bcrypt@0.8.1
+321 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\bcrypt\0.8.1\package\package.json not in flight; writing
+322 http 304 https://registry.npmjs.org/passport-http-bearer
+323 silly get cb [ 304,
+323 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+323 silly get     server: 'Apache',
+323 silly get     via: '1.1 varnish',
+323 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:45 GMT',
+323 silly get     'cache-control': 'max-age=60',
+323 silly get     etag: '"6M8XVTN1B10AJBR1Q6QU1GRPO"',
+323 silly get     age: '0',
+323 silly get     'x-served-by': 'cache-lcy1135-LCY',
+323 silly get     'x-cache': 'HIT',
+323 silly get     'x-cache-hits': '1',
+323 silly get     'x-timer': 'S1424611064.648647,VS0,VE621',
+323 silly get     vary: 'Accept',
+323 silly get     'content-length': '0',
+323 silly get     'keep-alive': 'timeout=10, max=50',
+323 silly get     connection: 'Keep-Alive' } ]
+324 verbose etag https://registry.npmjs.org/passport-http-bearer from cache
+325 verbose get saving passport-http-bearer to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\passport-http-bearer\.cache.json
+326 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\bcrypt\0.8.1\package\package.json written
+327 silly addNameTag next cb for passport-http-bearer with tag latest
+328 verbose addNamed passport-http-bearer@1.0.1
+329 silly addNamed semver.valid 1.0.1
+330 silly addNamed semver.validRange 1.0.1
+331 silly cache afterAdd passport-http-bearer@1.0.1
+332 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\passport-http-bearer\1.0.1\package\package.json not in flight; writing
+333 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\passport-http-bearer\1.0.1\package\package.json written
+334 info already installed passport-http-bearer@1.0.1
+335 http 304 https://registry.npmjs.org/passport-http
+336 silly get cb [ 304,
+336 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+336 silly get     server: 'Apache',
+336 silly get     via: '1.1 varnish',
+336 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:45 GMT',
+336 silly get     'cache-control': 'max-age=60',
+336 silly get     etag: '"7BXJ6HN3ETVLO7A3SY2YFNCV0"',
+336 silly get     age: '0',
+336 silly get     'x-served-by': 'cache-lcy1123-LCY',
+336 silly get     'x-cache': 'MISS',
+336 silly get     'x-cache-hits': '0',
+336 silly get     'x-timer': 'S1424611064.641198,VS0,VE646',
+336 silly get     vary: 'Accept',
+336 silly get     'content-length': '0',
+336 silly get     'keep-alive': 'timeout=10, max=50',
+336 silly get     connection: 'Keep-Alive' } ]
+337 verbose etag https://registry.npmjs.org/passport-http from cache
+338 verbose get saving passport-http to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\passport-http\.cache.json
+339 silly addNameTag next cb for passport-http with tag latest
+340 verbose addNamed passport-http@0.2.2
+341 silly addNamed semver.valid 0.2.2
+342 silly addNamed semver.validRange 0.2.2
+343 silly cache afterAdd passport-http@0.2.2
+344 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\passport-http\0.2.2\package\package.json not in flight; writing
+345 http 304 https://registry.npmjs.org/express
+346 silly get cb [ 304,
+346 silly get   { date: 'Sun, 22 Feb 2015 13:17:44 GMT',
+346 silly get     server: 'Apache',
+346 silly get     via: '1.1 varnish',
+346 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:45 GMT',
+346 silly get     'cache-control': 'max-age=60',
+346 silly get     etag: '"7LVQJTQ9UCEDWSGJFJCDBFE1F"',
+346 silly get     age: '0',
+346 silly get     'x-served-by': 'cache-lcy1131-LCY',
+346 silly get     'x-cache': 'HIT',
+346 silly get     'x-cache-hits': '1',
+346 silly get     'x-timer': 'S1424611064.660802,VS0,VE632',
+346 silly get     vary: 'Accept',
+346 silly get     'content-length': '0',
+346 silly get     'keep-alive': 'timeout=10, max=50',
+346 silly get     connection: 'Keep-Alive' } ]
+347 verbose etag https://registry.npmjs.org/express from cache
+348 verbose get saving express to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\express\.cache.json
+349 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\passport-http\0.2.2\package\package.json written
+350 info already installed passport-http@0.2.2
+351 silly addNameTag next cb for express with tag latest
+352 verbose addNamed express@4.11.2
+353 silly addNamed semver.valid 4.11.2
+354 silly addNamed semver.validRange 4.11.2
+355 silly cache afterAdd express@4.11.2
+356 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\express\4.11.2\package\package.json not in flight; writing
+357 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\express\4.11.2\package\package.json written
+358 info already installed express@4.11.2
+359 silly install resolved [ { name: 'bcrypt',
+359 silly install resolved     description: 'A bcrypt library for NodeJS.',
+359 silly install resolved     keywords:
+359 silly install resolved      [ 'bcrypt',
+359 silly install resolved        'password',
+359 silly install resolved        'auth',
+359 silly install resolved        'authentication',
+359 silly install resolved        'encryption',
+359 silly install resolved        'crypt',
+359 silly install resolved        'crypto' ],
+359 silly install resolved     main: './bcrypt',
+359 silly install resolved     version: '0.8.1',
+359 silly install resolved     author: { name: 'Nick Campbell', url: 'https://github.com/ncb000gt' },
+359 silly install resolved     engines: { node: '>= 0.6.0' },
+359 silly install resolved     repository:
+359 silly install resolved      { type: 'git',
+359 silly install resolved        url: 'https://github.com/ncb000gt/node.bcrypt.js.git' },
+359 silly install resolved     licenses: [ [Object] ],
+359 silly install resolved     bugs: { url: 'https://github.com/ncb000gt/node.bcrypt.js/issues' },
+359 silly install resolved     scripts:
+359 silly install resolved      { test: 'node-gyp configure build && nodeunit test',
+359 silly install resolved        install: 'node-gyp rebuild' },
+359 silly install resolved     dependencies: { bindings: '1.0.0', nan: '1.5.0' },
+359 silly install resolved     devDependencies: { nodeunit: '>=0.6.4' },
+359 silly install resolved     contributors:
+359 silly install resolved      [ [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object],
+359 silly install resolved        [Object] ],
+359 silly install resolved     gypfile: true,
+359 silly install resolved     gitHead: '1c76a3000c4e3a89f6e59d3f66e6d7b9da51affd',
+359 silly install resolved     homepage: 'https://github.com/ncb000gt/node.bcrypt.js',
+359 silly install resolved     _id: 'bcrypt@0.8.1',
+359 silly install resolved     _shasum: '384fa4fbc106ec87ccf8ee3d1e7e12d0ef8eeaaf',
+359 silly install resolved     _from: 'bcrypt@latest',
+359 silly install resolved     _npmVersion: '2.1.12',
+359 silly install resolved     _nodeVersion: '0.10.33',
+359 silly install resolved     _npmUser: { name: 'shtylman', email: 'shtylman@gmail.com' },
+359 silly install resolved     maintainers: [ [Object], [Object], [Object], [Object] ],
+359 silly install resolved     dist:
+359 silly install resolved      { shasum: '384fa4fbc106ec87ccf8ee3d1e7e12d0ef8eeaaf',
+359 silly install resolved        tarball: 'http://registry.npmjs.org/bcrypt/-/bcrypt-0.8.1.tgz' },
+359 silly install resolved     directories: {},
+359 silly install resolved     _resolved: 'https://registry.npmjs.org/bcrypt/-/bcrypt-0.8.1.tgz',
+359 silly install resolved     readme: 'ERROR: No README data found!' } ]
+360 info install bcrypt@0.8.1 into C:\Users\Romain\Documents\Git\weproov\server
+361 info installOne bcrypt@0.8.1
+362 verbose installOne of bcrypt to C:\Users\Romain\Documents\Git\weproov\server not in flight; installing
+363 verbose lock using C:\Users\Romain\AppData\Roaming\npm-cache\_locks\bcrypt-85be4ee8aac7dd76.lock for C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+364 silly install write writing bcrypt 0.8.1 to C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+365 silly cache addNamed cb bcrypt@0.8.1
+366 verbose unbuild node_modules\bcrypt
+367 verbose gentlyRm vacuuming C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+368 verbose tar unpack C:\Users\Romain\AppData\Roaming\npm-cache\bcrypt\0.8.1\package.tgz
+369 verbose tar unpacking to C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+370 verbose gentlyRm vacuuming C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+371 silly gunzTarPerm modes [ '777', '666' ]
+372 silly gunzTarPerm extractEntry package.json
+373 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+374 silly gunzTarPerm extractEntry .npmignore
+375 silly gunzTarPerm modified mode [ '.npmignore', 420, 438 ]
+376 silly gunzTarPerm extractEntry README.md
+377 silly gunzTarPerm modified mode [ 'README.md', 420, 438 ]
+378 silly gunzTarPerm extractEntry LICENSE
+379 silly gunzTarPerm modified mode [ 'LICENSE', 420, 438 ]
+380 silly gunzTarPerm extractEntry bcrypt.js
+381 silly gunzTarPerm modified mode [ 'bcrypt.js', 420, 438 ]
+382 silly gunzTarPerm extractEntry binding.gyp
+383 silly gunzTarPerm modified mode [ 'binding.gyp', 420, 438 ]
+384 silly gunzTarPerm extractEntry .travis.yml
+385 silly gunzTarPerm modified mode [ '.travis.yml', 420, 438 ]
+386 silly gunzTarPerm extractEntry CHANGELOG.md
+387 silly gunzTarPerm modified mode [ 'CHANGELOG.md', 420, 438 ]
+388 silly gunzTarPerm extractEntry examples/async_compare.js
+389 silly gunzTarPerm modified mode [ 'examples/async_compare.js', 420, 438 ]
+390 silly gunzTarPerm extractEntry examples/forever_gen_salt.js
+391 silly gunzTarPerm modified mode [ 'examples/forever_gen_salt.js', 420, 438 ]
+392 silly gunzTarPerm extractEntry test/async.js
+393 silly gunzTarPerm modified mode [ 'test/async.js', 420, 438 ]
+394 silly gunzTarPerm extractEntry test/repetitions.js
+395 silly gunzTarPerm modified mode [ 'test/repetitions.js', 420, 438 ]
+396 silly gunzTarPerm extractEntry test/sync.js
+397 silly gunzTarPerm modified mode [ 'test/sync.js', 420, 438 ]
+398 silly gunzTarPerm extractEntry Makefile
+399 silly gunzTarPerm modified mode [ 'Makefile', 420, 438 ]
+400 silly gunzTarPerm extractEntry src/bcrypt.cc
+401 silly gunzTarPerm modified mode [ 'src/bcrypt.cc', 420, 438 ]
+402 silly gunzTarPerm extractEntry src/bcrypt_node.cc
+403 silly gunzTarPerm modified mode [ 'src/bcrypt_node.cc', 420, 438 ]
+404 silly gunzTarPerm extractEntry src/blowfish.cc
+405 silly gunzTarPerm modified mode [ 'src/blowfish.cc', 420, 438 ]
+406 silly gunzTarPerm extractEntry src/node_blf.h
+407 silly gunzTarPerm modified mode [ 'src/node_blf.h', 420, 438 ]
+408 silly gunzTarPerm extractEntry werker.yml
+409 silly gunzTarPerm modified mode [ 'werker.yml', 420, 438 ]
+410 info preinstall bcrypt@0.8.1
+411 silly prepareForInstallMany adding bindings@1.0.0 from bcrypt dependencies
+412 silly prepareForInstallMany adding nan@1.5.0 from bcrypt dependencies
+413 silly cache add args [ 'bindings@1.0.0', null ]
+414 verbose cache add spec bindings@1.0.0
+415 silly cache add args [ 'nan@1.5.0', null ]
+416 verbose cache add spec nan@1.5.0
+417 silly cache add parsed spec { raw: 'bindings@1.0.0',
+417 silly cache add   scope: null,
+417 silly cache add   name: 'bindings',
+417 silly cache add   rawSpec: '1.0.0',
+417 silly cache add   spec: '1.0.0',
+417 silly cache add   type: 'version' }
+418 verbose addNamed bindings@1.0.0
+419 silly addNamed semver.valid 1.0.0
+420 silly addNamed semver.validRange 1.0.0
+421 silly mapToRegistry name bindings
+422 silly mapToRegistry using default registry
+423 silly mapToRegistry registry https://registry.npmjs.org/
+424 silly mapToRegistry uri https://registry.npmjs.org/bindings
+425 verbose addNameVersion registry:https://registry.npmjs.org/bindings not in flight; fetching
+426 silly cache add parsed spec { raw: 'nan@1.5.0',
+426 silly cache add   scope: null,
+426 silly cache add   name: 'nan',
+426 silly cache add   rawSpec: '1.5.0',
+426 silly cache add   spec: '1.5.0',
+426 silly cache add   type: 'version' }
+427 verbose addNamed nan@1.5.0
+428 silly addNamed semver.valid 1.5.0
+429 silly addNamed semver.validRange 1.5.0
+430 silly mapToRegistry name nan
+431 silly mapToRegistry using default registry
+432 silly mapToRegistry registry https://registry.npmjs.org/
+433 silly mapToRegistry uri https://registry.npmjs.org/nan
+434 verbose addNameVersion registry:https://registry.npmjs.org/nan not in flight; fetching
+435 verbose request uri https://registry.npmjs.org/bindings
+436 verbose request no auth needed
+437 info attempt registry request try #1 at 14:17:46
+438 verbose etag "BJGP1201ZXLWX88VO1W0N0YSR"
+439 http request GET https://registry.npmjs.org/bindings
+440 verbose request uri https://registry.npmjs.org/nan
+441 verbose request no auth needed
+442 info attempt registry request try #1 at 14:17:46
+443 verbose etag "EI65ZGD4YQM5HZLU2BK7SJIT9"
+444 http request GET https://registry.npmjs.org/nan
+445 http 304 https://registry.npmjs.org/nan
+446 silly get cb [ 304,
+446 silly get   { date: 'Sun, 22 Feb 2015 13:17:45 GMT',
+446 silly get     server: 'Apache',
+446 silly get     via: '1.1 varnish',
+446 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:45 GMT',
+446 silly get     'cache-control': 'max-age=60',
+446 silly get     etag: '"EI65ZGD4YQM5HZLU2BK7SJIT9"',
+446 silly get     age: '10',
+446 silly get     'x-served-by': 'cache-lcy1131-LCY',
+446 silly get     'x-cache': 'HIT',
+446 silly get     'x-cache-hits': '1',
+446 silly get     'x-timer': 'S1424611065.518707,VS0,VE0',
+446 silly get     vary: 'Accept',
+446 silly get     'content-length': '0',
+446 silly get     'keep-alive': 'timeout=10, max=50',
+446 silly get     connection: 'Keep-Alive' } ]
+447 verbose etag https://registry.npmjs.org/nan from cache
+448 verbose get saving nan to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\nan\.cache.json
+449 silly cache afterAdd nan@1.5.0
+450 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\nan\1.5.0\package\package.json not in flight; writing
+451 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\nan\1.5.0\package\package.json written
+452 http 304 https://registry.npmjs.org/bindings
+453 silly get cb [ 304,
+453 silly get   { date: 'Sun, 22 Feb 2015 13:17:45 GMT',
+453 silly get     server: 'Apache',
+453 silly get     via: '1.1 varnish',
+453 silly get     'last-modified': 'Sun, 22 Feb 2015 13:17:45 GMT',
+453 silly get     'cache-control': 'max-age=60',
+453 silly get     etag: '"BJGP1201ZXLWX88VO1W0N0YSR"',
+453 silly get     age: '0',
+453 silly get     'x-served-by': 'cache-lcy1120-LCY',
+453 silly get     'x-cache': 'HIT',
+453 silly get     'x-cache-hits': '1',
+453 silly get     'x-timer': 'S1424611065.522764,VS0,VE341',
+453 silly get     vary: 'Accept',
+453 silly get     'content-length': '0',
+453 silly get     'keep-alive': 'timeout=10, max=50',
+453 silly get     connection: 'Keep-Alive' } ]
+454 verbose etag https://registry.npmjs.org/bindings from cache
+455 verbose get saving bindings to C:\Users\Romain\AppData\Roaming\npm-cache\registry.npmjs.org\bindings\.cache.json
+456 silly cache afterAdd bindings@1.0.0
+457 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\bindings\1.0.0\package\package.json not in flight; writing
+458 verbose afterAdd C:\Users\Romain\AppData\Roaming\npm-cache\bindings\1.0.0\package\package.json written
+459 silly install resolved [ { name: 'nan',
+459 silly install resolved     version: '1.5.0',
+459 silly install resolved     description: 'Native Abstractions for Node.js: C++ header for Node 0.8->0.12 compatibility',
+459 silly install resolved     main: 'include_dirs.js',
+459 silly install resolved     repository: { type: 'git', url: 'git://github.com/rvagg/nan.git' },
+459 silly install resolved     scripts:
+459 silly install resolved      { test: 'tap --gc test/js/*-test.js',
+459 silly install resolved        'rebuild-tests': 'node-gyp rebuild --directory test' },
+459 silly install resolved     contributors:
+459 silly install resolved      [ [Object],
+459 silly install resolved        [Object],
+459 silly install resolved        [Object],
+459 silly install resolved        [Object],
+459 silly install resolved        [Object],
+459 silly install resolved        [Object],
+459 silly install resolved        [Object] ],
+459 silly install resolved     devDependencies:
+459 silly install resolved      { bindings: '~1.2.1',
+459 silly install resolved        'node-gyp': '~1.0.2',
+459 silly install resolved        tap: '~0.4.13',
+459 silly install resolved        xtend: '~4.0.0' },
+459 silly install resolved     license: 'MIT',
+459 silly install resolved     gitHead: '6fea75acc8f78124756ff4d8e536b6196aca3d37',
+459 silly install resolved     bugs: { url: 'https://github.com/rvagg/nan/issues' },
+459 silly install resolved     homepage: 'https://github.com/rvagg/nan',
+459 silly install resolved     _id: 'nan@1.5.0',
+459 silly install resolved     _shasum: '2b3c05bc361f52e50aea2c49077783aa67c5b7fb',
+459 silly install resolved     _from: 'nan@1.5.0',
+459 silly install resolved     _npmVersion: '2.1.18',
+459 silly install resolved     _nodeVersion: '0.11.14',
+459 silly install resolved     _npmUser: { name: 'kkoopa', email: 'bbyholm@abo.fi' },
+459 silly install resolved     maintainers: [ [Object], [Object] ],
+459 silly install resolved     dist:
+459 silly install resolved      { shasum: '2b3c05bc361f52e50aea2c49077783aa67c5b7fb',
+459 silly install resolved        tarball: 'http://registry.npmjs.org/nan/-/nan-1.5.0.tgz' },
+459 silly install resolved     directories: {},
+459 silly install resolved     _resolved: 'https://registry.npmjs.org/nan/-/nan-1.5.0.tgz',
+459 silly install resolved     readme: 'ERROR: No README data found!' },
+459 silly install resolved   { name: 'bindings',
+459 silly install resolved     description: 'Helper module for loading your native module\'s .node file',
+459 silly install resolved     keywords: [ 'native', 'addon', 'bindings', 'gyp', 'waf', 'c', 'c++' ],
+459 silly install resolved     version: '1.0.0',
+459 silly install resolved     author:
+459 silly install resolved      { name: 'Nathan Rajlich',
+459 silly install resolved        email: 'nathan@tootallnate.net',
+459 silly install resolved        url: 'http://tootallnate.net' },
+459 silly install resolved     repository:
+459 silly install resolved      { type: 'git',
+459 silly install resolved        url: 'git://github.com/TooTallNate/node-bindings.git' },
+459 silly install resolved     main: './bindings.js',
+459 silly install resolved     _id: 'bindings@1.0.0',
+459 silly install resolved     dist:
+459 silly install resolved      { shasum: 'c3ccde60e9de6807c6f1aa4ef4843af29191c828',
+459 silly install resolved        tarball: 'http://registry.npmjs.org/bindings/-/bindings-1.0.0.tgz' },
+459 silly install resolved     maintainers: [ [Object], [Object] ],
+459 silly install resolved     directories: {},
+459 silly install resolved     _shasum: 'c3ccde60e9de6807c6f1aa4ef4843af29191c828',
+459 silly install resolved     _resolved: 'https://registry.npmjs.org/bindings/-/bindings-1.0.0.tgz',
+459 silly install resolved     _from: 'bindings@1.0.0',
+459 silly install resolved     bugs: { url: 'https://github.com/TooTallNate/node-bindings/issues' },
+459 silly install resolved     readme: 'ERROR: No README data found!',
+459 silly install resolved     homepage: 'https://github.com/TooTallNate/node-bindings' } ]
+460 info install nan@1.5.0 into C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+461 info install bindings@1.0.0 into C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+462 info installOne nan@1.5.0
+463 verbose installOne of nan to C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt not in flight; installing
+464 info installOne bindings@1.0.0
+465 verbose installOne of bindings to C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt not in flight; installing
+466 verbose lock using C:\Users\Romain\AppData\Roaming\npm-cache\_locks\nan-1fda347a6e0e46bf.lock for C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\nan
+467 silly install write writing nan 1.5.0 to C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\nan
+468 silly cache addNamed cb nan@1.5.0
+469 verbose unbuild node_modules\bcrypt\node_modules\nan
+470 verbose lock using C:\Users\Romain\AppData\Roaming\npm-cache\_locks\bindings-d05f8c17deff4daf.lock for C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\bindings
+471 verbose gentlyRm vacuuming C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\nan
+472 silly install write writing bindings 1.0.0 to C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\bindings
+473 silly cache addNamed cb bindings@1.0.0
+474 verbose unbuild node_modules\bcrypt\node_modules\bindings
+475 verbose tar unpack C:\Users\Romain\AppData\Roaming\npm-cache\nan\1.5.0\package.tgz
+476 verbose tar unpacking to C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\nan
+477 verbose gentlyRm vacuuming C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\nan
+478 silly gunzTarPerm modes [ '777', '666' ]
+479 verbose gentlyRm vacuuming C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\bindings
+480 verbose tar unpack C:\Users\Romain\AppData\Roaming\npm-cache\bindings\1.0.0\package.tgz
+481 verbose tar unpacking to C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\bindings
+482 verbose gentlyRm vacuuming C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\bindings
+483 silly gunzTarPerm modes [ '777', '666' ]
+484 silly gunzTarPerm extractEntry package.json
+485 silly gunzTarPerm modified mode [ 'package.json', 436, 438 ]
+486 silly gunzTarPerm extractEntry package.json
+487 silly gunzTarPerm modified mode [ 'package.json', 420, 438 ]
+488 silly gunzTarPerm extractEntry README.md
+489 silly gunzTarPerm modified mode [ 'README.md', 436, 438 ]
+490 silly gunzTarPerm extractEntry README.md
+491 silly gunzTarPerm modified mode [ 'README.md', 420, 438 ]
+492 silly gunzTarPerm extractEntry bindings.js
+493 silly gunzTarPerm modified mode [ 'bindings.js', 420, 438 ]
+494 silly gunzTarPerm extractEntry include_dirs.js
+495 silly gunzTarPerm modified mode [ 'include_dirs.js', 436, 438 ]
+496 silly gunzTarPerm extractEntry LICENSE.md
+497 silly gunzTarPerm modified mode [ 'LICENSE.md', 436, 438 ]
+498 silly gunzTarPerm extractEntry .dntrc
+499 silly gunzTarPerm modified mode [ '.dntrc', 436, 438 ]
+500 silly gunzTarPerm extractEntry appveyor.yml
+501 silly gunzTarPerm modified mode [ 'appveyor.yml', 436, 438 ]
+502 silly gunzTarPerm extractEntry build/config.gypi
+503 silly gunzTarPerm modified mode [ 'build/config.gypi', 436, 438 ]
+504 silly gunzTarPerm extractEntry nan.h
+505 silly gunzTarPerm modified mode [ 'nan.h', 436, 438 ]
+506 silly gunzTarPerm extractEntry nan_implementation_12_inl.h
+507 silly gunzTarPerm modified mode [ 'nan_implementation_12_inl.h', 436, 438 ]
+508 silly gunzTarPerm extractEntry nan_implementation_pre_12_inl.h
+509 silly gunzTarPerm modified mode [ 'nan_implementation_pre_12_inl.h', 436, 438 ]
+510 silly gunzTarPerm extractEntry nan_new.h
+511 silly gunzTarPerm modified mode [ 'nan_new.h', 436, 438 ]
+512 silly gunzTarPerm extractEntry CHANGELOG.md
+513 silly gunzTarPerm modified mode [ 'CHANGELOG.md', 436, 438 ]
+514 info preinstall bindings@1.0.0
+515 silly install resolved []
+516 verbose about to build C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\bindings
+517 info build C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\bindings
+518 verbose linkStuff [ false,
+518 verbose linkStuff   false,
+518 verbose linkStuff   false,
+518 verbose linkStuff   'C:\\Users\\Romain\\Documents\\Git\\weproov\\server\\node_modules\\bcrypt\\node_modules' ]
+519 info linkStuff bindings@1.0.0
+520 verbose linkBins bindings@1.0.0
+521 verbose linkMans bindings@1.0.0
+522 verbose rebuildBundles bindings@1.0.0
+523 info install bindings@1.0.0
+524 info postinstall bindings@1.0.0
+525 verbose unlock done using C:\Users\Romain\AppData\Roaming\npm-cache\_locks\bindings-d05f8c17deff4daf.lock for C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\bindings
+526 info preinstall nan@1.5.0
+527 silly install resolved []
+528 verbose about to build C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\nan
+529 info build C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\nan
+530 verbose linkStuff [ false,
+530 verbose linkStuff   false,
+530 verbose linkStuff   false,
+530 verbose linkStuff   'C:\\Users\\Romain\\Documents\\Git\\weproov\\server\\node_modules\\bcrypt\\node_modules' ]
+531 info linkStuff nan@1.5.0
+532 verbose linkBins nan@1.5.0
+533 verbose linkMans nan@1.5.0
+534 verbose rebuildBundles nan@1.5.0
+535 info install nan@1.5.0
+536 info postinstall nan@1.5.0
+537 verbose unlock done using C:\Users\Romain\AppData\Roaming\npm-cache\_locks\nan-1fda347a6e0e46bf.lock for C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt\node_modules\nan
+538 verbose about to build C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+539 info build C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+540 verbose linkStuff [ false,
+540 verbose linkStuff   false,
+540 verbose linkStuff   false,
+540 verbose linkStuff   'C:\\Users\\Romain\\Documents\\Git\\weproov\\server\\node_modules' ]
+541 info linkStuff bcrypt@0.8.1
+542 verbose linkBins bcrypt@0.8.1
+543 verbose linkMans bcrypt@0.8.1
+544 verbose rebuildBundles bcrypt@0.8.1
+545 verbose rebuildBundles [ 'bindings', 'nan' ]
+546 info install bcrypt@0.8.1
+547 verbose unsafe-perm in lifecycle true
+548 info bcrypt@0.8.1 Failed to exec install script
+549 verbose unlock done using C:\Users\Romain\AppData\Roaming\npm-cache\_locks\bcrypt-85be4ee8aac7dd76.lock for C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+550 verbose stack Error: bcrypt@0.8.1 install: `node-gyp rebuild`
+550 verbose stack Exit status 1
+550 verbose stack     at EventEmitter.<anonymous> (C:\Program Files\nodejs\node_modules\npm\lib\utils\lifecycle.js:213:16)
+550 verbose stack     at EventEmitter.emit (events.js:110:17)
+550 verbose stack     at ChildProcess.<anonymous> (C:\Program Files\nodejs\node_modules\npm\lib\utils\spawn.js:14:12)
+550 verbose stack     at ChildProcess.emit (events.js:110:17)
+550 verbose stack     at maybeClose (child_process.js:1008:16)
+550 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1080:5)
+551 verbose pkgid bcrypt@0.8.1
+552 verbose cwd C:\Users\Romain\Documents\Git\weproov\server
+553 error Windows_NT 6.3.9600
+554 error argv "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install"
+555 error node v0.12.0
+556 error npm  v2.5.1
+557 error code ELIFECYCLE
+558 error bcrypt@0.8.1 install: `node-gyp rebuild`
+558 error Exit status 1
+559 error Failed at the bcrypt@0.8.1 install script 'node-gyp rebuild'.
+559 error This is most likely a problem with the bcrypt package,
+559 error not with npm itself.
+559 error Tell the author that this fails on your system:
+559 error     node-gyp rebuild
+559 error You can get their info via:
+559 error     npm owner ls bcrypt
+559 error There is likely additional logging output above.
+560 verbose exit [ 1, true ]
+561 verbose unbuild node_modules\bcrypt
+562 info preuninstall bcrypt@0.8.1
+563 info uninstall bcrypt@0.8.1
+564 verbose unbuild rmStuff bcrypt@0.8.1 from C:\Users\Romain\Documents\Git\weproov\server\node_modules
+565 info postuninstall bcrypt@0.8.1
+566 verbose gentlyRm vacuuming C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+567 silly gentlyRm purging C:\Users\Romain\Documents\Git\weproov\server\node_modules\bcrypt
+568 silly gentlyRm quitting because other entries in C:\Users\Romain\Documents\Git\weproov\server\node_modules

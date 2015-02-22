@@ -49,5 +49,5 @@ fs.readdirSync( __dirname + '/controllers').forEach(function (file) {
 //});
 
 http.createServer(app).listen( config.get("port") , function () {
-	logger.info('IBetYa server is running on port %d', config.get("port"));
+	logger.info('WeProov server is running on port %d', config.get("port"));
 });

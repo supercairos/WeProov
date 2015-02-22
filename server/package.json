@@ -1,19 +1,17 @@
 {
-	"name": "ibetya",
+	"name": "weproov",
 	"description": "A EAR project",
 	"version": "1.0.0",
 	"homepage": "play store",
 	"main": "server.js",
 	"authors": [
-		"Emmanuel Freund",
-		"Acher Criou",
 		"Romain Caire"
 	],
 	"engines": {
 		"node": ">=0.10"
 	},
 	"bin": {
-		"ibetya": "server.js"
+		"weproov": "server.js"
 	},
 	"dependencies": {
 		"express": "latest",
