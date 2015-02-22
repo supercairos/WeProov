@@ -23,7 +23,7 @@ public class MyApplication extends Application {
         ActiveAndroid.dispose();
     }
 
-    public static Context getContext() {
+    public static Context getAppContext() {
         return sContext;
     }
 }

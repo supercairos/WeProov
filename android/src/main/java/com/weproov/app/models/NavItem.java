@@ -24,7 +24,7 @@ public class NavItem {
     }
 
     public String getLabel() {
-        return MyApplication.getContext().getString(labelResId);
+        return MyApplication.getAppContext().getString(labelResId);
     }
 
     public int getIconResId() {

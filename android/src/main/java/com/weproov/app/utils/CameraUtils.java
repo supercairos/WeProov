@@ -3,7 +3,7 @@ package com.weproov.app.utils;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-public class CameraUtils {
+public final class CameraUtils {
 
     /** Check if this device has a camera */
     public static boolean checkCameraHardware(Context context) {

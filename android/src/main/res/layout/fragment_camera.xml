@@ -6,7 +6,7 @@
         android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.weproov.app.views.FourThirdView
+    <com.weproov.app.ui.views.FourThirdView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -38,7 +38,7 @@
                     android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
-    </com.weproov.app.views.FourThirdView>
+    </com.weproov.app.ui.views.FourThirdView>
 
     <FrameLayout
             android:layout_width="match_parent"

@@ -28,7 +28,7 @@
                     android:scaleType="centerInside"
                     android:layout_gravity="center"/>
 
-            <com.weproov.app.views.FloatLabelLayout
+            <com.weproov.app.ui.views.FloatLabelLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="8dp"
@@ -43,9 +43,9 @@
                         android:inputType="textEmailAddress"
                         android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/edit_password"/>
-            </com.weproov.app.views.FloatLabelLayout>
+            </com.weproov.app.ui.views.FloatLabelLayout>
 
-            <com.weproov.app.views.FloatLabelLayout
+            <com.weproov.app.ui.views.FloatLabelLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="8dp"
@@ -60,7 +60,7 @@
                         android:inputType="textPassword"
                         android:imeOptions="actionDone"/>
 
-            </com.weproov.app.views.FloatLabelLayout>
+            </com.weproov.app.ui.views.FloatLabelLayout>
 
             <TextView
                     android:layout_width="wrap_content"
