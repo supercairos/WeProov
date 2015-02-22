@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.weproov.app.models.User;
+import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.utils.PlayServicesUtils;
 import com.weproov.app.utils.constants.GcmConstants;
 import retrofit.RetrofitError;
@@ -55,7 +56,7 @@ public class GcmRegisterService extends IntentService {
         Log.d("Test", "Got token : " + regid);
         try {
             User.getService().registerGcm(regid);
-        } catch (RetrofitError error){
+        } catch (NetworkException | RetrofitError error){
             Log.e("Test", "Error !", error);
         }
     }

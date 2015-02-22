@@ -10,7 +10,7 @@ var BearerStrategy          = require('passport-http-bearer').Strategy;
 passport.use(new BasicStrategy(
     function(userid, password, done) {
         log.info("Trying to login: %s with password %s (hashed: %s)", userid, password, User.hash(password));
-        User.where({ username: userid, password: User.hash(password) }).findOne( function(err, user) {
+        User.where({ email: userid.trim(), password: User.hash(password.trim()) }).findOne( function(err, user) {
             if (err) { 
                 log.error("Database failed with error: %s", err);
                 return done(err); 
@@ -23,7 +23,7 @@ passport.use(new BasicStrategy(
 
             try {
                 user.token = crypto.randomBytes(256).toString('hex');
-                log.info("Generated token %s for user %s", user.token, user.username);
+                log.info("Generated token %s for user %s", user.token, user.email);
             } catch (ex) {
                 log.info("Couldn't create a new token :( ", err);
                 return done(ex); 
@@ -35,7 +35,7 @@ passport.use(new BasicStrategy(
                     return done(err); 
                 }
                 
-                log.info("%s logged in success", user.username);
+                log.info("%s logged in success", user.email);
                 return done(null, user);
             });
             
@@ -53,7 +53,7 @@ passport.use(new BearerStrategy(
                 return done(null, false); 
             }
 
-            log.info("Login success for user : " + user.username);
+            log.info("Login success for user : " + user.email);
             return done(null, user);
         });
     }

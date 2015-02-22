@@ -7,12 +7,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.squareup.otto.Subscribe;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.UsersTask;
+import com.weproov.app.models.events.LoginErrorEvent;
 import com.weproov.app.models.events.LoginSuccessEvent;
 import com.weproov.app.utils.AccountUtils;
 
@@ -58,5 +60,19 @@ public class LandingActivity extends BaseActivity {
     @Subscribe
     public void onLoginSuccess(LoginSuccessEvent event){
         mDialog.dismiss();
+        gotoMain();
+    }
+
+    @Subscribe
+    public void onLoginError(LoginErrorEvent event){
+        mDialog.dismiss();
+        Toast.makeText(this, "Error while login", Toast.LENGTH_SHORT);
+    }
+
+    private void gotoMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

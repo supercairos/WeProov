@@ -28,10 +28,11 @@ module.exports = function(app) {
 			})).end();
 		}
 
-		// // TODO: Check if username or email exist in database; 
+		// // TODO: Check if email exist in database; 
 		var myUser = new User({
-			username: req.body.username,
 			email: req.body.email,
+			firstname: req.body.firstname,
+			lastname: req.body.lastname,
 			password: User.hash(req.body.password),
 			token: crypto.randomBytes(256).toString('hex')
 		});
@@ -44,7 +45,7 @@ module.exports = function(app) {
 					message:"This is the error message"
 				})).end();
 			} else {
-				log.info("A new user registered %s (token:%s)", user.username, user.token);
+				log.info("A new user registered %s (token:%s)", user.email, user.token);
 				res.status(200).json( user ).end();
 			}
 		});
@@ -119,15 +120,15 @@ module.exports = function(app) {
 
 	app.get('/users/autocomplete', 
 		function(req, res) {
-			log.info("Looking for an username starting by %s", req.query.q);
+			log.info("Looking for an email starting by %s", req.query.q);
 			if(req.query.q && req.query.q.length > 2){
-				User.find({ 'username':  { $regex: new RegExp(req.query.q, 'i') }}, 'username picture', function(err, usernames) {
+				User.find({ 'email':  { $regex: new RegExp(req.query.q, 'i') }}, 'email picture', function(err, emails) {
 					if(err){
 						log.error("Database error %s ", err);
 						res.sendStatus(500);
 					}
 
-					res.status(200).json(usernames).end();
+					res.status(200).json(emails).end();
 				});
 			} else {
 				log.info("Too short");

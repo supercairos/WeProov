@@ -25,7 +25,7 @@ public class Connection {
 
     public static final long TIMEOUT = 60;
     public static final String PROTOCOL = "http";
-    public static final String HOST = "62.210.38.195";
+    public static final String HOST = "192.168.0.14";
     public static final int PORT = 1337;
 
     public static final String URL = createUrl();

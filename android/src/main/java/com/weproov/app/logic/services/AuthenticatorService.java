@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import com.squareup.okhttp.Credentials;
 import com.weproov.app.models.User;
+import com.weproov.app.models.exceptions.LoginException;
 import com.weproov.app.ui.LandingActivity;
 import com.weproov.app.ui.RegisterActivity;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
@@ -75,13 +76,17 @@ public class AuthenticatorService extends Service {
             // Lets give another try to authenticate the user
             if (password != null) {
                 Log.d("IBetYa", TAG + "> re-authenticating with the existing password");
-                User user = User.getService().login(Credentials.basic(account.name, password));
-                if (!TextUtils.isEmpty(user.token)) {
-                    final Bundle result = new Bundle();
-                    result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
-                    result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
-                    result.putString(AccountManager.KEY_AUTHTOKEN, user.token);
-                    return result;
+                try {
+                    User user = User.getService().login(Credentials.basic(account.name, password));
+                    if (!TextUtils.isEmpty(user.token)) {
+                        final Bundle result = new Bundle();
+                        result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
+                        result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
+                        result.putString(AccountManager.KEY_AUTHTOKEN, user.token);
+                        return result;
+                    }
+                } catch (LoginException e) {
+                    // Do nothing
                 }
             }
 

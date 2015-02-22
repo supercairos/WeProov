@@ -6,8 +6,11 @@ import android.util.Log;
 import com.squareup.okhttp.Credentials;
 import com.weproov.app.MyApplication;
 import com.weproov.app.models.User;
+import com.weproov.app.models.events.LoginErrorEvent;
 import com.weproov.app.models.events.LoginSuccessEvent;
 import com.weproov.app.models.events.RegisterSuccessEvent;
+import com.weproov.app.models.exceptions.LoginException;
+import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.models.providers.BusProvider;
 import com.weproov.app.utils.constants.AccountConstants;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
@@ -27,9 +30,10 @@ public class UsersTask {
                     Log.d("Test", "User found : " + user.toString());
                     save(user, password);
                     BUS.post(new LoginSuccessEvent());
-                } catch (RetrofitError error) {
+                } catch (LoginException | RetrofitError error) {
                     Log.e("Test", "Got an error while login :(", error);
                     // TODO : Handle error on the front end;
+                    BUS.post(new LoginErrorEvent());
                 }
             }
         }).start();
@@ -44,7 +48,7 @@ public class UsersTask {
                     Log.d("Test", "User found : " + user.toString());
                     save(server, user.password);
                     BUS.post(new RegisterSuccessEvent());
-                } catch (RetrofitError error) {
+                } catch (NetworkException | RetrofitError error) {
                     Log.e("Test", "Got an error while login :(", error);
                     // TODO : Handle error on the front end;
                 }

@@ -4,8 +4,9 @@ var log = require('../libs/logger.js');
 var crypto = require('crypto');
 
 var UsersSchema = database.Schema({
-    username: { type: String, index: true },
-    email: String,
+    email: { type: String, index: true },
+    firstname: String,
+	lastname: String,
     password: String,
     token: String,
     gcm_token: String
