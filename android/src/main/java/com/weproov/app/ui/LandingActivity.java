@@ -33,13 +33,25 @@ public class LandingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
         ButterKnife.inject(this);
+    }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         String token = AccountUtils.peekToken();
         if(!TextUtils.isEmpty(token)){
             Log.d("Test", "Autologin : " + token);
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mDialog != null) {
+            mDialog.dismiss();
+        }
+    }
 
     @OnClick(R.id.button_login)
     public void onButtonLoginClicked(Button button) {
@@ -58,15 +70,15 @@ public class LandingActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onLoginSuccess(LoginSuccessEvent event){
+    public void onLoginSuccess(LoginSuccessEvent event) {
         mDialog.dismiss();
         gotoMain();
     }
 
     @Subscribe
-    public void onLoginError(LoginErrorEvent event){
+    public void onLoginError(LoginErrorEvent event) {
         mDialog.dismiss();
-        Toast.makeText(this, "Error while login", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "Error while login", Toast.LENGTH_SHORT).show();
     }
 
     private void gotoMain() {

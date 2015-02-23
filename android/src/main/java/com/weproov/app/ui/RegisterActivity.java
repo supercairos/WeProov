@@ -1,9 +1,7 @@
 package com.weproov.app.ui;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
@@ -12,16 +10,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.squareup.otto.Subscribe;
 import com.weproov.app.R;
-import com.weproov.app.utils.PrefUtils;
-import com.weproov.app.utils.constants.Constants;
+import com.weproov.app.logic.controllers.UsersTask;
+import com.weproov.app.models.User;
+import com.weproov.app.models.events.RegisterErrorEvent;
+import com.weproov.app.models.events.RegisterSuccessEvent;
 import com.weproov.app.utils.validators.EmailValidator;
 import com.weproov.app.utils.validators.PasswordValidator;
-
-import java.lang.ref.WeakReference;
 
 public class RegisterActivity extends BaseActivity {
 
@@ -47,6 +47,8 @@ public class RegisterActivity extends BaseActivity {
 
     @InjectView(R.id.action_bar)
     Toolbar mActionBar;
+
+    ProgressDialog mDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,67 +123,38 @@ public class RegisterActivity extends BaseActivity {
 
         if (isEverythingOk) {
             // Register
-            (new FakeRegistration(this, firstname, lastname, email, password)).execute();
-        }
-
-    }
-
-    public static void login(Activity ctx, String displayName, String email){
-        PrefUtils.putString(Constants.KEY_DISPLAY_NAME, displayName);
-        PrefUtils.putString(Constants.KEY_EMAIL, email);
-        Intent intent = new Intent(ctx, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        ctx.startActivity(intent);
-        ctx.finish();
-    }
-
-    private static class FakeRegistration extends AsyncTask<Void, Void, Void> {
-
-        WeakReference<Activity> mContext;
-        ProgressDialog mDialog;
-
-        private String mFirstname;
-        private String mLastname;
-        private String mEmail;
-        private String mPassword;
-
-        public FakeRegistration(Activity ctx, String firstname, String lastname, String email, String password) {
-            mContext = new WeakReference<>(ctx);
-
-            mFirstname = firstname;
-            mLastname = lastname;
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            mDialog = ProgressDialog.show(mContext.get(), "Register", "Please wait...", true);
+            mDialog = ProgressDialog.show(this, "Register", "Please wait...", true);
             mDialog.show();
+
+            UsersTask.register(new User(email, password, firstname, lastname));
         }
+    }
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return null;
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mDialog != null) {
+            mDialog.dismiss();
         }
+    }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+    @Subscribe
+    public void onRegisterSuccess(RegisterSuccessEvent event) {
+        mDialog.dismiss();
+        gotoMain();
+    }
 
-            Activity context = mContext.get();
-            if (context != null) {
-                mDialog.dismiss();
-                login(context, mFirstname + " " + mLastname, mEmail);
-            }
-        }
+    @Subscribe
+    public void onRegisterError(RegisterErrorEvent event) {
+        mDialog.dismiss();
+        Toast.makeText(this, "Error while registering", Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void gotoMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

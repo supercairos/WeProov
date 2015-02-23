@@ -8,6 +8,7 @@ import com.weproov.app.MyApplication;
 import com.weproov.app.models.User;
 import com.weproov.app.models.events.LoginErrorEvent;
 import com.weproov.app.models.events.LoginSuccessEvent;
+import com.weproov.app.models.events.RegisterErrorEvent;
 import com.weproov.app.models.events.RegisterSuccessEvent;
 import com.weproov.app.models.exceptions.LoginException;
 import com.weproov.app.models.exceptions.NetworkException;
@@ -32,7 +33,6 @@ public class UsersTask {
                     BUS.post(new LoginSuccessEvent());
                 } catch (LoginException | RetrofitError error) {
                     Log.e("Test", "Got an error while login :(", error);
-                    // TODO : Handle error on the front end;
                     BUS.post(new LoginErrorEvent());
                 }
             }
@@ -45,12 +45,12 @@ public class UsersTask {
             public void run() {
                 try {
                     User server = SERVICE.register(user);
-                    Log.d("Test", "User found : " + user.toString());
+                    Log.d("Test", "User found : " + server.toString());
                     save(server, user.password);
                     BUS.post(new RegisterSuccessEvent());
                 } catch (NetworkException | RetrofitError error) {
-                    Log.e("Test", "Got an error while login :(", error);
-                    // TODO : Handle error on the front end;
+                    Log.e("Test", "Got an error while registering :(", error);
+                    BUS.post(new RegisterErrorEvent());
                 }
             }
         }).start();
