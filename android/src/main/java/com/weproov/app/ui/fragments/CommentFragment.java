@@ -94,7 +94,7 @@ public class CommentFragment extends BaseFragment {
     public void onAddCommentClicked() {
         mComments.add(mAddCommentText.getEditableText().toString());
         mAdapter.notifyDataSetChanged();
-
+        mAddCommentText.getEditableText().clear();
     }
 
     @OnClick(R.id.button_positive)

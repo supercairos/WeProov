@@ -114,19 +114,20 @@ public class CameraFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mActionBarListener.hideActionBar();
     }
 
     @Override
     public void onStart() {
         super.onStart();
         (new BootCameraTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        mActionBarListener.hideActionBar();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         releaseCamera();
+        mActionBarListener.showActionBar();
     }
 
     @Override
@@ -327,11 +328,20 @@ public class CameraFragment extends BaseFragment {
         protected File doInBackground(BytesWrapper... params) {
             // Save picture to file
             File file = new File(getActivity().getCacheDir(), "pic_" + System.currentTimeMillis() + ".jpg");
+            FileOutputStream f = null;
             try {
-                FileOutputStream f = new FileOutputStream(file);
+                f = new FileOutputStream(file);
                 f.write(params[0].bytes);
             } catch (IOException e) {
                 Log.e("Test", "IOEx", e);
+            } finally {
+                if(f != null) {
+                    try {
+                        f.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             return file;
@@ -345,7 +355,6 @@ public class CameraFragment extends BaseFragment {
             if (s != null && s.exists()) {
                 Bundle bundle = new Bundle();
                 bundle.putString(MainActivity.KEY_COMMENT_PICTURE_PATH, s.getAbsolutePath());
-
                 Log.d("Test", "File is = " + s.getAbsolutePath());
                 ((Tunnelface) getActivity()).next();
             } else {
