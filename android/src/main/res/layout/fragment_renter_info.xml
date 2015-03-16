@@ -5,46 +5,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/bottom_frame_layout"
-            android:background="@android:color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/divider"/>
-
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <Button
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="@android:string/cancel"
-                    android:textColor="@color/primary_dark"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:id="@+id/button_cancel"/>
-
-            <Button
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:text="@android:string/ok"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:background="@drawable/btn_default_material"
-                    android:id="@+id/button_ok"/>
-        </LinearLayout>
-    </LinearLayout>
-
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -225,5 +185,12 @@
                     android:layout_height="50dp"/>
         </LinearLayout>
     </ScrollView>
+
+    <include
+            layout="@layout/footer_button_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

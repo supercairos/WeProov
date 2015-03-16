@@ -6,45 +6,50 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.weproov.app.ui.views.FourThirdView
+            android:id="@+id/root_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-        <RelativeLayout
-                android:id="@+id/root_view"
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loading_camera"
+                android:id="@+id/textView"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+
+        <ImageView
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:visibility="gone"
+                android:id="@+id/camera_overlay"
+                android:layout_alignBottom="@+id/textView"
+                android:layout_centerHorizontal="true"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loading_camera"
-                    android:id="@+id/textView"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_set_flash"
+                android:visibility="gone"
+                android:src="@drawable/ic_flash_on_holo_light"
+                android:layout_marginTop="35dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="35dp"/>
 
-            <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:id="@+id/camera_overlay"
-                    android:layout_alignBottom="@+id/textView"
-                    android:layout_centerHorizontal="true"/>
+        <TextView
+                android:id="@+id/camera_overlay_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:gravity="center"
+                android:background="@color/overlay_subtitle_background_color"
+                android:textColor="@color/overlay_subtitle_color"
+                android:layout_alignParentBottom="true"/>
 
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btn_set_flash"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_flash_on_holo_light"
-                    android:layout_marginTop="35dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="35dp"/>
-
-        </RelativeLayout>
     </com.weproov.app.ui.views.FourThirdView>
 
     <FrameLayout
@@ -76,7 +81,7 @@
                 android:visibility="gone"
                 android:textStyle="bold"
                 android:textAllCaps="true"
-                android:text="Saving picture..."
+                android:text="@string/saving_picture"
                 android:id="@+id/saving_picture_textview"
                 android:layout_gravity="center"/>
     </FrameLayout>

@@ -26,6 +26,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
                 android:id="@+id/camera_overlay"
+                android:visibility="gone"
                 android:layout_alignBottom="@+id/textView"
                 android:layout_centerHorizontal="true"/>
 
@@ -44,6 +45,10 @@
                 android:id="@+id/camera_overlay_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:gravity="center"
+                android:background="@color/overlay_subtitle_background_color"
+                android:textColor="@color/overlay_subtitle_color"
                 android:layout_alignParentBottom="true"/>
     </com.weproov.app.ui.views.FourThirdView>
 
@@ -76,7 +81,7 @@
                 android:visibility="gone"
                 android:textStyle="bold"
                 android:textAllCaps="true"
-                android:text="Saving picture..."
+                android:text="@string/saving_picture"
                 android:id="@+id/saving_picture_textview"
                 android:layout_gravity="center"/>
     </FrameLayout>

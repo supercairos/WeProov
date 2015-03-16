@@ -59,5 +59,9 @@
     <string name="error_brand">This is not a proper brand</string>
     <string name="renter_brand">Car brand</string>
     <string name="comment_hint">Comments</string>
+    <string name="title_about_us">About us</string>
+    <string name="title_signature_dialog">Sign below</string>
+    <string name="saving_picture">Saving picture...</string>
+    <string name="error_taking_picture">An error occured taking picture, please retry</string>
 
 </resources>

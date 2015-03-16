@@ -6,35 +6,23 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
-import butterknife.InjectView;
+import android.view.View;
 import com.weproov.app.R;
-import com.weproov.app.ui.views.FingerPaintView;
 
-public class SignatureDialogFragment extends BaseDialogFragment {
-
-    @InjectView(R.id.finger_paint_view)
-    FingerPaintView mFingerPaintView;
+public class AboutDialogFragment extends BaseDialogFragment {
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        mFingerPaintView = (FingerPaintView) inflater.inflate(R.layout.fragment_signature, null);
+        View view = inflater.inflate(R.layout.fragment_about, null);
 
         return new AlertDialog.Builder(getActivity())
                 .setIcon(R.drawable.ic_action_about)
-                .setTitle(R.string.title_signature_dialog)
-                .setView(mFingerPaintView)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                            }
-                        }
-                )
-
-                .setNegativeButton(android.R.string.cancel,
+                .setTitle(R.string.title_about_us)
+                .setView(view)
+                .setNeutralButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
 
@@ -45,3 +33,4 @@ public class SignatureDialogFragment extends BaseDialogFragment {
                 .create();
     }
 }
+

@@ -27,6 +27,12 @@ public class LandingActivity extends BaseActivity {
     @InjectView(R.id.edit_password)
     EditText mPassword;
 
+    @InjectView(R.id.button_positive)
+    Button mPositiveButton;
+
+    @InjectView(R.id.button_negative)
+    Button mNegativeButton;
+
     ProgressDialog mDialog;
 
     @Override
@@ -34,6 +40,9 @@ public class LandingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
         ButterKnife.inject(this);
+
+        mPositiveButton.setText(R.string.register);
+        mNegativeButton.setText(android.R.string.cancel);
     }
 
 
@@ -41,7 +50,7 @@ public class LandingActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         String token = AccountUtils.peekToken();
-        if(!TextUtils.isEmpty(token) || BuildConfig.DEBUG){
+        if (!TextUtils.isEmpty(token) || BuildConfig.DEBUG) {
             Log.d("Test", "Autologin : " + token);
             gotoMain();
         }
@@ -55,7 +64,7 @@ public class LandingActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.button_login)
+    @OnClick(R.id.button_positive)
     public void onButtonLoginClicked(Button button) {
         mDialog = ProgressDialog.show(this, "Login", "Please wait...", true);
         mDialog.show();
@@ -66,7 +75,7 @@ public class LandingActivity extends BaseActivity {
         UsersTask.login(email, password);
     }
 
-    @OnClick(R.id.button_register)
+    @OnClick(R.id.button_negative)
     public void onButtonRegisterClicked(Button button) {
         startActivity(new Intent(this, RegisterActivity.class));
     }

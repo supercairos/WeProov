@@ -20,8 +20,13 @@ public class RenterFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_renter_info, container, false);
     }
 
-    @OnClick(R.id.button_ok)
+    @OnClick(R.id.button_positive)
     public void onOkClicked() {
-        ((Tunnelface) getActivity()).next(CarInfoFragment.class);
+        ((Tunnelface) getActivity()).next();
+    }
+
+    @OnClick(R.id.button_negative)
+    public void onCancelClicked() {
+        // Goto dashboard
     }
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,7 +25,7 @@ import com.weproov.app.R;
 import com.weproov.app.logic.services.GcmRegisterService;
 import com.weproov.app.models.NavItem;
 import com.weproov.app.ui.fragments.*;
-import com.weproov.app.ui.fragments.dialogs.AboutFragment;
+import com.weproov.app.ui.fragments.dialogs.AboutDialogFragment;
 import com.weproov.app.ui.fragments.dialogs.SignatureDialogFragment;
 import com.weproov.app.ui.ifaces.ActionBarIface;
 import com.weproov.app.ui.ifaces.Tunnelface;
@@ -184,16 +185,19 @@ public class MainActivity extends BaseActivity implements NavigationFragment.OnN
                 mCurrentFragment = new SignatureDialogFragment();
                 break;
             case NavItem.NAV_ABOUT:
-                mCurrentFragment = new AboutFragment();
+                mCurrentFragment = new AboutDialogFragment();
                 break;
             default:
                 throw new IllegalArgumentException();
         }
 
 
-        FragmentsUtils.replace(this, mCurrentFragment, R.id.content_fragment);
-        // update selected item and title, then close the drawer
-        setTitle(item.getLabel());
+        if (mCurrentFragment instanceof DialogFragment) {
+            FragmentsUtils.showDialog(this, (DialogFragment) mCurrentFragment);
+        } else {
+            FragmentsUtils.replace(this, mCurrentFragment, R.id.content_fragment);
+            setTitle(item.getLabel());
+        }
         mDrawerLayout.closeDrawer(mDrawerNavigation);
     }
 
@@ -225,29 +229,36 @@ public class MainActivity extends BaseActivity implements NavigationFragment.OnN
 
     @Override
     public void next(Bundle data) {
+        Log.d("Test", "Next clicked (b = " + data + ")");
         if (RenterFragment.class.equals(mCurrentFragment.getClass())) {
             // Need to go to CarInfoFragment;
-            CarInfoFragment carInfoFragment = new CarInfoFragment();
-
+            mCurrentFragment = new CarInfoFragment();
         } else if (CarInfoFragment.class.equals(mCurrentFragment.getClass())) {
             // Need to go to Camera and reset counter;
             mWeProovStep = 0;
-            CameraFragment cameraFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlaySubtitleArray[mWeProovStep]);
+            mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlaySubtitleArray[mWeProovStep]);
         } else if (CameraFragment.class.equals(mCurrentFragment.getClass())) {
             // Need to go to comment
-            CommentFragment commentFragment = CommentFragment.newInstance("");
+            String path = null;
+            if (data != null) {
+                path = data.getString(KEY_COMMENT_PICTURE_PATH);
+            }
+
+            mCurrentFragment = CommentFragment.newInstance(path);
         } else if (CommentFragment.class.equals(mCurrentFragment.getClass())) {
             // Goto next drawable
             ++mWeProovStep;
-
             if (mWeProovStep == mOverlayDrawableArray.length) {
                 // We are at the end. Show last fragment;
+                mCurrentFragment = new DashboardFragment();
             } else {
                 // Progress with camera
-                CameraFragment cameraFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
+                mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
             }
         } else {
-            throw new IllegalStateException("Called from a non nextable method");
+            throw new IllegalStateException("Called from a non nextable fragment");
         }
+
+        FragmentsUtils.replace(this, mCurrentFragment, R.id.content_fragment);
     }
 }

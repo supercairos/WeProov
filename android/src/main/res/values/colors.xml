@@ -10,4 +10,6 @@
     <color name="camera_mode_color">#2979ff</color>
     <color name="bottombar_unpressed">#191919</color>
     <color name="bottombar_pressed">#262626</color>
+    <color name="overlay_subtitle_background_color">#33000000</color>
+    <color name="overlay_subtitle_color">@android:color/white</color>
 </resources>

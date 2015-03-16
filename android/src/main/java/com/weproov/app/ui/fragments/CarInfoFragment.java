@@ -42,8 +42,13 @@ public class CarInfoFragment extends BaseFragment {
         mSpinner.setAdapter(adapter);
     }
 
-    @OnClick
+    @OnClick(R.id.button_positive)
     public void onOkClicked() {
         ((Tunnelface) getActivity()).next();
+    }
+
+    @OnClick(R.id.button_negative)
+    public void onCancelClicked() {
+        // Goto dashboard
     }
 }

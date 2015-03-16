@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,12 @@ public class RegisterActivity extends BaseActivity {
     @InjectView(R.id.action_bar)
     Toolbar mActionBar;
 
+    @InjectView(R.id.button_positive)
+    Button mPositiveButton;
+
+    @InjectView(R.id.button_negative)
+    Button mNegativeButton;
+
     ProgressDialog mDialog;
 
     @Override
@@ -56,8 +63,9 @@ public class RegisterActivity extends BaseActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.inject(this);
         setSupportActionBar(mActionBar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mPositiveButton.setText(R.string.register);
+        mNegativeButton.setText(android.R.string.cancel);
     }
 
     @Override
@@ -76,12 +84,12 @@ public class RegisterActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.button_back)
+    @OnClick(R.id.button_negative)
     public void onButtonBackClicked() {
         NavUtils.navigateUpFromSameTask(this);
     }
 
-    @OnClick(R.id.button_register)
+    @OnClick(R.id.button_positive)
     public void onButtonRegisterClicked() {
         String firstname = mFirstName.getEditableText().toString();
         String lastname = mLastName.getEditableText().toString();

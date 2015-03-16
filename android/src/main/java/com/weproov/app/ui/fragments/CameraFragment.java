@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.weproov.app.R;
@@ -89,7 +90,7 @@ public class CameraFragment extends BaseFragment {
 
         if (getArguments() != null) {
             mOverlayResourceId = getArguments().getInt(MainActivity.KEY_OVERLAY_PICTURE, 0);
-            mOverlaySubtitleString = getArguments().getString(MainActivity.KEY_OVERLAY_PICTURE);
+            mOverlaySubtitleString = getArguments().getString(MainActivity.KEY_OVERLAY_PICTURE_SUBTITLE);
         }
     }
 
@@ -101,17 +102,7 @@ public class CameraFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        (new BootCameraTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        if (mOverlayResourceId > 0) {
-            mOverlay.setImageResource(mOverlayResourceId);
-        }
-
-        if (!TextUtils.isEmpty(mOverlaySubtitleString)) {
-            mOverlaySubtitle.setText(mOverlaySubtitleString);
-        } else {
-            mOverlaySubtitle.setVisibility(View.GONE);
-        }
+        mBtnCamera.setEnabled(false);
     }
 
     @Override
@@ -127,9 +118,20 @@ public class CameraFragment extends BaseFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        (new BootCameraTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        releaseCamera();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        releaseCamera();
     }
 
     /**
@@ -212,7 +214,15 @@ public class CameraFragment extends BaseFragment {
 
     @OnClick(R.id.btn_camera)
     public void onCameraButtonClicked() {
-        mCamera.takePicture(null, null, mPictureCallback);
+        try {
+            if (mCamera != null) {
+                mCamera.takePicture(null, null, mPictureCallback);
+            }
+        } catch (Exception e) {
+            // For some reason, the picture could not be taken.
+            Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
+            Log.e("Test", "Test", e);
+        }
     }
 
     @OnClick(R.id.btn_set_flash)
@@ -260,7 +270,7 @@ public class CameraFragment extends BaseFragment {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             mBtnCamera.setEnabled(false);
-            (new SavePictureTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            (new SavePictureTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new BytesWrapper(data));
         }
     }
 
@@ -282,6 +292,19 @@ public class CameraFragment extends BaseFragment {
                 mRootView.removeViewAt(0);
                 mRootView.addView(mPreview, 0);
                 mBtnSetFlash.setVisibility(View.VISIBLE);
+                if (mOverlayResourceId > 0) {
+                    mOverlay.setImageResource(mOverlayResourceId);
+                    mOverlay.setVisibility(View.VISIBLE);
+                }
+
+                if (!TextUtils.isEmpty(mOverlaySubtitleString)) {
+                    mOverlaySubtitle.setText(mOverlaySubtitleString);
+                    mOverlaySubtitle.setVisibility(View.VISIBLE);
+                } else {
+                    mOverlaySubtitle.setVisibility(View.GONE);
+                }
+
+                mBtnCamera.setEnabled(true);
             }
         }
     }
@@ -296,6 +319,7 @@ public class CameraFragment extends BaseFragment {
             lockOrientation(getActivity());
             mSavingPicture.setVisibility(View.VISIBLE);
             mIcCamera.setVisibility(View.GONE);
+            mBtnCamera.setEnabled(false);
             mDialog = ProgressDialog.show(getActivity(), "Saving picture", "Please wait...", true);
         }
 
@@ -319,7 +343,14 @@ public class CameraFragment extends BaseFragment {
             mDialog.dismiss();
             // Move to edit
             if (s != null && s.exists()) {
+                Bundle bundle = new Bundle();
+                bundle.putString(MainActivity.KEY_COMMENT_PICTURE_PATH, s.getAbsolutePath());
+
+                Log.d("Test", "File is = " + s.getAbsolutePath());
                 ((Tunnelface) getActivity()).next();
+            } else {
+                Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
+                mBtnCamera.setEnabled(true);
             }
         }
     }
