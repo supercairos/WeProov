@@ -1,12 +1,14 @@
 package com.weproov.app.ui.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.*;
 import android.widget.ImageView;
@@ -14,7 +16,9 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.weproov.app.R;
+import com.weproov.app.ui.MainActivity;
 import com.weproov.app.ui.ifaces.ActionBarIface;
+import com.weproov.app.ui.ifaces.Tunnelface;
 import com.weproov.app.ui.views.CameraPreviewView;
 
 import java.io.File;
@@ -41,17 +45,51 @@ public class CameraFragment extends BaseFragment {
     @InjectView(R.id.ic_camera)
     ImageView mIcCamera;
 
+    @InjectView(R.id.camera_overlay)
+    ImageView mOverlay;
+
+    @InjectView(R.id.camera_overlay_subtitle)
+    TextView mOverlaySubtitle;
+
+    private int mOverlayResourceId;
+    private String mOverlaySubtitleString;
+
     private CameraPreviewView mPreview;
     private ActionBarIface mActionBarListener;
     private Camera mCamera;
     private MyPictureCallback mPictureCallback = new MyPictureCallback();
 
-    private class BytesWrapper {
 
-        public byte[] bytes;
+    private static class BytesWrapper {
+
+        private byte[] bytes;
 
         public BytesWrapper(byte[] bytes) {
             this.bytes = bytes;
+        }
+    }
+
+    public static CameraFragment newInstance(int overlay, String subtitle) {
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(MainActivity.KEY_OVERLAY_PICTURE, overlay);
+        bundle.putString(MainActivity.KEY_OVERLAY_PICTURE_SUBTITLE, subtitle);
+
+        CameraFragment frag = new CameraFragment();
+        frag.setArguments(bundle);
+        return frag;
+    }
+
+    public CameraFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mOverlayResourceId = getArguments().getInt(MainActivity.KEY_OVERLAY_PICTURE, 0);
+            mOverlaySubtitleString = getArguments().getString(MainActivity.KEY_OVERLAY_PICTURE);
         }
     }
 
@@ -63,8 +101,17 @@ public class CameraFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         (new BootCameraTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        if (mOverlayResourceId > 0) {
+            mOverlay.setImageResource(mOverlayResourceId);
+        }
+
+        if (!TextUtils.isEmpty(mOverlaySubtitleString)) {
+            mOverlaySubtitle.setText(mOverlaySubtitleString);
+        } else {
+            mOverlaySubtitle.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -241,12 +288,15 @@ public class CameraFragment extends BaseFragment {
 
     private class SavePictureTask extends AsyncTask<BytesWrapper, Void, File> {
 
+        ProgressDialog mDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             lockOrientation(getActivity());
             mSavingPicture.setVisibility(View.VISIBLE);
             mIcCamera.setVisibility(View.GONE);
+            mDialog = ProgressDialog.show(getActivity(), "Saving picture", "Please wait...", true);
         }
 
         @Override
@@ -266,10 +316,10 @@ public class CameraFragment extends BaseFragment {
         @Override
         protected void onPostExecute(File s) {
             super.onPostExecute(s);
+            mDialog.dismiss();
             // Move to edit
             if (s != null && s.exists()) {
-                //
-
+                ((Tunnelface) getActivity()).next();
             }
         }
     }

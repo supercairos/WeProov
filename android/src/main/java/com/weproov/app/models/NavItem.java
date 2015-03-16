@@ -8,10 +8,12 @@ import java.util.List;
 
 public class NavItem {
 
-    public static final int NAV_WEPROOV = 0;
-    public static final int NAV_MY_DOCUMENTS = 1;
-    public static final int NAV_LOGOUT = 2;
-    public static final int NAV_ABOUT = 3;
+    public static final int NAV_DASHBOARD = 0;
+    public static final int NAV_WEPROOV = 1;
+    public static final int NAV_MY_DOCUMENTS = 2;
+    public static final int NAV_LOGOUT = 3;
+    public static final int NAV_ABOUT = 4;
+
 
     public int id;
     private int labelResId;
@@ -37,6 +39,7 @@ public class NavItem {
 
         if (ARRAY.size() == 0) {
             // Fill it;
+            ARRAY.add(new NavItem(NAV_DASHBOARD, R.string.nav_dashboard, R.drawable.ic_action_about));
             ARRAY.add(new NavItem(NAV_WEPROOV, R.string.nav_weproov, R.drawable.ic_action_send_now));
             ARRAY.add(new NavItem(NAV_MY_DOCUMENTS, R.string.nav_my_documents, R.drawable.ic_action_view_as_list));
             ARRAY.add(new NavItem(NAV_LOGOUT, R.string.nav_logout, R.drawable.ic_action_accounts));

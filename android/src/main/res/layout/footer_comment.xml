@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/add_comment"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawableEnd="@drawable/ic_action_send_now"
+        android:hint="@string/comment_hint"/>

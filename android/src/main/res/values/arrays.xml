@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="car_type">
+        <item name="hybrid">@string/car_type_hybrid</item>
+        <item name="diesel">@string/car_type_diesel</item>
+        <item name="gpl">@string/car_type_gpl</item>
+        <item name="electric">@string/car_type_electric</item>
+        <item name="gas">@string/car_type_gas</item>
+    </string-array>
+
+    <array name="camera_overlay">
+        <item>@drawable/front</item>
+        <item>@drawable/front_right_corner</item>
+        <item>@drawable/right_side</item>
+        <item>@drawable/wheels</item>
+        <item>@drawable/wheels</item>
+        <item>@drawable/back_right_corner</item>
+        <item>@drawable/back</item>
+        <item>@drawable/back_left_corner</item>
+        <item>@drawable/left_side</item>
+        <item>@drawable/wheels</item>
+        <item>@drawable/wheels</item>
+        <item>@drawable/front_left_corner</item>
+    </array>
+
+    <string-array name="camera_overlay_subtitle">
+        <item>@string/car_type_hybrid</item>
+        <item>@string/car_type_diesel</item>
+        <item>@string/car_type_gpl</item>
+        <item>@string/car_type_electric</item>
+        <item>@string/car_type_gas</item>
+    </string-array>
+
+
+</resources>

@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.squareup.otto.Subscribe;
+import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.UsersTask;
 import com.weproov.app.models.events.LoginErrorEvent;
@@ -40,8 +41,9 @@ public class LandingActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         String token = AccountUtils.peekToken();
-        if(!TextUtils.isEmpty(token)){
+        if(!TextUtils.isEmpty(token) || BuildConfig.DEBUG){
             Log.d("Test", "Autologin : " + token);
+            gotoMain();
         }
     }
 

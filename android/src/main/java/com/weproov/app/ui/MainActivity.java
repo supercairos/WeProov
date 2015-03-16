@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -16,23 +17,29 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.logic.services.GcmRegisterService;
 import com.weproov.app.models.NavItem;
-import com.weproov.app.ui.fragments.AboutFragment;
-import com.weproov.app.ui.fragments.CameraFragment;
-import com.weproov.app.ui.fragments.NavigationFragment;
-import com.weproov.app.ui.fragments.SignatureFragment;
+import com.weproov.app.ui.fragments.*;
+import com.weproov.app.ui.fragments.dialogs.AboutFragment;
+import com.weproov.app.ui.fragments.dialogs.SignatureDialogFragment;
 import com.weproov.app.ui.ifaces.ActionBarIface;
+import com.weproov.app.ui.ifaces.Tunnelface;
 import com.weproov.app.utils.CameraUtils;
+import com.weproov.app.utils.FragmentsUtils;
 import com.weproov.app.utils.PlayServicesUtils;
 import com.weproov.app.utils.PrefUtils;
 import com.weproov.app.utils.constants.Constants;
 
 
-public class MainActivity extends BaseActivity implements NavigationFragment.OnNavigationInteractionListener, ActionBarIface {
+public class MainActivity extends BaseActivity implements NavigationFragment.OnNavigationInteractionListener, ActionBarIface, Tunnelface {
+
+    public static final String KEY_OVERLAY_PICTURE_SUBTITLE = "key_overlay_picture_subtitle";
+    public static final String KEY_OVERLAY_PICTURE = "key_overlay_picture";
+    public static final String KEY_COMMENT_PICTURE_PATH = "key_comment_picture_path";
 
     @InjectView(R.id.action_bar)
     Toolbar mActionBar;
@@ -45,18 +52,23 @@ public class MainActivity extends BaseActivity implements NavigationFragment.OnN
 
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private Fragment mCurrentFragment;
+
+    private int mWeProovStep;
+    private int[] mOverlayDrawableArray;
+    private String[] mOverlaySubtitleArray;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (CameraUtils.checkCameraHardware(this)) {
-            // Toast.makeText(this, R.string.camera_is_required, Toast.LENGTH_SHORT).show();
-            // finish();
+        if (!CameraUtils.checkCameraHardware(this)) {
+            Toast.makeText(this, R.string.camera_is_required, Toast.LENGTH_SHORT).show();
+            finish();
         }
 
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-
         setSupportActionBar(mActionBar);
 
         // set a custom shadow that overlays the main content when the drawer opens
@@ -96,6 +108,14 @@ public class MainActivity extends BaseActivity implements NavigationFragment.OnN
             Log.i("Test", "No valid Google Play Services APK found.");
         }
 
+        TypedArray ids = getResources().obtainTypedArray(R.array.camera_overlay);
+        mOverlayDrawableArray = new int[ids.length()];
+        for (int i = 0; i < ids.length(); i++) {
+            mOverlayDrawableArray[i] = ids.getResourceId(i, -1);
+        }
+        ids.recycle();
+
+        mOverlaySubtitleArray = getResources().getStringArray(R.array.camera_overlay_subtitle);
     }
 
     /**
@@ -136,47 +156,50 @@ public class MainActivity extends BaseActivity implements NavigationFragment.OnN
 
     @Override
     public void onNavItemSelected(NavItem item) {
-
-        if (item.id == NavItem.NAV_LOGOUT) {
-            // Handle Logout;
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Are you sure you want to logout ?")
-                    .setTitle("Logout")
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            logout(MainActivity.this);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // User cancelled the dialog
-                        }
-                    });
-
-            builder.create().show();
-            return;
-        }
-
-
-        Fragment fragment = null;
         switch (item.id) {
+            case NavItem.NAV_LOGOUT:
+                // Handle Logout;
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure you want to logout ?")
+                        .setTitle("Logout")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                logout(MainActivity.this);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        });
+                builder.create().show();
+                return; // Keep the return here
             case NavItem.NAV_WEPROOV:
-                fragment = new SignatureFragment();
+                mCurrentFragment = new RenterFragment();
+                break;
+            case NavItem.NAV_DASHBOARD:
+                mCurrentFragment = new DashboardFragment();
                 break;
             case NavItem.NAV_MY_DOCUMENTS:
-                fragment = new CameraFragment();
+                mCurrentFragment = new SignatureDialogFragment();
                 break;
             case NavItem.NAV_ABOUT:
-                fragment = new AboutFragment();
+                mCurrentFragment = new AboutFragment();
                 break;
             default:
                 throw new IllegalArgumentException();
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, fragment).commit();
+
+        FragmentsUtils.replace(this, mCurrentFragment, R.id.content_fragment);
         // update selected item and title, then close the drawer
         setTitle(item.getLabel());
         mDrawerLayout.closeDrawer(mDrawerNavigation);
+    }
+
+    @Override
+    public void onBackPressed() {
+        onNavItemSelected(NavItem.getNavItems().get(0));
     }
 
     public boolean isActionBarShowing() {
@@ -195,18 +218,36 @@ public class MainActivity extends BaseActivity implements NavigationFragment.OnN
         }
     }
 
-    public boolean isNavigationDrawerOpen() {
-        return mDrawerLayout.isDrawerOpen(mDrawerNavigation);
+    @Override
+    public void next() {
+        next(null);
     }
 
-    public void openDrawer() {
-        mDrawerLayout.openDrawer(mDrawerNavigation);
+    @Override
+    public void next(Bundle data) {
+        if (RenterFragment.class.equals(mCurrentFragment.getClass())) {
+            // Need to go to CarInfoFragment;
+            CarInfoFragment carInfoFragment = new CarInfoFragment();
+
+        } else if (CarInfoFragment.class.equals(mCurrentFragment.getClass())) {
+            // Need to go to Camera and reset counter;
+            mWeProovStep = 0;
+            CameraFragment cameraFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlaySubtitleArray[mWeProovStep]);
+        } else if (CameraFragment.class.equals(mCurrentFragment.getClass())) {
+            // Need to go to comment
+            CommentFragment commentFragment = CommentFragment.newInstance("");
+        } else if (CommentFragment.class.equals(mCurrentFragment.getClass())) {
+            // Goto next drawable
+            ++mWeProovStep;
+
+            if (mWeProovStep == mOverlayDrawableArray.length) {
+                // We are at the end. Show last fragment;
+            } else {
+                // Progress with camera
+                CameraFragment cameraFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
+            }
+        } else {
+            throw new IllegalStateException("Called from a non nextable method");
+        }
     }
-
-    public void closeDrawer() {
-        mDrawerLayout.closeDrawer(mDrawerNavigation);
-    }
-
-
-
 }

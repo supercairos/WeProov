@@ -26,6 +26,14 @@
                     android:layout_centerHorizontal="true"/>
 
             <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:id="@+id/camera_overlay"
+                    android:layout_alignBottom="@+id/textView"
+                    android:layout_centerHorizontal="true"/>
+
+            <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/btn_set_flash"
