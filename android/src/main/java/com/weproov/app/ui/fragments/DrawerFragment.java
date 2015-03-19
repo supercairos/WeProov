@@ -2,20 +2,24 @@ package com.weproov.app.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import com.weproov.app.R;
-import com.weproov.app.ui.adapter.NavigationAdapter;
 import com.weproov.app.models.NavItem;
-import com.weproov.app.utils.constants.Constants;
+import com.weproov.app.ui.adapter.NavigationAdapter;
+import com.weproov.app.utils.PicassoUtils;
+import com.weproov.app.utils.PixelUtils;
 import com.weproov.app.utils.PrefUtils;
+import com.weproov.app.utils.constants.Constants;
 
-public class NavigationFragment extends BaseFragment {
+public class DrawerFragment extends BaseFragment {
 
     private OnNavigationInteractionListener mListener;
     private NavigationAdapter mAdapter;
@@ -29,7 +33,10 @@ public class NavigationFragment extends BaseFragment {
     @InjectView(R.id.drawer_subtitle)
     TextView mDrawerSubtitle;
 
-    public NavigationFragment() {
+    @InjectView(R.id.drawer_image)
+    ImageView mDrawerImageView;
+
+    public DrawerFragment() {
         // Required empty public constructor
     }
 
@@ -51,8 +58,13 @@ public class NavigationFragment extends BaseFragment {
         // Check first item;
         mDrawerList.setItemChecked(0, true);
 
-        String username = PrefUtils.getString(Constants.KEY_DISPLAY_NAME, "");
-        String email = PrefUtils.getString(Constants.KEY_EMAIL, "");
+        String username = PrefUtils.getString(Constants.KEY_DISPLAY_NAME, "Romain Caire");
+        String email = PrefUtils.getString(Constants.KEY_EMAIL, "WeProov Corp");
+        String url = PrefUtils.getString(Constants.KEY_PICTURE_URL, "");
+
+        if (!TextUtils.isEmpty(url)) {
+            PicassoUtils.PICASSO.load(url).resize((int) PixelUtils.convertDpToPixel(50f, getActivity()), (int) PixelUtils.convertDpToPixel(50f, getActivity())).into(mDrawerImageView);
+        }
 
         mDrawerTitle.setText(username);
         mDrawerSubtitle.setText(email);

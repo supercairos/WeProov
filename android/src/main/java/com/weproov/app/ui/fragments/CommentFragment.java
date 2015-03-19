@@ -1,7 +1,5 @@
 package com.weproov.app.ui.fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,14 +12,20 @@ import android.widget.ListView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.weproov.app.R;
-import com.weproov.app.ui.MainActivity;
 import com.weproov.app.ui.ifaces.Tunnelface;
 import com.weproov.app.ui.views.FingerPaintView;
+import com.weproov.app.ui.views.FourThirdView;
+import com.weproov.app.utils.PicassoUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommentFragment extends BaseFragment {
+
+    /**
+     * Arguments key *
+     */
+    private static final String KEY_COMMENT_PICTURE_PATH = "comment_picture_path";
 
     @InjectView(R.id.comment_image_view)
     ImageView mImageView;
@@ -29,8 +33,11 @@ public class CommentFragment extends BaseFragment {
     FingerPaintView mFingerPaint;
     @InjectView(R.id.comment_list_view)
     ListView mListView;
-
-    /** Footer Views **/
+    @InjectView(R.id.picture_container)
+    FourThirdView mPictureContainer;
+    /**
+     * Footer Views *
+     */
     EditText mAddCommentText;
     ImageView mAddCommentImageView;
     View mFooter;
@@ -40,11 +47,15 @@ public class CommentFragment extends BaseFragment {
     private final List<String> mComments = new ArrayList<String>();
     private ArrayAdapter<String> mAdapter;
 
+    /**
+     * The picture *
+     */
+    private Object mBitmap;
 
 
     public static CommentFragment newInstance(String picturePath) {
         Bundle bundle = new Bundle();
-        bundle.putString(MainActivity.KEY_COMMENT_PICTURE_PATH, picturePath);
+        bundle.putString(KEY_COMMENT_PICTURE_PATH, picturePath);
 
         CommentFragment commentFragment = new CommentFragment();
         commentFragment.setArguments(bundle);
@@ -59,7 +70,7 @@ public class CommentFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mRawPicturePath = getArguments().getString(MainActivity.KEY_COMMENT_PICTURE_PATH);
+            mRawPicturePath = getArguments().getString(KEY_COMMENT_PICTURE_PATH);
             Log.d("Test", "Found picture = " + mRawPicturePath);
         }
     }
@@ -86,9 +97,7 @@ public class CommentFragment extends BaseFragment {
                 onAddCommentClicked();
             }
         });
-
-        Bitmap bmp = BitmapFactory.decodeFile(mRawPicturePath);
-        mImageView.setImageBitmap(bmp);
+        PicassoUtils.PICASSO.load("file://" + mRawPicturePath).fit().into(mImageView);
     }
 
     public void onAddCommentClicked() {

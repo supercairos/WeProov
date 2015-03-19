@@ -1,48 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
 
-    <ScrollView
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <com.weproov.app.ui.views.FourThirdView
+            android:id="@+id/picture_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-                android:orientation="vertical"
+        <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:id="@+id/comment_image_view"/>
 
-            <com.weproov.app.ui.views.FourThirdView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+        <com.weproov.app.ui.views.FingerPaintView
+                android:id="@+id/comment_finger_paint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+    </com.weproov.app.ui.views.FourThirdView>
 
-                <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/comment_image_view"/>
-
-                <com.weproov.app.ui.views.FingerPaintView
-                        android:id="@+id/comment_finger_paint"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-            </com.weproov.app.ui.views.FourThirdView>
-
-            <ListView
-                    android:id="@+id/comment_list_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"/>
-        </LinearLayout>
-    </ScrollView>
+    <ListView
+            android:id="@+id/comment_list_view"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
 
     <include
             layout="@layout/footer_button_bar"
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
-</FrameLayout>
+</LinearLayout>

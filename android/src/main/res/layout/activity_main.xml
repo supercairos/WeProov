@@ -39,7 +39,7 @@
                 android:id="@+id/navigation_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.weproov.app.ui.fragments.NavigationFragment"
+                android:name="com.weproov.app.ui.fragments.DrawerFragment"
                 tools:layout="@layout/fragment_navigation"/>
     </FrameLayout>
 

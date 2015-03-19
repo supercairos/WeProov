@@ -3,8 +3,6 @@ package com.weproov.app.ui.fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,10 +15,11 @@ import android.widget.Toast;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.weproov.app.R;
-import com.weproov.app.ui.MainActivity;
 import com.weproov.app.ui.ifaces.ActionBarIface;
 import com.weproov.app.ui.ifaces.Tunnelface;
 import com.weproov.app.ui.views.CameraPreviewView;
+import com.weproov.app.utils.OrientationUtils;
+import com.weproov.app.utils.constants.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +29,10 @@ public class CameraFragment extends BaseFragment {
 
     private static final int CAM_ID = 0;
     private static final String TAG = "CameraFragment";
+
+    /** Arguments keys **/
+    public static final String KEY_OVERLAY_PICTURE_SUBTITLE = "key_overlay_picture_subtitle";
+    public static final String KEY_OVERLAY_PICTURE = "key_overlay_picture";
 
     @InjectView(R.id.root_view)
     ViewGroup mRootView;
@@ -73,8 +76,8 @@ public class CameraFragment extends BaseFragment {
     public static CameraFragment newInstance(int overlay, String subtitle) {
 
         Bundle bundle = new Bundle();
-        bundle.putInt(MainActivity.KEY_OVERLAY_PICTURE, overlay);
-        bundle.putString(MainActivity.KEY_OVERLAY_PICTURE_SUBTITLE, subtitle);
+        bundle.putInt(KEY_OVERLAY_PICTURE, overlay);
+        bundle.putString(KEY_OVERLAY_PICTURE_SUBTITLE, subtitle);
 
         CameraFragment frag = new CameraFragment();
         frag.setArguments(bundle);
@@ -89,8 +92,8 @@ public class CameraFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mOverlayResourceId = getArguments().getInt(MainActivity.KEY_OVERLAY_PICTURE, 0);
-            mOverlaySubtitleString = getArguments().getString(MainActivity.KEY_OVERLAY_PICTURE_SUBTITLE);
+            mOverlayResourceId = getArguments().getInt(KEY_OVERLAY_PICTURE, 0);
+            mOverlaySubtitleString = getArguments().getString(KEY_OVERLAY_PICTURE_SUBTITLE);
         }
     }
 
@@ -244,27 +247,7 @@ public class CameraFragment extends BaseFragment {
         mCamera.setParameters(parameters);
     }
 
-    public static void lockOrientation(Activity activity) {
-        Display display = ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        int rotation = display.getRotation();
-        int tempOrientation = activity.getResources().getConfiguration().orientation;
-        int orientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-        switch (tempOrientation) {
-            case Configuration.ORIENTATION_LANDSCAPE:
-                if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_90)
-                    orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-                else
-                    orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
-                break;
-            case Configuration.ORIENTATION_PORTRAIT:
-                if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_270)
-                    orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                else
-                    orientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
-        }
 
-        activity.setRequestedOrientation(orientation);
-    }
 
     private class MyPictureCallback implements Camera.PictureCallback {
 
@@ -317,7 +300,7 @@ public class CameraFragment extends BaseFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            lockOrientation(getActivity());
+            OrientationUtils.lockOrientation(getActivity());
             mSavingPicture.setVisibility(View.VISIBLE);
             mIcCamera.setVisibility(View.GONE);
             mBtnCamera.setEnabled(false);
@@ -354,9 +337,10 @@ public class CameraFragment extends BaseFragment {
             // Move to edit
             if (s != null && s.exists()) {
                 Bundle bundle = new Bundle();
-                bundle.putString(MainActivity.KEY_COMMENT_PICTURE_PATH, s.getAbsolutePath());
+                bundle.putString(Constants.KEY_COMMENT_PICTURE_PATH, s.getAbsolutePath());
                 Log.d("Test", "File is = " + s.getAbsolutePath());
-                ((Tunnelface) getActivity()).next();
+                OrientationUtils.unlockOrientation(getActivity());
+                ((Tunnelface) getActivity()).next(bundle);
             } else {
                 Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
                 mBtnCamera.setEnabled(true);

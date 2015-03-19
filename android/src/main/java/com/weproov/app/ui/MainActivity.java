@@ -36,11 +36,9 @@ import com.weproov.app.utils.PrefUtils;
 import com.weproov.app.utils.constants.Constants;
 
 
-public class MainActivity extends BaseActivity implements NavigationFragment.OnNavigationInteractionListener, ActionBarIface, Tunnelface {
+public class MainActivity extends BaseActivity implements DrawerFragment.OnNavigationInteractionListener, ActionBarIface, Tunnelface {
 
-    public static final String KEY_OVERLAY_PICTURE_SUBTITLE = "key_overlay_picture_subtitle";
-    public static final String KEY_OVERLAY_PICTURE = "key_overlay_picture";
-    public static final String KEY_COMMENT_PICTURE_PATH = "key_comment_picture_path";
+
 
     @InjectView(R.id.action_bar)
     Toolbar mActionBar;
@@ -230,6 +228,11 @@ public class MainActivity extends BaseActivity implements NavigationFragment.OnN
     @Override
     public void next(Bundle data) {
         Log.d("Test", "Next clicked (b = " + data + ")");
+        if(mCurrentFragment == null) {
+            // Restore
+            mCurrentFragment = getSupportFragmentManager().findFragmentByTag("tag");
+        }
+
         if (RenterFragment.class.equals(mCurrentFragment.getClass())) {
             // Need to go to CarInfoFragment;
             mCurrentFragment = new CarInfoFragment();
@@ -241,7 +244,7 @@ public class MainActivity extends BaseActivity implements NavigationFragment.OnN
             // Need to go to comment
             String path = null;
             if (data != null) {
-                path = data.getString(KEY_COMMENT_PICTURE_PATH);
+                path = data.getString(Constants.KEY_COMMENT_PICTURE_PATH);
             }
 
             mCurrentFragment = CommentFragment.newInstance(path);
