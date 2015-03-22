@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WeProov</string>
+    <string name="action_settings">Parametres</string>
+    <string name="nav_about">A Propos</string>
+</resources>
