@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/content_root_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -36,14 +37,14 @@
                     app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
                 <EditText
-                        android:id="@+id/edit_firstname"
+                        android:id="@+id/edit_first_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/firstname"
+                        android:hint="@string/first_name"
                         android:singleLine="true"
                         android:imeOptions="actionNext"
                         android:inputType="textPersonName"
-                        android:nextFocusDown="@+id/edit_lastname"/>
+                        android:nextFocusDown="@+id/edit_last_name"/>
             </com.weproov.app.ui.views.FloatLabelLayout>
 
             <TextView
@@ -53,8 +54,8 @@
                     android:paddingBottom="4dp"
                     android:visibility="invisible"
                     android:textColor="@color/material_red_700"
-                    android:text="@string/error_firstname"
-                    android:id="@+id/edit_firstname_error"/>
+                    android:text="@string/error_first_name"
+                    android:id="@+id/edit_first_name_error"/>
 
             <com.weproov.app.ui.views.FloatLabelLayout
                     android:layout_width="match_parent"
@@ -62,10 +63,10 @@
                     app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
                 <EditText
-                        android:id="@+id/edit_lastname"
+                        android:id="@+id/edit_last_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/lastname"
+                        android:hint="@string/last_name"
                         android:singleLine="true"
                         android:inputType="textPersonName"
                         android:imeOptions="actionNext"
@@ -80,8 +81,8 @@
                     android:paddingBottom="4dp"
                     android:visibility="invisible"
                     android:textColor="@color/material_red_700"
-                    android:text="@string/error_lastname"
-                    android:id="@+id/edit_lastname_error"/>
+                    android:text="@string/error_last_name"
+                    android:id="@+id/edit_last_name_error"/>
 
             <com.weproov.app.ui.views.FloatLabelLayout
                     android:layout_width="match_parent"
@@ -140,11 +141,12 @@
                     android:layout_height="50dp"/>
         </LinearLayout>
     </ScrollView>
+
     <include
             layout="@layout/footer_button_bar"
+            android:id="@+id/bottom_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
-
 </RelativeLayout>

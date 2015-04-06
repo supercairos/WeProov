@@ -16,10 +16,9 @@
     <uses-permission android:name="android.permission.READ_SYNC_STATS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
 
-    <!-- Notify the playstore that we use the camera and any device requires a camera to run the app. -->
+    <!-- Notify the play store that we use the camera and any device requires a camera to run the app. -->
     <uses-feature android:name="android.hardware.camera"/>
 
     <permission
@@ -38,7 +37,9 @@
         <meta-data android:name="AA_DB_VERSION" android:value="1" />
         <meta-data
                 android:name="AA_MODELS"
-                android:value="" />
+                android:value="com.weproov.app.models.WeProov, com.weproov.app.models.PictureItem, com.weproov.app.models.CarInfo, com.weproov.app.models.RenterInfo" />
+        <meta-data android:name="AA_SERIALIZERS"
+                   android:value="com.weproov.app.utils.serializers.UriSerializer" />
 
         <meta-data
                 android:name="com.google.android.gms.version"

@@ -89,8 +89,6 @@ public class BitmapUtils {
 			bmp.compress(Bitmap.CompressFormat.PNG, 100, fOut);
 			fOut.flush();
 			fOut.close();
-		} catch (FileNotFoundException e) {
-			Log.d("Test", "Ex", e);
 		} catch (IOException e) {
 			Log.d("Test", "Ex", e);
 		}
@@ -243,7 +241,7 @@ public class BitmapUtils {
 			connection.setDoInput(true);
 			connection.connect();
 			stream = connection.getInputStream();
-			return decodeSampledBitmapFromInputStream(stream, reqWidth, reqWidth);
+			return decodeSampledBitmapFromInputStream(stream, reqWidth, reqHeight);
 		} catch (IOException e) {
 			return null;
 		} finally {

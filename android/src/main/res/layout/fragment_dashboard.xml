@@ -1,10 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.weproov.app.ui.fragments.DashboardFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/content_fragment_root_view"
+                tools:context="com.weproov.app.ui.fragments.DashboardFragment">
 
     <ImageView
+            android:contentDescription="@android:string/untitled"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:id="@+id/imageView"

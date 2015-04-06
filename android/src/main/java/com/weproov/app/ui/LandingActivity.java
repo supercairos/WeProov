@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import com.squareup.otto.Subscribe;
 import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
@@ -27,12 +26,6 @@ public class LandingActivity extends BaseActivity {
     @InjectView(R.id.edit_password)
     EditText mPassword;
 
-    @InjectView(R.id.button_positive)
-    Button mPositiveButton;
-
-    @InjectView(R.id.button_negative)
-    Button mNegativeButton;
-
     ProgressDialog mDialog;
 
     @Override
@@ -41,8 +34,8 @@ public class LandingActivity extends BaseActivity {
         setContentView(R.layout.activity_landing);
         ButterKnife.inject(this);
 
-        mPositiveButton.setText(R.string.register);
-        mNegativeButton.setText(android.R.string.cancel);
+        getNegativeButton().setText(R.string.register);
+        getPositiveButton().setText(R.string.login);
     }
 
 
@@ -51,7 +44,7 @@ public class LandingActivity extends BaseActivity {
         super.onStart();
         String token = AccountUtils.peekToken();
         if (!TextUtils.isEmpty(token) || BuildConfig.DEBUG) {
-            Log.d("Test", "Autologin : " + token);
+            Log.d("Test", "Auto login : " + token);
             gotoMain();
         }
     }
@@ -64,8 +57,9 @@ public class LandingActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.button_positive)
-    public void onButtonLoginClicked(Button button) {
+    @Override
+    protected void onPositiveButtonClicked(Button b) {
+        super.onPositiveButtonClicked(b);
         mDialog = ProgressDialog.show(this, "Login", "Please wait...", true);
         mDialog.show();
 
@@ -75,8 +69,9 @@ public class LandingActivity extends BaseActivity {
         UsersTask.login(email, password);
     }
 
-    @OnClick(R.id.button_negative)
-    public void onButtonRegisterClicked(Button button) {
+    @Override
+    protected void onNegativeButtonClicked(Button b) {
+        super.onNegativeButtonClicked(b);
         startActivity(new Intent(this, RegisterActivity.class));
     }
 

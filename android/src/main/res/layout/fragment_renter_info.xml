@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
+                android:id="@+id/content_fragment_root_view"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -37,58 +38,79 @@
                     android:layout_marginBottom="10dp"
                     />
 
-            <com.weproov.app.ui.views.FloatLabelLayout
+            <LinearLayout
+                    android:baselineAligned="false"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
 
-                <EditText
-                        android:id="@+id/edit_firstname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/renter_firstname"
-                        android:singleLine="true"
-                        android:inputType="textPersonName"
-                        android:imeOptions="actionNext"
-                        android:nextFocusDown="@+id/edit_lastname"/>
-            </com.weproov.app.ui.views.FloatLabelLayout>
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_firstname"
-                    android:id="@+id/edit_firstname_error"/>
+                    <com.weproov.app.ui.views.FloatLabelLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
-            <com.weproov.app.ui.views.FloatLabelLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                        <EditText
+                                android:id="@+id/edit_first_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/renter_first_name"
+                                android:singleLine="true"
+                                android:inputType="textPersonName"
+                                android:imeOptions="actionNext"
+                                android:nextFocusDown="@+id/edit_last_name"/>
+                    </com.weproov.app.ui.views.FloatLabelLayout>
 
-                <EditText
-                        android:id="@+id/edit_lastname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/renter_lastname"
-                        android:singleLine="true"
-                        android:inputType="textPersonName"
-                        android:imeOptions="actionNext"
-                        android:nextFocusDown="@+id/edit_email"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:paddingBottom="4dp"
+                            android:visibility="invisible"
+                            android:textColor="@color/material_red_700"
+                            android:text="@string/error_first_name"
+                            android:id="@+id/edit_first_name_error"/>
+                </LinearLayout>
 
-            </com.weproov.app.ui.views.FloatLabelLayout>
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_lastname"
-                    android:id="@+id/edit_lastname_error"/>
+                    <com.weproov.app.ui.views.FloatLabelLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+                        <EditText
+                                android:id="@+id/edit_last_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/renter_last_name"
+                                android:singleLine="true"
+                                android:inputType="textPersonName"
+                                android:imeOptions="actionNext"
+                                android:nextFocusDown="@+id/edit_email"/>
+
+                    </com.weproov.app.ui.views.FloatLabelLayout>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:paddingBottom="4dp"
+                            android:visibility="invisible"
+                            android:textColor="@color/material_red_700"
+                            android:text="@string/error_last_name"
+                            android:id="@+id/edit_last_name_error"/>
+                </LinearLayout>
+            </LinearLayout>
 
             <com.weproov.app.ui.views.FloatLabelLayout
                     android:layout_width="match_parent"
@@ -140,7 +162,7 @@
                     android:visibility="invisible"
                     android:textColor="@color/material_red_700"
                     android:text="@string/error_company"
-                    android:id="@+id/edit_password_error"/>
+                    android:id="@+id/edit_company_error"/>
 
             <TextView
                     android:layout_width="match_parent"
@@ -148,7 +170,7 @@
                     android:gravity="center_vertical"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/renter_document_info"
-                    android:id="@+id/car_info"/>
+                    android:id="@+id/renter_document_info"/>
 
             <View
                     android:layout_width="match_parent"
@@ -157,40 +179,70 @@
                     android:layout_marginBottom="10dp"
                     />
 
-            <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/horizontalScrollView">
+
+            <LinearLayout
+                    android:id="@+id/documents"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
 
                 <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:id="@+id/driving_licence"
+                        android:layout_width="100dp"
+                        android:orientation="vertical"
+                        android:layout_height="100dp">
 
                     <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:scaleType="fitCenter"
-                            android:layout_margin="0dp"
-                            android:padding="0dp"
-                            android:src="@drawable/ic_action_about"
-                            android:id="@+id/add_document"/>
+                            android:contentDescription="@android:string/untitled"
+                            android:id="@+id/driving_licence_picture"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:src="@drawable/card1"
+                            android:layout_weight="1"
+                            android:layout_height="0dp"/>
+
+                    <TextView
+                            android:contentDescription="@android:string/untitled"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/driving_licence"
+                            android:layout_gravity="center"
+                            android:id="@+id/driving_licence_text"/>
                 </LinearLayout>
 
-            </HorizontalScrollView>
+                <LinearLayout
+                        android:id="@+id/identity_card"
+                        android:layout_width="100dp"
+                        android:orientation="vertical"
+                        android:layout_height="100dp">
 
+                    <ImageView
+                            android:contentDescription="@android:string/untitled"
+                            android:id="@+id/identity_card_picture"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:src="@drawable/card1"
+                            android:layout_weight="1"
+                            android:layout_height="0dp"/>
+
+                    <TextView
+                            android:contentDescription="@android:string/untitled"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/identity_card"
+                            android:layout_gravity="center"
+                            android:id="@+id/identity_card_text"/>
+                </LinearLayout>
+            </LinearLayout>
 
             <Space
                     android:layout_width="match_parent"
                     android:layout_height="50dp"/>
         </LinearLayout>
     </ScrollView>
-
-    <include
-            layout="@layout/footer_button_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
-
 </RelativeLayout>

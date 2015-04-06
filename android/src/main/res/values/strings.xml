@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">WeProov</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -11,14 +11,14 @@
     <string name="camera_is_required">This app require a camera</string>
     <string name="button_clear">Clear</string>
     <string name="loading_camera">Loading camera\nPlease wait.</string>
-    <string name="or">Or</string>
+
     <string name="login">Log me in</string>
     <string name="register">Register</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
-    <string name="firstname">Firstname</string>
-    <string name="lastname">Lastname</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
     <string name="back">Back</string>
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_weproov">We Proov</string>
@@ -29,14 +29,14 @@
     <string name="renter_info">Renter Info</string>
     <string name="car_info">Car Info</string>
 
-    <string name="error_firstname">This is not a valid firstname.</string>
-    <string name="error_lastname">This is not a valid lastname.</string>
+    <string name="error_first_name">This is not a valid first name.</string>
+    <string name="error_last_name">This is not a valid last name.</string>
     <string name="error_email">Please use a valid email</string>
     <string name="error_password">Please use a stronger password.</string>
     <string name="error_company">Error company</string>
 
-    <string name="renter_firstname">Firstname</string>
-    <string name="renter_lastname">Lastname</string>
+    <string name="renter_first_name">First name</string>
+    <string name="renter_last_name">Last name</string>
     <string name="renter_email">Email</string>
     <string name="renter_company">Company</string>
     <string name="renter_document_info">Renter documents</string>
@@ -52,16 +52,25 @@
     <string name="car_plate_number">Plate number</string>
     <string name="error_car_color">This is not a valid color</string>
     <string name="car_color">Car color</string>
-    <string name="error_car_milage">This is not a proper milage</string>
-    <string name="car_milage">Car milage</string>
-    <string name="error_modele">This is not a valid car modele</string>
-    <string name="renter_modele">Car modele</string>
+    <string name="error_car_millage">This is not a proper millage</string>
+    <string name="car_millage">Car millage</string>
+    <string name="error_model">This is not a valid car model</string>
+    <string name="renter_model">Car model</string>
     <string name="error_brand">This is not a proper brand</string>
     <string name="renter_brand">Car brand</string>
     <string name="comment_hint">Comments</string>
     <string name="title_about_us">About us</string>
     <string name="title_signature_dialog">Sign below</string>
-    <string name="saving_picture">Saving picture...</string>
-    <string name="error_taking_picture">An error occured taking picture, please retry</string>
+    <string name="saving_picture">Saving picture…</string>
+    <string name="error_taking_picture">An error occurred taking picture, please retry</string>
+    <string name="picker_select_source">Select source</string>
+    
+    <string name="millage_type_kilometers">km</string>
+    <string name="millage_type_miles">mi</string>
+    <string name="driving_licence">Driving Licence</string>
+    <string name="identity_card">ID Card</string>
+    <string name="car_document_info">Car documents</string>
+    <string name="vehicle_documentation">Vehicle documentation</string>
+    <string name="car_additional_info">Additional info</string>
 
 </resources>

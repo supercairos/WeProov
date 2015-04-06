@@ -4,6 +4,7 @@
         android:baselineAligned="false"
         android:layout_width="match_parent"
         android:orientation="vertical"
+        android:id="@+id/content_fragment_root_view"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.weproov.app.ui.views.FourThirdView
@@ -22,6 +23,7 @@
                 android:layout_centerHorizontal="true"/>
 
         <ImageView
+                android:contentDescription="@android:string/untitled"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
@@ -31,6 +33,7 @@
                 android:layout_centerHorizontal="true"/>
 
         <ImageView
+                android:contentDescription="@android:string/untitled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_set_flash"

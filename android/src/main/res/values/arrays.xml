@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="car_type">
+    <string-array name="car_type" >
         <item name="hybrid">@string/car_type_hybrid</item>
         <item name="diesel">@string/car_type_diesel</item>
         <item name="gpl">@string/car_type_gpl</item>
@@ -29,6 +29,11 @@
         <item>@string/car_type_gpl</item>
         <item>@string/car_type_electric</item>
         <item>@string/car_type_gas</item>
+    </string-array>
+
+    <string-array name="millage_type">
+        <item>@string/millage_type_kilometers</item>
+        <item>@string/millage_type_miles</item>
     </string-array>
 
 

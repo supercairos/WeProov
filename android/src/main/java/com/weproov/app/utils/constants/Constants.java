@@ -10,7 +10,5 @@ public class Constants {
     public static final String KEY_EMAIL = "user_email";
     public static final String KEY_PICTURE_URL = "user_picture_url";
 
-    /** Fragment **/
 
-    public static final String KEY_COMMENT_PICTURE_PATH = "key_comment_picture_path";
 }

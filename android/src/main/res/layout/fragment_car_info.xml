@@ -1,105 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<ScrollView
+        android:id="@+id/content_fragment_root_view"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true">
 
-    <ScrollView
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/scrollView">
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:id="@+id/linearLayout2">
 
-        <LinearLayout
-                android:orientation="vertical"
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/car_info"
+                android:id="@+id/car_info"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primary_dark"
+                android:layout_marginBottom="10dp"
+                />
+
+        <com.weproov.app.ui.views.FloatLabelLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="12dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:id="@+id/linearLayout2">
+                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
-            <TextView
+            <AutoCompleteTextView
+                    android:id="@+id/edit_car_plate_number"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:gravity="center_vertical"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/car_info"
-                    android:id="@+id/car_info"/>
+                    android:layout_height="wrap_content"
+                    android:hint="@string/car_plate_number"
+                    android:singleLine="true"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"/>
 
-            <View
+        </com.weproov.app.ui.views.FloatLabelLayout>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="@string/error_car_plate_number"
+                android:id="@+id/edit_car_plate_number_error"/>
+
+        <com.weproov.app.ui.views.FloatLabelLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+            <EditText
+                    android:id="@+id/edit_brand"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/primary_dark"
-                    android:layout_marginBottom="10dp"
-                    />
+                    android:layout_height="wrap_content"
+                    android:hint="@string/renter_brand"
+                    android:singleLine="true"
+                    android:inputType="textPersonName"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@+id/edit_model"/>
+        </com.weproov.app.ui.views.FloatLabelLayout>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:paddingBottom="4dp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="@string/error_brand"
+                android:id="@+id/edit_brand_error"/>
+
+        <com.weproov.app.ui.views.FloatLabelLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+            <EditText
+                    android:id="@+id/edit_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/renter_model"
+                    android:singleLine="true"
+                    android:inputType="textPersonName"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@+id/edit_email"/>
+
+        </com.weproov.app.ui.views.FloatLabelLayout>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:paddingBottom="4dp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="@string/error_model"
+                android:id="@+id/edit_last_name_error"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <com.weproov.app.ui.views.FloatLabelLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
                 <EditText
-                        android:id="@+id/edit_brand"
+                        android:id="@+id/edit_car_millage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/renter_brand"
-                        android:singleLine="true"
-                        android:inputType="textPersonName"
-                        android:imeOptions="actionNext"
-                        android:nextFocusDown="@+id/edit_modele"/>
-            </com.weproov.app.ui.views.FloatLabelLayout>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_brand"
-                    android:id="@+id/edit_brand_error"/>
-
-            <com.weproov.app.ui.views.FloatLabelLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
-
-                <EditText
-                        android:id="@+id/edit_modele"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/renter_modele"
-                        android:singleLine="true"
-                        android:inputType="textPersonName"
-                        android:imeOptions="actionNext"
-                        android:nextFocusDown="@+id/edit_email"/>
-
-            </com.weproov.app.ui.views.FloatLabelLayout>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_modele"
-                    android:id="@+id/edit_lastname_error"/>
-
-            <com.weproov.app.ui.views.FloatLabelLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
-
-                <EditText
-                        android:id="@+id/edit_car_milage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/car_milage"
+                        android:hint="@string/car_millage"
                         android:singleLine="true"
                         android:inputType="numberDecimal"
                         android:imeOptions="actionNext"
@@ -107,124 +133,163 @@
 
             </com.weproov.app.ui.views.FloatLabelLayout>
 
-            <TextView
+            <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_car_milage"
-                    android:id="@+id/edit_car_milage_error"/>
-
-            <com.weproov.app.ui.views.FloatLabelLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
-
-                <EditText
-                        android:id="@+id/edit_car_color"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/car_color"
-                        android:singleLine="true"
-                        android:inputType="textNoSuggestions"
-                        android:imeOptions="actionDone"/>
-
-            </com.weproov.app.ui.views.FloatLabelLayout>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_car_color"
-                    android:id="@+id/edit_car_color_error"/>
-
-            <com.weproov.app.ui.views.FloatLabelLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
-
-                <EditText
-                        android:id="@+id/edit_car_plate_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/car_plate_number"
-                        android:singleLine="true"
-                        android:inputType="text"
-                        android:imeOptions="actionDone"/>
-
-            </com.weproov.app.ui.views.FloatLabelLayout>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_car_plate_number"
-                    android:id="@+id/edit_car_plate_number_error"/>
-
-            <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:gravity="center_vertical"
-                        android:text="@string/gas_level"
-                        android:paddingEnd="10dp"
-                        android:paddingStart="10dp"
-                        android:id="@+id/textView2"
-                        android:layout_alignBottom="@+id/seekBar"
-                        android:layout_alignParentTop="true"/>
-
-                <SeekBar
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/seekBar"
-                        android:progress="50"
-                        android:max="100"
-                        android:layout_toEndOf="@+id/textView2"/>
-
-                <Spinner
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/car_type_spinner"
-                        android:clickable="true"
-                        android:spinnerMode="dialog"
-                        android:layout_alignParentEnd="true"
-                        android:layout_toEndOf="@+id/car_type"
-                        android:layout_below="@+id/seekBar"/>
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:gravity="center_vertical"
-                        android:text="@string/car_type"
-                        android:paddingEnd="10dp"
-                        android:paddingStart="10dp"
-                        android:id="@+id/car_type"
-                        android:layout_toStartOf="@+id/seekBar"
-                        android:layout_alignParentBottom="true"
-                        android:layout_below="@+id/textView2"/>
-            </RelativeLayout>
-
-            <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"/>
+                    android:entries="@array/millage_type"
+                    android:id="@+id/millage_type_spinner"
+                    android:layout_gravity="bottom"
+                    android:paddingBottom="6dp"
+                    android:spinnerMode="dropdown"/>
         </LinearLayout>
-    </ScrollView>
 
-    <include
-            layout="@layout/footer_button_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
-</RelativeLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:paddingBottom="4dp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="@string/error_car_millage"
+                android:id="@+id/edit_car_millage_error"/>
+
+        <com.weproov.app.ui.views.FloatLabelLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+            <EditText
+                    android:id="@+id/edit_car_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/car_color"
+                    android:singleLine="true"
+                    android:inputType="textNoSuggestions"
+                    android:imeOptions="actionDone"/>
+
+        </com.weproov.app.ui.views.FloatLabelLayout>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="@string/error_car_color"
+                android:id="@+id/edit_car_color_error"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/car_additional_info"
+                android:id="@+id/car_additional_info"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primary_dark"
+                android:layout_marginBottom="10dp"
+                />
+
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center_vertical"
+                    android:text="@string/gas_level"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:id="@+id/textView2"
+                    android:layout_alignBottom="@+id/seekBar"
+                    android:layout_alignParentTop="true"/>
+
+            <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/seekBar"
+
+                    android:progress="50"
+                    android:max="100"
+                    android:layout_toEndOf="@+id/textView2"
+                    android:indeterminate="false"/>
+
+            <Spinner
+                    android:layout_width="match_parent"
+                    android:entries="@array/car_type"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/car_type_spinner"
+                    android:clickable="true"
+                    android:spinnerMode="dialog"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toEndOf="@+id/car_type"
+                    android:layout_below="@+id/seekBar"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center_vertical"
+                    android:text="@string/car_type"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:id="@+id/car_type"
+                    android:layout_toStartOf="@+id/seekBar"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/textView2"/>
+        </RelativeLayout>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/car_document_info"
+                android:id="@+id/car_document_info"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primary_dark"
+                android:layout_marginBottom="10dp"
+                />
+
+
+        <LinearLayout
+                android:id="@+id/vehicle_documentation"
+                android:layout_width="100dp"
+                android:orientation="vertical"
+                android:layout_height="100dp">
+
+            <ImageView
+                    android:contentDescription="@android:string/untitled"
+                    android:id="@+id/vehicle_documentation_picture"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/card1"
+                    android:layout_weight="1"
+                    android:layout_height="0dp"/>
+
+            <TextView
+                    android:contentDescription="@android:string/untitled"
+                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vehicle_documentation"
+                    android:layout_gravity="center"
+                    android:id="@+id/vehicle_documentation_text"/>
+        </LinearLayout>
+
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+    </LinearLayout>
+</ScrollView>

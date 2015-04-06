@@ -51,7 +51,7 @@ public class User {
                 '}';
     }
 
-    public static interface IUserService {
+    public interface IUserService {
 
         @GET(MODULE + GET_LOGIN)
         User login(@Header("Authorization") String basicAuth) throws LoginException;

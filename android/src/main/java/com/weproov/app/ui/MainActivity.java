@@ -24,11 +24,11 @@ import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.logic.services.GcmRegisterService;
 import com.weproov.app.models.NavItem;
+import com.weproov.app.models.RenterInfo;
 import com.weproov.app.ui.fragments.*;
 import com.weproov.app.ui.fragments.dialogs.AboutDialogFragment;
 import com.weproov.app.ui.fragments.dialogs.SignatureDialogFragment;
 import com.weproov.app.ui.ifaces.ActionBarIface;
-import com.weproov.app.ui.ifaces.Tunnelface;
 import com.weproov.app.utils.CameraUtils;
 import com.weproov.app.utils.FragmentsUtils;
 import com.weproov.app.utils.PlayServicesUtils;
@@ -36,14 +36,12 @@ import com.weproov.app.utils.PrefUtils;
 import com.weproov.app.utils.constants.Constants;
 
 
-public class MainActivity extends BaseActivity implements DrawerFragment.OnNavigationInteractionListener, ActionBarIface, Tunnelface {
-
-
+public class MainActivity extends BaseActivity implements DrawerFragment.OnNavigationInteractionListener, ActionBarIface, TunnelFragment.Tunnel {
 
     @InjectView(R.id.action_bar)
     Toolbar mActionBar;
 
-    @InjectView(R.id.drawer_layout)
+    @InjectView(R.id.content_root_view)
     DrawerLayout mDrawerLayout;
 
     @InjectView(R.id.left_frame)
@@ -171,7 +169,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
                                 // User cancelled the dialog
                             }
                         });
-                builder.create().show();
+                builder.show();
                 return; // Keep the return here
             case NavItem.NAV_WEPROOV:
                 mCurrentFragment = new RenterFragment();
@@ -235,6 +233,13 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
         if (RenterFragment.class.equals(mCurrentFragment.getClass())) {
             // Need to go to CarInfoFragment;
+            RenterInfo info = null;
+            if (data != null) {
+                info = data.getParcelable(TunnelFragment.KEY_RENTER_INFO);
+            }
+
+            Log.d("Test", "Got Renter info : " + info);
+
             mCurrentFragment = new CarInfoFragment();
         } else if (CarInfoFragment.class.equals(mCurrentFragment.getClass())) {
             // Need to go to Camera and reset counter;
@@ -244,9 +249,10 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
             // Need to go to comment
             String path = null;
             if (data != null) {
-                path = data.getString(Constants.KEY_COMMENT_PICTURE_PATH);
+                path = data.getString(TunnelFragment.KEY_COMMENT_PICTURE_PATH);
             }
 
+            FragmentsUtils.clearBackStack(getSupportFragmentManager());
             mCurrentFragment = CommentFragment.newInstance(path);
         } else if (CommentFragment.class.equals(mCurrentFragment.getClass())) {
             // Goto next drawable
@@ -262,6 +268,8 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
             throw new IllegalStateException("Called from a non nextable fragment");
         }
 
+        setCommandListener(null);
         FragmentsUtils.replace(this, mCurrentFragment, R.id.content_fragment);
+        // Clear state
     }
 }

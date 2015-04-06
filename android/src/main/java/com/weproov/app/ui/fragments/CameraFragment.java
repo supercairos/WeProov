@@ -16,16 +16,14 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import com.weproov.app.R;
 import com.weproov.app.ui.ifaces.ActionBarIface;
-import com.weproov.app.ui.ifaces.Tunnelface;
 import com.weproov.app.ui.views.CameraPreviewView;
 import com.weproov.app.utils.OrientationUtils;
-import com.weproov.app.utils.constants.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class CameraFragment extends BaseFragment {
+public class CameraFragment extends TunnelFragment {
 
     private static final int CAM_ID = 0;
     private static final String TAG = "CameraFragment";
@@ -117,6 +115,7 @@ public class CameraFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setCommmandListener(null);
     }
 
     @Override
@@ -337,10 +336,10 @@ public class CameraFragment extends BaseFragment {
             // Move to edit
             if (s != null && s.exists()) {
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.KEY_COMMENT_PICTURE_PATH, s.getAbsolutePath());
+                bundle.putString(TunnelFragment.KEY_COMMENT_PICTURE_PATH, s.getAbsolutePath());
                 Log.d("Test", "File is = " + s.getAbsolutePath());
                 OrientationUtils.unlockOrientation(getActivity());
-                ((Tunnelface) getActivity()).next(bundle);
+                getTunnel().next(bundle);
             } else {
                 Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
                 mBtnCamera.setEnabled(true);

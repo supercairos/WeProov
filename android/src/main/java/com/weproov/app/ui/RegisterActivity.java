@@ -12,9 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import com.squareup.otto.Subscribe;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.UsersTask;
@@ -26,14 +24,14 @@ import com.weproov.app.utils.validators.PasswordValidator;
 
 public class RegisterActivity extends BaseActivity {
 
-    @InjectView(R.id.edit_firstname)
+    @InjectView(R.id.edit_first_name)
     EditText mFirstName;
-    @InjectView(R.id.edit_firstname_error)
+    @InjectView(R.id.edit_first_name_error)
     TextView mFirstNameError;
 
-    @InjectView(R.id.edit_lastname)
+    @InjectView(R.id.edit_last_name)
     EditText mLastName;
-    @InjectView(R.id.edit_lastname_error)
+    @InjectView(R.id.edit_last_name_error)
     TextView mLastNameError;
 
     @InjectView(R.id.edit_email)
@@ -49,28 +47,18 @@ public class RegisterActivity extends BaseActivity {
     @InjectView(R.id.action_bar)
     Toolbar mActionBar;
 
-    @InjectView(R.id.button_positive)
-    Button mPositiveButton;
-
-    @InjectView(R.id.button_negative)
-    Button mNegativeButton;
-
     ProgressDialog mDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        ButterKnife.inject(this);
+
         setSupportActionBar(mActionBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mPositiveButton.setText(R.string.register);
-        mNegativeButton.setText(android.R.string.cancel);
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+        getPositiveButton().setText(R.string.register);
+        getNegativeButton().setText(android.R.string.cancel);
     }
 
     @Override
@@ -84,15 +72,13 @@ public class RegisterActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.button_negative)
-    public void onButtonBackClicked() {
+    protected void onNegativeButtonClicked(Button b) {
         NavUtils.navigateUpFromSameTask(this);
     }
 
-    @OnClick(R.id.button_positive)
-    public void onButtonRegisterClicked() {
-        String firstname = mFirstName.getEditableText().toString();
-        String lastname = mLastName.getEditableText().toString();
+    protected void onPositiveButtonClicked(Button b) {
+        String first_name = mFirstName.getEditableText().toString();
+        String last_name = mLastName.getEditableText().toString();
         String email = mEmail.getEditableText().toString();
         String password = mPassword.getEditableText().toString();
 
@@ -113,7 +99,7 @@ public class RegisterActivity extends BaseActivity {
             mPasswordError.setVisibility(View.INVISIBLE);
         }
 
-        if (TextUtils.isEmpty(lastname)) {
+        if (TextUtils.isEmpty(last_name)) {
             mLastNameError.setVisibility(View.VISIBLE);
             mLastName.requestFocus();
             isEverythingOk = false;
@@ -121,7 +107,7 @@ public class RegisterActivity extends BaseActivity {
             mLastNameError.setVisibility(View.INVISIBLE);
         }
 
-        if (TextUtils.isEmpty(firstname)) {
+        if (TextUtils.isEmpty(first_name)) {
             mFirstNameError.setVisibility(View.VISIBLE);
             mFirstName.requestFocus();
             isEverythingOk = false;
@@ -134,7 +120,7 @@ public class RegisterActivity extends BaseActivity {
             mDialog = ProgressDialog.show(this, "Register", "Please wait...", true);
             mDialog.show();
 
-            UsersTask.register(new User(email, password, firstname, lastname));
+            UsersTask.register(new User(email, password, first_name, last_name));
         }
     }
 

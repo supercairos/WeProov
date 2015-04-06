@@ -1,18 +1,15 @@
 package com.weproov.app.ui.fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.*;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import com.weproov.app.R;
-import com.weproov.app.ui.ifaces.Tunnelface;
+import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.ui.views.FingerPaintView;
 import com.weproov.app.ui.views.FourThirdView;
 import com.weproov.app.utils.PicassoUtils;
@@ -20,7 +17,7 @@ import com.weproov.app.utils.PicassoUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentFragment extends BaseFragment {
+public class CommentFragment extends TunnelFragment implements CommandIface.OnClickListener {
 
     /**
      * Arguments key *
@@ -35,6 +32,7 @@ public class CommentFragment extends BaseFragment {
     ListView mListView;
     @InjectView(R.id.picture_container)
     FourThirdView mPictureContainer;
+
     /**
      * Footer Views *
      */
@@ -50,7 +48,7 @@ public class CommentFragment extends BaseFragment {
     /**
      * The picture *
      */
-    private Object mBitmap;
+    private Bitmap mBitmap;
 
 
     public static CommentFragment newInstance(String picturePath) {
@@ -106,13 +104,19 @@ public class CommentFragment extends BaseFragment {
         mAddCommentText.getEditableText().clear();
     }
 
-    @OnClick(R.id.button_positive)
-    public void onOkClicked() {
-        ((Tunnelface) getActivity()).next();
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setCommmandListener(this);
     }
 
-    @OnClick(R.id.button_negative)
-    public void onCancelClicked() {
+    @Override
+    public void onPositiveButtonClicked(Button b) {
+        getTunnel().next();
+    }
+
+    @Override
+    public void onNegativeButtonClicked(Button b) {
         // Goto dashboard
     }
 }

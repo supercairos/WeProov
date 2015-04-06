@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/content_root_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/action_bar"
+            android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
             android:id="@+id/scrollView">
 
@@ -16,14 +17,15 @@
                 android:orientation="vertical"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
-                android:layout_centerInParent="true"
+
                 android:id="@+id/linearLayout">
 
             <ImageView
+                    android:contentDescription="@android:string/untitled"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginBottom="10dp"
-                    android:src="@drawable/logo"
+                    android:src="@drawable/ic_launcher"
                     android:scaleType="centerInside"
                     android:layout_gravity="center"/>
 
@@ -76,6 +78,7 @@
 
     <include
             layout="@layout/footer_button_bar"
+            android:id="@+id/bottom_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

@@ -3,6 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:id="@+id/bottom_frame_layout"
+        android:visibility="gone"
         android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -24,7 +25,7 @@
                 android:text="@android:string/cancel"
                 android:textColor="@color/primary_dark"
                 style="?android:attr/borderlessButtonStyle"
-                android:id="@+id/button_negative"/>
+                android:id="@android:id/button1"/>
 
         <Button
                 android:layout_width="0dp"
@@ -34,6 +35,6 @@
                 android:text="@android:string/ok"
                 style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/btn_default_material"
-                android:id="@+id/button_positive"/>
+                android:id="@android:id/button2"/>
     </LinearLayout>
 </LinearLayout>

@@ -87,7 +87,7 @@ public class DrawerFragment extends BaseFragment {
     }
 
     public interface OnNavigationInteractionListener {
-        public void onNavItemSelected(NavItem item);
+        void onNavItemSelected(NavItem item);
     }
 
     /* The click listner for ListView in the navigation drawer */
