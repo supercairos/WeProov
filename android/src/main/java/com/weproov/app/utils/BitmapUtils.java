@@ -15,7 +15,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class BitmapUtils {
+public final class BitmapUtils {
 
 	public static Bitmap blur(Context context, int radius, Bitmap bitmapOriginal) {
 		RenderScript rs = RenderScript.create(context);

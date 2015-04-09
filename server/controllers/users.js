@@ -51,6 +51,33 @@ module.exports = function(app) {
 		});
 	});
 
+	app.put('/users/gcm/:gcm_token', 
+		passport.authenticate('bearer', { session: false }), 
+		function(req, res) {
+			req.user.update({ gcm_token : req.params.gcm_token }, function (err, affected, raw) {
+				if (err) {
+					log.error("Error is " + err);
+					res.sendStatus(500);
+					return;
+				}
+				log.info('The number of updated documents was %d', affected);
+				log.info('The raw response from Mongo was %s', raw);
+
+				res.status(200).json( req.user ).end();
+			});
+		}
+	);
+
+	app.get('/users/login', 
+		passport.authenticate('basic', { 
+			session: false 
+		}), 
+		function(req, res) {
+			res.status(200).json( req.user ).end();
+		}
+	);
+
+	// These functions are for testing / showcasing purposes.
 	app.get('/users/gcm', function(req, res) {
 		// or with object values
 		var message = new gcm.Message({
@@ -91,32 +118,6 @@ module.exports = function(app) {
 			}
 		});	
 	});
-
-	app.put('/users/gcm/:gcm_token', 
-		passport.authenticate('bearer', { session: false }), 
-		function(req, res) {
-			req.user.update({ gcm_token : req.params.gcm_token }, function (err, affected, raw) {
-				if (err) {
-					log.error("Error is " + err);
-					res.sendStatus(500);
-					return;
-				}
-				log.info('The number of updated documents was %d', affected);
-				log.info('The raw response from Mongo was %s', raw);
-
-				res.status(200).json( req.user ).end();
-			});
-		}
-	);
-
-	app.get('/users/login', 
-		passport.authenticate('basic', { 
-			session: false 
-		}), 
-		function(req, res) {
-			res.status(200).json( req.user ).end();
-		}
-	);
 
 	app.get('/users/autocomplete', 
 		function(req, res) {

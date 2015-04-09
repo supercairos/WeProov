@@ -25,6 +25,7 @@
 		"passport": "latest",
 		"passport-http": "latest",
 		"passport-http-bearer": "latest",
-		"passport-facebook-token": "latest"
+		"passport-facebook-token": "latest",
+		"multer" : "latest"
 	}
 }

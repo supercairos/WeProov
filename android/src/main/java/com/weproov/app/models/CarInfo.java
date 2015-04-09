@@ -1,37 +1,43 @@
 package com.weproov.app.models;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.BaseColumns;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.google.gson.annotations.Expose;
 
 @Table(name = "cars", id = BaseColumns._ID)
 public class CarInfo extends BaseModel implements Parcelable {
 
+	@Expose
 	@Column(name = "plate")
-	String plate;
+	public String plate;
 
 	@Column(name = "brand")
-	String brand;
+	public String brand;
 
 	@Column(name = "model")
-	String model;
+	public String model;
 
 	@Column(name = "car_type")
-	String car_type;
+	public String car_type;
 
 	@Column(name = "millage")
-	float millage;
+	public float millage;
 
 	@Column(name = "millage_type")
-	String millage_type;
+	public String millage_type;
 
 	@Column(name = "color")
-	String color;
+	public String color;
 
 	@Column(name = "gas_level")
-	int gas_level;
+	public int gas_level;
+
+	@Column(name = "vehicle_documentation")
+	public Uri vehicle_documentation;
 
 
 	public CarInfo() {

@@ -17,7 +17,7 @@ import com.weproov.app.utils.constants.AccountConstants;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 import retrofit.RetrofitError;
 
-public class UsersTask {
+public final class UsersTask {
 
     private static final User.IUserService SERVICE = User.getService();
     private static final BusProvider.MainThreadBus BUS = BusProvider.getInstance();

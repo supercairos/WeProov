@@ -72,5 +72,9 @@
     <string name="car_document_info">Car documents</string>
     <string name="vehicle_documentation">Vehicle documentation</string>
     <string name="car_additional_info">Additional info</string>
+    <string name="notification_picture_download_title">Uploading WeProov</string>
+    <string name="notification_picture_download_start">Establishing connection</string>
+    <string name="notification_picture_download_picture">Uploading picture %s</string>
+    <string name="notification_picture_download_end">Upload complete</string>
 
 </resources>

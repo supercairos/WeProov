@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.logic.services.GcmRegisterService;
+import com.weproov.app.models.CarInfo;
 import com.weproov.app.models.NavItem;
 import com.weproov.app.models.RenterInfo;
 import com.weproov.app.ui.fragments.*;
@@ -172,7 +173,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
                 builder.show();
                 return; // Keep the return here
             case NavItem.NAV_WEPROOV:
-                mCurrentFragment = new RenterFragment();
+                mCurrentFragment = new CarInfoFragment();
                 break;
             case NavItem.NAV_DASHBOARD:
                 mCurrentFragment = new DashboardFragment();
@@ -243,6 +244,15 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
             mCurrentFragment = new CarInfoFragment();
         } else if (CarInfoFragment.class.equals(mCurrentFragment.getClass())) {
             // Need to go to Camera and reset counter;
+
+            // Need to go to CarInfoFragment;
+            CarInfo info = null;
+            if (data != null) {
+                info = data.getParcelable(TunnelFragment.KEY_CAR_INFO);
+            }
+
+            Log.d("Test", "Got Car info : " + info);
+
             mWeProovStep = 0;
             mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlaySubtitleArray[mWeProovStep]);
         } else if (CameraFragment.class.equals(mCurrentFragment.getClass())) {

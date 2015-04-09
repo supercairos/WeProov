@@ -12,6 +12,7 @@
             android:layout_height="wrap_content">
 
         <ImageView
+                android:contentDescription="@android:string/untitled"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/comment_image_view"/>
@@ -22,16 +23,4 @@
                 android:layout_height="match_parent"/>
     </com.weproov.app.ui.views.FourThirdView>
 
-    <ListView
-            android:id="@+id/comment_list_view"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp"/>
-
-    <include
-            layout="@layout/footer_button_bar"
-            android:id="@+id/bottom_frame_layout"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 </LinearLayout>

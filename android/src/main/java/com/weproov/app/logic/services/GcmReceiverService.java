@@ -18,8 +18,16 @@ public class GcmReceiverService extends IntentService {
     private static final int NOTIFICATION_ID = 1;
     private static final String TAG = GcmReceiverService.class.getSimpleName();
 
+    private final NotificationManager mNotifyManager;
+
     public GcmReceiverService() {
         super("GcmIntentService");
+        mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
     }
 
     @Override
@@ -61,16 +69,15 @@ public class GcmReceiverService extends IntentService {
     // a GCM message.
     private void sendNotification(String msg) {
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, LandingActivity.class), 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("GCM Notification")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setContentText(msg);
 
         builder.setContentIntent(contentIntent);
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+        mNotifyManager.notify(NOTIFICATION_ID, builder.build());
     }
 }

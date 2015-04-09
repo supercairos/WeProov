@@ -5,20 +5,21 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.*;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.weproov.app.R;
+import com.weproov.app.models.CarInfo;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.PixelUtils;
@@ -30,19 +31,60 @@ import java.util.List;
 
 public class CarInfoFragment extends TunnelFragment implements CommandIface.OnClickListener {
 
-	private static final int SELECT_VEHICULE_DOC_REQUEST_CODE = 999;
-
-	@InjectView(R.id.car_type_spinner)
-	Spinner mCarType;
-
-	@InjectView(R.id.millage_type_spinner)
-	Spinner mMillageType;
+	private static final int SELECT_VEHICLE_DOC_REQUEST_CODE = 999;
 
 	private Uri mOutputFileUri;
 	private Uri mVehicleDocumentationUri;
 
+	private String[] mMillageTypeServer;
+	private String[] mCarTypeServer;
+
+	@InjectView(R.id.edit_car_plate_number)
+	TextView mPlateNumber;
+	@InjectView(R.id.edit_car_plate_number_error)
+	TextView mPlateNumberError;
+
+	@InjectView(R.id.edit_car_brand)
+	TextView mBrand;
+	@InjectView(R.id.edit_car_brand_error)
+	TextView mBrandError;
+
+	@InjectView(R.id.edit_car_model)
+	TextView mModel;
+	@InjectView(R.id.edit_car_model_error)
+	TextView mModelError;
+
+	@InjectView(R.id.edit_car_millage)
+	TextView mMillage;
+	@InjectView(R.id.edit_car_millage_error)
+	TextView mMillageError;
+
+	@InjectView(R.id.spinner_car_millage_type)
+	Spinner mMillageType;
+
+	@InjectView(R.id.edit_car_color)
+	TextView mColor;
+	@InjectView(R.id.edit_car_color_error)
+	TextView mColorError;
+
+	@InjectView(R.id.seekbar_car_gas_level)
+	SeekBar mGasLevel;
+
+	@InjectView(R.id.spinner_car_type)
+	Spinner mCarType;
+
 	@InjectView(R.id.vehicle_documentation_picture)
-	ImageView mVehicleDocumentation;
+	ImageView mVehicleDocumentationPicture;
+	@InjectView(R.id.vehicle_documentation_text)
+	TextView mVehicleDocumentationText;
+
+	public static CarInfoFragment newInstance(CarInfo info) {
+		CarInfoFragment fragment = new CarInfoFragment();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(TunnelFragment.KEY_CAR_INFO, info);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 	public CarInfoFragment() {
 	}
@@ -53,18 +95,139 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		mCarTypeServer = getResources().getStringArray(R.array.car_type_server);
+		mMillageTypeServer = getResources().getStringArray(R.array.millage_type_server);
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setCommmandListener(this);
+
+		CarInfo info = null;
+		if (savedInstanceState != null) {
+			info = savedInstanceState.getParcelable(TunnelFragment.KEY_RENTER_INFO);
+		} else if (getArguments() != null) {
+			info = getArguments().getParcelable(TunnelFragment.KEY_RENTER_INFO);
+		}
+
+		if (info != null) {
+			mPlateNumber.setText(info.plate);
+			mBrand.setText(info.brand);
+			mModel.setText(info.model);
+			mMillage.setText(String.valueOf(info.millage));
+			mMillageType.setSelection(getServerIndex(mMillageTypeServer, info.millage_type));
+			mColor.setText(info.color);
+
+			mGasLevel.setProgress(info.gas_level);
+			mCarType.setSelection(getServerIndex(mCarTypeServer, info.millage_type));
+
+			int size = (int) PixelUtils.convertDpToPixel(100, getActivity());
+			mVehicleDocumentationUri = info.vehicle_documentation;
+			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mVehicleDocumentationPicture);
+		}
+	}
+
+	private int getServerIndex(String[] serverValues, String serverVal) {
+		for(int i = 0; i < serverValues.length; i++) {
+			String val = serverValues[i];
+			if(serverVal.equals(val)){
+				return i;
+			}
+		}
+
+		return 0;
+	}
+
+	private CarInfo getCarInfo() {
+		CarInfo info = new CarInfo();
+		info.plate = mPlateNumber.getEditableText().toString();
+		info.brand = mBrand.getEditableText().toString();
+		info.model = mModel.getEditableText().toString();
+		info.color = mColor.getEditableText().toString();
+
+		try {
+			info.millage = Float.parseFloat(mMillage.getEditableText().toString().replaceAll("[^\\d.,-]", ""));
+		} catch (NumberFormatException e) {
+			info.millage = -1;
+		}
+		info.millage_type = mMillageTypeServer[mMillageType.getSelectedItemPosition()];
+
+		info.gas_level = mGasLevel.getProgress();
+		info.car_type = mCarTypeServer[mCarType.getSelectedItemPosition()];
+
+		info.vehicle_documentation = mVehicleDocumentationUri;
+
+		return info;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putParcelable(TunnelFragment.KEY_CAR_INFO, getCarInfo());
+		super.onSaveInstanceState(outState);
 	}
 
 	@Override
 	public void onPositiveButtonClicked(Button b) {
-		Log.d("Test", "Millage type is : " + mMillageType.getSelectedItem());
-		Log.d("Test", "Car type is : " + mCarType.getSelectedItem());
 
-		Bundle bundle = new Bundle();
-		getTunnel().next(bundle);
+		CarInfo info = getCarInfo();
+		boolean valid;
+		if (TextUtils.isEmpty(info.plate)) {
+			mPlateNumberError.setVisibility(View.VISIBLE);
+			valid = false;
+		} else {
+			mPlateNumberError.setVisibility(View.INVISIBLE);
+			valid = true;
+		}
+
+		if (TextUtils.isEmpty(info.brand)) {
+			mBrandError.setVisibility(View.VISIBLE);
+			valid = false;
+		} else {
+			mBrandError.setVisibility(View.INVISIBLE);
+			valid &= true;
+		}
+
+		if (TextUtils.isEmpty(info.model)) {
+			mModelError.setVisibility(View.VISIBLE);
+			valid = false;
+		} else {
+			mModelError.setVisibility(View.INVISIBLE);
+			valid &= true;
+		}
+
+		if (TextUtils.isEmpty(info.color)) {
+			mColorError.setVisibility(View.VISIBLE);
+			valid = false;
+		} else {
+			mColorError.setVisibility(View.INVISIBLE);
+			valid &= true;
+		}
+
+		if (info.millage < 0) {
+			mMillageError.setVisibility(View.VISIBLE);
+			valid = false;
+		} else {
+			mMillageError.setVisibility(View.INVISIBLE);
+			valid &= true;
+		}
+
+		if (mVehicleDocumentationUri == null) {
+			mVehicleDocumentationText.setTextColor(Color.RED);
+			valid = false;
+		} else {
+			mVehicleDocumentationText.setTextColor(Color.BLACK);
+			valid &= true;
+		}
+
+		if (valid) {
+			Bundle out = new Bundle();
+			out.putParcelable(TunnelFragment.KEY_RENTER_INFO, info);
+			getTunnel().next(out);
+		}
 	}
 
 
@@ -75,7 +238,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 
 	@OnClick(R.id.vehicle_documentation)
 	public void onDrivingLicenceClicked() {
-		startImageIntent(SELECT_VEHICULE_DOC_REQUEST_CODE);
+		startImageIntent(SELECT_VEHICLE_DOC_REQUEST_CODE);
 	}
 
 	private void startImageIntent(int requestCode) {
@@ -111,7 +274,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == SELECT_VEHICULE_DOC_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+		if (requestCode == SELECT_VEHICLE_DOC_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
 			if (data == null || (data.getAction() != null && data.getAction().equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE))) {
 				mVehicleDocumentationUri = mOutputFileUri;
 			} else {
@@ -119,7 +282,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			}
 
 			int size = (int) PixelUtils.convertDpToPixel(100, getActivity());
-			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).into(mVehicleDocumentation);
+			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).into(mVehicleDocumentationPicture);
 
 			Log.d("Test", "Found picture : " + mVehicleDocumentationUri);
 		}

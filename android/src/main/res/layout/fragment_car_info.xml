@@ -64,7 +64,7 @@
                 app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
             <EditText
-                    android:id="@+id/edit_brand"
+                    android:id="@+id/edit_car_brand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/renter_brand"
@@ -82,7 +82,7 @@
                 android:visibility="invisible"
                 android:textColor="@color/material_red_700"
                 android:text="@string/error_brand"
-                android:id="@+id/edit_brand_error"/>
+                android:id="@+id/edit_car_brand_error"/>
 
         <com.weproov.app.ui.views.FloatLabelLayout
                 android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                 app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
             <EditText
-                    android:id="@+id/edit_model"
+                    android:id="@+id/edit_car_model"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/renter_model"
@@ -109,7 +109,7 @@
                 android:visibility="invisible"
                 android:textColor="@color/material_red_700"
                 android:text="@string/error_model"
-                android:id="@+id/edit_last_name_error"/>
+                android:id="@+id/edit_car_model_error"/>
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -137,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:entries="@array/millage_type"
-                    android:id="@+id/millage_type_spinner"
+                    android:id="@+id/spinner_car_millage_type"
                     android:layout_gravity="bottom"
                     android:paddingBottom="6dp"
                     android:spinnerMode="dropdown"/>
@@ -206,14 +206,13 @@
                     android:paddingEnd="10dp"
                     android:paddingStart="10dp"
                     android:id="@+id/textView2"
-                    android:layout_alignBottom="@+id/seekBar"
+                    android:layout_alignBottom="@+id/seekbar_car_gas_level"
                     android:layout_alignParentTop="true"/>
 
             <SeekBar
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/seekBar"
-
+                    android:id="@+id/seekbar_car_gas_level"
                     android:progress="50"
                     android:max="100"
                     android:layout_toEndOf="@+id/textView2"
@@ -223,12 +222,12 @@
                     android:layout_width="match_parent"
                     android:entries="@array/car_type"
                     android:layout_height="wrap_content"
-                    android:id="@+id/car_type_spinner"
+                    android:id="@+id/spinner_car_type"
                     android:clickable="true"
                     android:spinnerMode="dialog"
                     android:layout_alignParentEnd="true"
                     android:layout_toEndOf="@+id/car_type"
-                    android:layout_below="@+id/seekBar"/>
+                    android:layout_below="@+id/seekbar_car_gas_level"/>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -239,7 +238,7 @@
                     android:paddingEnd="10dp"
                     android:paddingStart="10dp"
                     android:id="@+id/car_type"
-                    android:layout_toStartOf="@+id/seekBar"
+                    android:layout_toStartOf="@+id/seekbar_car_gas_level"
                     android:layout_alignParentBottom="true"
                     android:layout_below="@+id/textView2"/>
         </RelativeLayout>
