@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
 import com.weproov.app.models.CarInfo;
 import com.weproov.app.ui.ifaces.CommandIface;
@@ -223,7 +224,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			valid &= true;
 		}
 
-		if (valid) {
+		if (valid || BuildConfig.DEBUG) {
 			Bundle out = new Bundle();
 			out.putParcelable(TunnelFragment.KEY_RENTER_INFO, info);
 			getTunnel().next(out);

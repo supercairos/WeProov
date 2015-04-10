@@ -20,16 +20,16 @@
     <array name="camera_overlay">
         <item>@drawable/front</item>
         <item>@drawable/front_right_corner</item>
-        <item>@drawable/right_side</item>
-        <item>@drawable/wheels</item>
-        <item>@drawable/wheels</item>
-        <item>@drawable/back_right_corner</item>
-        <item>@drawable/back</item>
-        <item>@drawable/back_left_corner</item>
-        <item>@drawable/left_side</item>
-        <item>@drawable/wheels</item>
-        <item>@drawable/wheels</item>
-        <item>@drawable/front_left_corner</item>
+        <!--<item>@drawable/right_side</item>-->
+        <!--<item>@drawable/wheels</item>-->
+        <!--<item>@drawable/wheels</item>-->
+        <!--<item>@drawable/back_right_corner</item>-->
+        <!--<item>@drawable/back</item>-->
+        <!--<item>@drawable/back_left_corner</item>-->
+        <!--<item>@drawable/left_side</item>-->
+        <!--<item>@drawable/wheels</item>-->
+        <!--<item>@drawable/wheels</item>-->
+        <!--<item>@drawable/front_left_corner</item>-->
     </array>
 
     <string-array name="camera_overlay_subtitle">

@@ -3,14 +3,14 @@ package com.weproov.app.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.BaseColumns;
-import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "weproov", id = BaseColumns._ID)
-public class WeProov extends Model implements Parcelable {
+public class WeProov extends BaseModel implements Parcelable {
 
 	@Column(name = "renter")
 	public RenterInfo renter;
@@ -21,9 +21,14 @@ public class WeProov extends Model implements Parcelable {
 	@Column(name = "uploaded")
 	public boolean uploaded = false;
 
-	public List<PictureItem> pictures;
+	private List<PictureItem> pictures = new ArrayList<>();
+
+	public void addPicture(PictureItem pictureItem) {
+		pictures.add(pictureItem);
+	}
+
 	public List<PictureItem> getPictures() {
-		return getMany(PictureItem.class, "pictures");
+		return getMany(PictureItem.class, "parent");
 	}
 
 	public WeProov() {
@@ -35,8 +40,14 @@ public class WeProov extends Model implements Parcelable {
 		renter = in.readParcelable(RenterInfo.class.getClassLoader());
 		car = in.readParcelable(CarInfo.class.getClassLoader());
 		in.readList(pictures, PictureItem.class.getClassLoader());
-
 		uploaded = in.readByte() != 0;
+	}
+
+	public void savePictures() {
+		for (PictureItem item : pictures) {
+			item.parent = this;
+			item.save();
+		}
 	}
 
 	@Override

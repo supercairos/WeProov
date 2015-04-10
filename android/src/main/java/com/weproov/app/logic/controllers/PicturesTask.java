@@ -20,10 +20,10 @@ public final class PicturesTask {
 	private static final PictureItem.IPictureService SERVICE = PictureItem.getService();
 	private static final BusProvider.MainThreadBus BUS = BusProvider.getInstance();
 
-	public static void upload(String type, String comment, Uri uri) {
+	public static void upload(PictureItem item) {
 		try {
-			File file = new File(uri.getPath());
-			Response response = SERVICE.upload(new TypedString(type), new TypedString(comment), new TypedFile(getMimeType(file), file));
+			File file = new File(item.path.getPath());
+			Response response = SERVICE.upload(item, new TypedFile(getMimeType(file), file));
 			Log.d("Test", "Response found : " + response);
 
 			BUS.post(new LoginSuccessEvent());

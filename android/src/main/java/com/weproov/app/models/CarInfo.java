@@ -15,30 +15,36 @@ public class CarInfo extends BaseModel implements Parcelable {
 	@Column(name = "plate")
 	public String plate;
 
+	@Expose
 	@Column(name = "brand")
 	public String brand;
 
+	@Expose
 	@Column(name = "model")
 	public String model;
 
+	@Expose
 	@Column(name = "car_type")
 	public String car_type;
 
+	@Expose
 	@Column(name = "millage")
 	public float millage;
 
+	@Expose
 	@Column(name = "millage_type")
 	public String millage_type;
 
+	@Expose
 	@Column(name = "color")
 	public String color;
 
+	@Expose
 	@Column(name = "gas_level")
 	public int gas_level;
 
 	@Column(name = "vehicle_documentation")
 	public Uri vehicle_documentation;
-
 
 	public CarInfo() {
 		super();

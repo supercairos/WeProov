@@ -3,20 +3,28 @@ package com.weproov.app.models;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.BaseColumns;
 import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.google.gson.annotations.Expose;
 
+@Table(name = "renter", id = BaseColumns._ID)
 public class RenterInfo extends BaseModel implements Parcelable {
 
 
+	@Expose
 	@Column(name = "lastname")
 	public String lastname;
 
+	@Expose
 	@Column(name = "firstname")
 	public String firstname;
 
+	@Expose
 	@Column(name = "email")
 	public String email;
 
+	@Expose
 	@Column(name = "company")
 	public String company;
 

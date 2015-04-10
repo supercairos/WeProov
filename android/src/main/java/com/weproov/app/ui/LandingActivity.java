@@ -11,14 +11,14 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.squareup.otto.Subscribe;
-import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.UsersTask;
 import com.weproov.app.models.events.LoginErrorEvent;
 import com.weproov.app.models.events.LoginSuccessEvent;
+import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.AccountUtils;
 
-public class LandingActivity extends BaseActivity {
+public class LandingActivity extends BaseActivity implements CommandIface.OnClickListener {
 
     @InjectView(R.id.edit_email)
     EditText mEmail;
@@ -36,6 +36,7 @@ public class LandingActivity extends BaseActivity {
 
         getNegativeButton().setText(R.string.register);
         getPositiveButton().setText(R.string.login);
+        setCommandListener(this);
     }
 
 
@@ -43,7 +44,7 @@ public class LandingActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         String token = AccountUtils.peekToken();
-        if (!TextUtils.isEmpty(token) || BuildConfig.DEBUG) {
+        if (!TextUtils.isEmpty(token)) {
             Log.d("Test", "Auto login : " + token);
             gotoMain();
         }
@@ -58,8 +59,7 @@ public class LandingActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPositiveButtonClicked(Button b) {
-        super.onPositiveButtonClicked(b);
+    public void onPositiveButtonClicked(Button b) {
         mDialog = ProgressDialog.show(this, "Login", "Please wait...", true);
         mDialog.show();
 
@@ -70,8 +70,7 @@ public class LandingActivity extends BaseActivity {
     }
 
     @Override
-    protected void onNegativeButtonClicked(Button b) {
-        super.onNegativeButtonClicked(b);
+    public void onNegativeButtonClicked(Button b) {
         startActivity(new Intent(this, RegisterActivity.class));
     }
 

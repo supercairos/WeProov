@@ -21,6 +21,7 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.squareup.picasso.RequestCreator;
+import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
 import com.weproov.app.models.RenterInfo;
 import com.weproov.app.ui.ifaces.CommandIface;
@@ -36,7 +37,6 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 
 	private static final int SELECT_ID_CARD_REQUEST_CODE = 999;
 	private static final int SELECT_DRIVING_LICENCE_REQUEST_CODE = 666;
-
 
 
 	/**
@@ -205,7 +205,7 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 			valid &= true;
 		}
 
-		if (valid) {
+		if (valid || BuildConfig.DEBUG) {
 			Bundle out = new Bundle();
 			out.putParcelable(TunnelFragment.KEY_RENTER_INFO, info);
 			getTunnel().next(out);

@@ -19,10 +19,11 @@ import com.weproov.app.logic.controllers.UsersTask;
 import com.weproov.app.models.User;
 import com.weproov.app.models.events.RegisterErrorEvent;
 import com.weproov.app.models.events.RegisterSuccessEvent;
+import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.validators.EmailValidator;
 import com.weproov.app.utils.validators.PasswordValidator;
 
-public class RegisterActivity extends BaseActivity {
+public class RegisterActivity extends BaseActivity implements CommandIface.OnClickListener {
 
     @InjectView(R.id.edit_first_name)
     EditText mFirstName;
@@ -59,6 +60,8 @@ public class RegisterActivity extends BaseActivity {
 
         getPositiveButton().setText(R.string.register);
         getNegativeButton().setText(android.R.string.cancel);
+
+		setCommandListener(this);
     }
 
     @Override
@@ -72,11 +75,13 @@ public class RegisterActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected void onNegativeButtonClicked(Button b) {
+    @Override
+    public void onNegativeButtonClicked(Button b) {
         NavUtils.navigateUpFromSameTask(this);
     }
 
-    protected void onPositiveButtonClicked(Button b) {
+    @Override
+    public void onPositiveButtonClicked(Button b) {
         String first_name = mFirstName.getEditableText().toString();
         String last_name = mLastName.getEditableText().toString();
         String email = mEmail.getEditableText().toString();

@@ -72,7 +72,7 @@ public class SyncService extends Service {
 				mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, mBuilder.build());
 
 				// Upload picture
-				PicturesTask.upload(item.comment, item.comment, item.path);
+				PicturesTask.upload(item);
 			}
 
 			// When the loop is finished, updates the notification
