@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import com.weproov.app.R;
 import com.weproov.app.ui.ifaces.ActionBarIface;
 import com.weproov.app.ui.views.CameraPreviewView;
@@ -234,6 +235,30 @@ public class CameraFragment extends TunnelFragment {
 			Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
 			Log.e("Test", "Test", e);
 		}
+	}
+
+	@OnLongClick(R.id.btn_camera)
+	public boolean onCameraButtonLongClicked() {
+		try {
+			if (mCamera != null) {
+				mCamera.autoFocus(new Camera.AutoFocusCallback() {
+					@Override
+					public void onAutoFocus(boolean success, Camera camera) {
+						if (success) {
+							camera.takePicture(null, null, mPictureCallback);
+						}
+					}
+				});
+
+				return true;
+			}
+		} catch (Exception e) {
+			// For some reason, the picture could not be taken.
+			Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
+			Log.e("Test", "Test", e);
+		}
+
+		return false;
 	}
 
 	@OnClick(R.id.btn_set_flash)

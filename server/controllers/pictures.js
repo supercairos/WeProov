@@ -1,10 +1,11 @@
 var log = require('../libs/logger.js');
-var multer  = require('multer')
+var multer  = require('multer');
+var passport = require('passport');
 
 module.exports = function(app) {
 
 	app.post('/pictures', 
-		passport.authenticate('bearer', { session: false }), 
+		//passport.authenticate('bearer', { session: false }), 
 		multer({ 
 		dest: 'uploads/',
 		rename: function (fieldname, filename) {
