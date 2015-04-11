@@ -20,76 +20,75 @@ import com.weproov.app.utils.AccountUtils;
 
 public class LandingActivity extends BaseActivity implements CommandIface.OnClickListener {
 
-    @InjectView(R.id.edit_email)
-    EditText mEmail;
+	@InjectView(R.id.edit_email)
+	EditText mEmail;
 
-    @InjectView(R.id.edit_password)
-    EditText mPassword;
+	@InjectView(R.id.edit_password)
+	EditText mPassword;
 
-    ProgressDialog mDialog;
+	ProgressDialog mDialog;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing);
-        ButterKnife.inject(this);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_landing);
+		ButterKnife.inject(this);
 
-        getNegativeButton().setText(R.string.register);
-        getPositiveButton().setText(R.string.login);
-        setCommandListener(this);
-    }
+		getNegativeButton().setText(R.string.register);
+		getPositiveButton().setText(R.string.login);
+		setCommandListener(this);
+	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		String token = AccountUtils.peekToken();
+		if (!TextUtils.isEmpty(token)) {
+			Log.d("Test", "Auto login : " + token);
+			gotoMain();
+		}
+	}
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        String token = AccountUtils.peekToken();
-        if (!TextUtils.isEmpty(token)) {
-            Log.d("Test", "Auto login : " + token);
-            gotoMain();
-        }
-    }
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (mDialog != null) {
+			mDialog.dismiss();
+		}
+	}
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mDialog != null) {
-            mDialog.dismiss();
-        }
-    }
+	@Override
+	public void onPositiveButtonClicked(Button b) {
+		mDialog = ProgressDialog.show(this, "Login", "Please wait...", true);
+		mDialog.show();
 
-    @Override
-    public void onPositiveButtonClicked(Button b) {
-        mDialog = ProgressDialog.show(this, "Login", "Please wait...", true);
-        mDialog.show();
+		String email = mEmail.getEditableText().toString().trim();
+		String password = mPassword.getEditableText().toString().trim();
 
-        String email = mEmail.getEditableText().toString().trim();
-        String password = mPassword.getEditableText().toString().trim();
+		UsersTask.login(email, password);
+	}
 
-        UsersTask.login(email, password);
-    }
+	@Override
+	public void onNegativeButtonClicked(Button b) {
+		startActivity(new Intent(this, RegisterActivity.class));
+	}
 
-    @Override
-    public void onNegativeButtonClicked(Button b) {
-        startActivity(new Intent(this, RegisterActivity.class));
-    }
+	@Subscribe
+	public void onLoginSuccess(LoginSuccessEvent event) {
+		mDialog.dismiss();
+		gotoMain();
+	}
 
-    @Subscribe
-    public void onLoginSuccess(LoginSuccessEvent event) {
-        mDialog.dismiss();
-        gotoMain();
-    }
+	@Subscribe
+	public void onLoginError(LoginErrorEvent event) {
+		mDialog.dismiss();
+		Toast.makeText(this, "Error while login", Toast.LENGTH_SHORT).show();
+	}
 
-    @Subscribe
-    public void onLoginError(LoginErrorEvent event) {
-        mDialog.dismiss();
-        Toast.makeText(this, "Error while login", Toast.LENGTH_SHORT).show();
-    }
-
-    private void gotoMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
+	private void gotoMain() {
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
+	}
 }

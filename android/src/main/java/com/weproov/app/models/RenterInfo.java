@@ -34,6 +34,9 @@ public class RenterInfo extends BaseModel implements Parcelable {
 	@Column(name = "id_card")
 	public Uri id_card;
 
+	@Column(name = "uploaded")
+	public boolean uploaded = false;
+
 
 	public RenterInfo() {
 		super();
@@ -47,7 +50,8 @@ public class RenterInfo extends BaseModel implements Parcelable {
 		company = in.readString();
 
 		driving_licence = in.readParcelable(Uri.class.getClassLoader());
-		id_card = in.readParcelable(Uri.class.getClassLoader());;
+		id_card = in.readParcelable(Uri.class.getClassLoader());
+		;
 	}
 
 	@Override

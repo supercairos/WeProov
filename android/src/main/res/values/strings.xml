@@ -76,5 +76,7 @@
     <string name="notification_picture_download_start">Establishing connection</string>
     <string name="notification_picture_download_picture">Uploading picture %s</string>
     <string name="notification_picture_download_end">Upload complete</string>
+    <string name="welcome">Welcome %s!</string>
+    <string name="explore_weproov">Explore WeProov:</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.weproov.app.models.providers;
+package com.weproov.app.logic.providers;
 
 import android.os.Handler;
 import android.os.Looper;

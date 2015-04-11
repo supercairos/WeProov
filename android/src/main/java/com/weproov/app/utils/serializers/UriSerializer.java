@@ -12,7 +12,7 @@ public class UriSerializer extends TypeSerializer {
 
 	@Override
 	public Class<?> getSerializedType() {
-		return Long.class;
+		return String.class;
 	}
 
 	@Override

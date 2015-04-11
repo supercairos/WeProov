@@ -41,6 +41,8 @@
             <AutoCompleteTextView
                     android:id="@+id/edit_car_plate_number"
                     android:layout_width="match_parent"
+                    android:maxLength="9"
+                    android:textAllCaps="true"
                     android:layout_height="wrap_content"
                     android:hint="@string/car_plate_number"
                     android:singleLine="true"

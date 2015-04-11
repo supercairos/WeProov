@@ -15,7 +15,7 @@ import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.mime.TypedFile;
 
-@Table(name = "weproov", id = BaseColumns._ID)
+@Table(name = "pictures", id = BaseColumns._ID)
 public class PictureItem extends BaseModel implements Parcelable {
 
 	// api endpoint
@@ -38,6 +38,9 @@ public class PictureItem extends BaseModel implements Parcelable {
 	@Expose
 	@Column(name = "type")
 	public String type = "<TODO>";
+
+	@Column(name = "uploaded")
+	public boolean uploaded = false;
 
 	@SuppressWarnings("unused")
 	public PictureItem() {
@@ -90,6 +93,6 @@ public class PictureItem extends BaseModel implements Parcelable {
 
 		@Multipart
 		@POST(MODULE + POST_PICTURE)
-		Response upload(@Part("info") PictureItem item, @Part("file") TypedFile file) throws LoginException;
+		Response upload(@Part("picture") PictureItem item, @Part("file") TypedFile file) throws LoginException;
 	}
 }

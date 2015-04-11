@@ -15,6 +15,8 @@ public class MyApplication extends Application {
 
         sContext = this;
         ActiveAndroid.initialize(this);
+        ActiveAndroid.setLoggingEnabled(true);
+
         MultiDex.install(this);
     }
 

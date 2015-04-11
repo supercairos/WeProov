@@ -10,7 +10,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import butterknife.OnClick;
 import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
 import com.weproov.app.models.CarInfo;
+import com.weproov.app.ui.adapter.PlateAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.PixelUtils;
@@ -40,8 +44,9 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	private String[] mMillageTypeServer;
 	private String[] mCarTypeServer;
 
+	private PlateAutocompleteAdapter mAutocompleteAdapter;
 	@InjectView(R.id.edit_car_plate_number)
-	TextView mPlateNumber;
+	AutoCompleteTextView mPlateNumber;
 	@InjectView(R.id.edit_car_plate_number_error)
 	TextView mPlateNumberError;
 
@@ -78,6 +83,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	ImageView mVehicleDocumentationPicture;
 	@InjectView(R.id.vehicle_documentation_text)
 	TextView mVehicleDocumentationText;
+
 
 	public static CarInfoFragment newInstance(CarInfo info) {
 		CarInfoFragment fragment = new CarInfoFragment();
@@ -130,12 +136,53 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			mVehicleDocumentationUri = info.vehicle_documentation;
 			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mVehicleDocumentationPicture);
 		}
+
+		mAutocompleteAdapter = new PlateAutocompleteAdapter(getActivity());
+		mPlateNumber.setAdapter(mAutocompleteAdapter);
+		mPlateNumber.setThreshold(1);
+		mPlateNumber.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				CarInfo info = mAutocompleteAdapter.getItem(position);
+				mBrand.setText(info.brand);
+				mModel.setText(info.model);
+				mMillageType.setSelection(getServerIndex(mMillageTypeServer, info.millage_type));
+				mColor.setText(info.color);
+				mCarType.setSelection(getServerIndex(mCarTypeServer, info.millage_type));
+
+				int size = (int) PixelUtils.convertDpToPixel(100, getActivity());
+				mVehicleDocumentationUri = info.vehicle_documentation;
+				PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mVehicleDocumentationPicture);
+			}
+		});
+		mPlateNumber.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+		mPlateNumber.addTextChangedListener(new TextWatcher() {
+
+			boolean isDeletion = false;
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				isDeletion = count > after;
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (!isDeletion && (s.length() == 2 || s.length() == 6)) {
+					s.append("-");
+				}
+			}
+		});
 	}
 
 	private int getServerIndex(String[] serverValues, String serverVal) {
-		for(int i = 0; i < serverValues.length; i++) {
+		for (int i = 0; i < serverValues.length; i++) {
 			String val = serverValues[i];
-			if(serverVal.equals(val)){
+			if (serverVal.equals(val)) {
 				return i;
 			}
 		}
@@ -145,23 +192,27 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 
 	private CarInfo getCarInfo() {
 		CarInfo info = new CarInfo();
-		info.plate = mPlateNumber.getEditableText().toString();
-		info.brand = mBrand.getEditableText().toString();
-		info.model = mModel.getEditableText().toString();
-		info.color = mColor.getEditableText().toString();
-
 		try {
-			info.millage = Float.parseFloat(mMillage.getEditableText().toString().replaceAll("[^\\d.,-]", ""));
-		} catch (NumberFormatException e) {
-			info.millage = -1;
+			info.plate = mPlateNumber.getEditableText().toString().toUpperCase();
+			info.brand = mBrand.getEditableText().toString();
+			info.model = mModel.getEditableText().toString();
+			info.color = mColor.getEditableText().toString();
+
+			try {
+				info.millage = Float.parseFloat(mMillage.getEditableText().toString().replaceAll("[^\\d.,-]", ""));
+			} catch (NumberFormatException e) {
+				info.millage = -1;
+			}
+			info.millage_type = mMillageTypeServer[mMillageType.getSelectedItemPosition()];
+
+			info.gas_level = mGasLevel.getProgress();
+			info.car_type = mCarTypeServer[mCarType.getSelectedItemPosition()];
+
+			info.vehicle_documentation = mVehicleDocumentationUri;
+
+		} catch (NullPointerException e) {
+			// Ignore
 		}
-		info.millage_type = mMillageTypeServer[mMillageType.getSelectedItemPosition()];
-
-		info.gas_level = mGasLevel.getProgress();
-		info.car_type = mCarTypeServer[mCarType.getSelectedItemPosition()];
-
-		info.vehicle_documentation = mVehicleDocumentationUri;
-
 		return info;
 	}
 
@@ -176,7 +227,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 
 		CarInfo info = getCarInfo();
 		boolean valid;
-		if (TextUtils.isEmpty(info.plate)) {
+		if (TextUtils.isEmpty(info.plate) || info.plate.length() != 9) {
 			mPlateNumberError.setVisibility(View.VISIBLE);
 			valid = false;
 		} else {
@@ -226,7 +277,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 
 		if (valid || BuildConfig.DEBUG) {
 			Bundle out = new Bundle();
-			out.putParcelable(TunnelFragment.KEY_RENTER_INFO, info);
+			out.putParcelable(TunnelFragment.KEY_CAR_INFO, info);
 			getTunnel().next(out);
 		}
 	}

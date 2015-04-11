@@ -1,17 +1,15 @@
 package com.weproov.app.logic.controllers;
 
-import android.net.Uri;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import com.weproov.app.models.PictureItem;
 import com.weproov.app.models.events.LoginErrorEvent;
 import com.weproov.app.models.events.LoginSuccessEvent;
 import com.weproov.app.models.exceptions.LoginException;
-import com.weproov.app.models.providers.BusProvider;
+import com.weproov.app.logic.providers.BusProvider;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
-import retrofit.mime.TypedString;
 
 import java.io.File;
 

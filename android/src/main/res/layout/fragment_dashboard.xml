@@ -5,14 +5,39 @@
                 android:id="@+id/content_fragment_root_view"
                 tools:context="com.weproov.app.ui.fragments.DashboardFragment">
 
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/welcome"
+            android:id="@+id/text_welcome"
+            android:layout_marginTop="43dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
     <ImageView
             android:contentDescription="@android:string/untitled"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:id="@+id/imageView"
+            android:id="@+id/profile_picture"
             android:scaleType="centerInside"
             android:layout_alignParentTop="true"
-            android:src="@drawable/no_icon_profile"
+            android:src="@drawable/ico_romain_caire"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="107dp"/>
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/explore_weproov"
+                android:layout_marginTop="41dp"/>
+    </LinearLayout>
 </RelativeLayout>

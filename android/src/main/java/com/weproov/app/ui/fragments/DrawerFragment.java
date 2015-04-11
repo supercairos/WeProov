@@ -1,6 +1,9 @@
 package com.weproov.app.ui.fragments;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,90 +17,108 @@ import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.models.NavItem;
 import com.weproov.app.ui.adapter.NavigationAdapter;
+import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.PixelUtils;
-import com.weproov.app.utils.PrefUtils;
-import com.weproov.app.utils.constants.Constants;
+import com.weproov.app.utils.constants.AccountConstants;
 
 public class DrawerFragment extends BaseFragment {
 
-    private OnNavigationInteractionListener mListener;
-    private NavigationAdapter mAdapter;
+	private OnNavigationInteractionListener mListener;
+	private NavigationAdapter mAdapter;
 
-    @InjectView(R.id.drawer_list)
-    ListView mDrawerList;
+	@InjectView(R.id.drawer_list)
+	ListView mDrawerList;
 
-    @InjectView(R.id.drawer_title)
-    TextView mDrawerTitle;
+	@InjectView(R.id.drawer_title)
+	TextView mDrawerTitle;
 
-    @InjectView(R.id.drawer_subtitle)
-    TextView mDrawerSubtitle;
+	@InjectView(R.id.drawer_subtitle)
+	TextView mDrawerSubtitle;
 
-    @InjectView(R.id.drawer_image)
-    ImageView mDrawerImageView;
+	@InjectView(R.id.drawer_image)
+	ImageView mDrawerImageView;
 
-    public DrawerFragment() {
-        // Required empty public constructor
-    }
+	private AccountManager mAccountManager;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_navigation, container, false);
-    }
+	public DrawerFragment() {
+		// Required empty public constructor
+	}
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mAccountManager = (AccountManager) getActivity().getSystemService(Context.ACCOUNT_SERVICE);
+	}
 
-        // set up the drawer's list view with items and click listener
-        mAdapter = new NavigationAdapter(getActivity(), NavItem.getNavItems());
-        mDrawerList.setAdapter(mAdapter);
-        mDrawerList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_navigation, container, false);
+	}
 
-        // Check first item;
-        mDrawerList.setItemChecked(0, true);
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 
-        String username = PrefUtils.getString(Constants.KEY_DISPLAY_NAME, "Romain Caire");
-        String email = PrefUtils.getString(Constants.KEY_EMAIL, "WeProov Corp");
-        String url = PrefUtils.getString(Constants.KEY_PICTURE_URL, "");
+		// set up the drawer's list view with items and click listener
+		mAdapter = new NavigationAdapter(getActivity(), NavItem.getNavItems());
+		mDrawerList.setAdapter(mAdapter);
+		mDrawerList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        if (!TextUtils.isEmpty(url)) {
-            PicassoUtils.PICASSO.load(url).resize((int) PixelUtils.convertDpToPixel(50f, getActivity()), (int) PixelUtils.convertDpToPixel(50f, getActivity())).into(mDrawerImageView);
-        }
+		// Check first item;
+		mDrawerList.setItemChecked(0, true);
 
-        mDrawerTitle.setText(username);
-        mDrawerSubtitle.setText(email);
-    }
+		String firstName = "Romain";
+		String lastName = "Caire";
+		String email = "romain@weproov.com";
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnNavigationInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnNavigationInteractionListener");
-        }
-    }
+		Account account = AccountUtils.getAccount();
+		if(account != null) {
+			firstName = mAccountManager.getUserData(account, AccountConstants.KEY_FIRST_NAME);
+			lastName = mAccountManager.getUserData(account, AccountConstants.KEY_LAST_NAME);
+			email = account.name;
+		}
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+		mDrawerTitle.setText(firstName + " " + lastName);
+		mDrawerSubtitle.setText(email);
 
-    public interface OnNavigationInteractionListener {
-        void onNavItemSelected(NavItem item);
-    }
+		String url = null; //PrefUtils.getString(Constants.KEY_PICTURE_URL, "");
+		if (!TextUtils.isEmpty(url)) {
+			PicassoUtils.PICASSO.load(url).resize((int) PixelUtils.convertDpToPixel(50f, getActivity()), (int) PixelUtils.convertDpToPixel(50f, getActivity())).into(mDrawerImageView);
+		}
 
-    /* The click listner for ListView in the navigation drawer */
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            mListener.onNavItemSelected(mAdapter.getItem(position));
-            mDrawerList.setItemChecked(position, true);
-        }
-    }
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			mListener = (OnNavigationInteractionListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString() + " must implement OnNavigationInteractionListener");
+		}
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		mListener = null;
+	}
+
+	public interface OnNavigationInteractionListener {
+		void onNavItemSelected(NavItem item);
+	}
+
+	/* The click listner for ListView in the navigation drawer */
+	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			mListener.onNavItemSelected(mAdapter.getItem(position));
+			mDrawerList.setItemChecked(position, true);
+		}
+	}
 
 }

@@ -124,10 +124,21 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 
 	private RenterInfo getRenterInfo() {
 		RenterInfo info = new RenterInfo();
-		info.firstname = mFirstName.getEditableText().toString();
-		info.lastname = mLastName.getEditableText().toString();
-		info.email = mEmail.getEditableText().toString();
-		info.company = mCompany.getEditableText().toString();
+		if(mFirstName != null) {
+			info.firstname = mFirstName.getEditableText().toString();
+		}
+
+		if(mLastName != null) {
+			info.lastname = mLastName.getEditableText().toString();
+		}
+
+		if(mEmail != null) {
+			info.email = mEmail.getEditableText().toString();
+		}
+
+		if(mCompany != null) {
+			info.company = mCompany.getEditableText().toString();
+		}
 
 		info.id_card = mIdCardUri;
 		info.driving_licence = mDrivingLicenceUri;

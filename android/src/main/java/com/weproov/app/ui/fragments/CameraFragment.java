@@ -20,6 +20,7 @@ import com.weproov.app.ui.ifaces.ActionBarIface;
 import com.weproov.app.ui.views.CameraPreviewView;
 import com.weproov.app.utils.CameraUtils;
 import com.weproov.app.utils.OrientationUtils;
+import com.weproov.app.utils.PicassoUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -323,7 +324,7 @@ public class CameraFragment extends TunnelFragment {
 				setFlashMode();
 				mBtnSetFlash.setVisibility(View.VISIBLE);
 				if (mOverlayResourceId > 0) {
-					mOverlay.setImageResource(mOverlayResourceId);
+					PicassoUtils.PICASSO.load(mOverlayResourceId).fit().centerInside().into(mOverlay);
 					mOverlay.setVisibility(View.VISIBLE);
 				}
 
@@ -377,6 +378,7 @@ public class CameraFragment extends TunnelFragment {
 					}
 				}
 			}
+
 			return file;
 		}
 

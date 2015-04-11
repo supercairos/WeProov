@@ -46,6 +46,9 @@ public class CarInfo extends BaseModel implements Parcelable {
 	@Column(name = "vehicle_documentation")
 	public Uri vehicle_documentation;
 
+	@Column(name = "uploaded")
+	public boolean uploaded = false;
+
 	public CarInfo() {
 		super();
 	}

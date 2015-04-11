@@ -14,7 +14,9 @@ module.exports = function(app) {
 
 	}), function(req, res){
 
-		log.info(req.body);
+		JSON.parse(req.body)
+	
+		log.info(req.body.picture);
 		log.info(req.files);
 	    res.status(204).end()
 	    

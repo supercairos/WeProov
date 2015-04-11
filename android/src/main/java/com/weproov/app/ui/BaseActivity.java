@@ -13,7 +13,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.Optional;
 import com.weproov.app.R;
-import com.weproov.app.models.providers.BusProvider;
+import com.weproov.app.logic.providers.BusProvider;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.debug.ViewServer;
 

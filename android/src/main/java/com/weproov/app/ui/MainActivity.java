@@ -1,5 +1,6 @@
 package com.weproov.app.ui;
 
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -7,7 +8,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -24,13 +24,17 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.logic.services.GcmRegisterService;
-import com.weproov.app.models.*;
+import com.weproov.app.models.NavItem;
+import com.weproov.app.models.PictureItem;
+import com.weproov.app.models.WeProov;
 import com.weproov.app.ui.fragments.*;
 import com.weproov.app.ui.fragments.dialogs.AboutDialogFragment;
 import com.weproov.app.ui.fragments.dialogs.SignatureDialogFragment;
 import com.weproov.app.ui.ifaces.ActionBarIface;
-import com.weproov.app.utils.*;
-import com.weproov.app.utils.constants.Constants;
+import com.weproov.app.utils.AccountUtils;
+import com.weproov.app.utils.CameraUtils;
+import com.weproov.app.utils.FragmentsUtils;
+import com.weproov.app.utils.PlayServicesUtils;
 
 
 public class MainActivity extends BaseActivity implements DrawerFragment.OnNavigationInteractionListener, ActionBarIface, TunnelFragment.Tunnel {
@@ -144,14 +148,15 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	private static void logout(Activity ctx) {
+	private static void logout(final Activity ctx) {
 		Log.d("Test", "Loging out");
-		PrefUtils.remove(Constants.KEY_DISPLAY_NAME);
-		PrefUtils.remove(Constants.KEY_EMAIL);
-		Intent intent = new Intent(ctx, LandingActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		ctx.startActivity(intent);
-		ctx.finish();
+		AccountManager accountManager =  AccountManager.get(ctx);
+		if(accountManager.removeAccountExplicitly(AccountUtils.getAccount())) {
+			Intent intent = new Intent(ctx, LandingActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			ctx.startActivity(intent);
+			ctx.finish();
+		}
 	}
 
 	@Override
@@ -208,13 +213,8 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		onSaveInstanceState(outState, null);
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
 		outState.putParcelable(KEY_WE_PROOV_OBJECT, mCurrentWeProov);
-		super.onSaveInstanceState(outState, outPersistentState);
+		super.onSaveInstanceState(outState);
 	}
 
 	public boolean isActionBarShowing() {
@@ -248,26 +248,20 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
 		if (RenterFragment.class.equals(mCurrentFragment.getClass())) {
 			// Need to go to CarInfoFragment;
-			RenterInfo info = null;
 			if (data != null) {
-				info = data.getParcelable(TunnelFragment.KEY_RENTER_INFO);
+				mCurrentWeProov.renter = data.getParcelable(TunnelFragment.KEY_RENTER_INFO);
 			}
-
-			mCurrentWeProov.renter = info;
-			Log.d("Test", "Got Renter info : " + info);
+			Log.d("Test", "Got Renter info : " + mCurrentWeProov.renter);
 
 			mCurrentFragment = new CarInfoFragment();
 		} else if (CarInfoFragment.class.equals(mCurrentFragment.getClass())) {
-			// Need to go to Camera and reset counter;
-
 			// Need to go to CarInfoFragment;
-			CarInfo info = null;
 			if (data != null) {
-				info = data.getParcelable(TunnelFragment.KEY_CAR_INFO);
+				mCurrentWeProov.car = data.getParcelable(TunnelFragment.KEY_CAR_INFO);
 			}
 
-			mCurrentWeProov.car = info;
-			Log.d("Test", "Got Car info : " + info);
+
+			Log.d("Test", "Got Car info : " + mCurrentWeProov.car);
 			mWeProovStep = 0;
 			mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlaySubtitleArray[mWeProovStep]);
 		} else if (CameraFragment.class.equals(mCurrentFragment.getClass())) {
@@ -277,7 +271,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 				path = data.getString(TunnelFragment.KEY_COMMENT_PICTURE_PATH);
 			}
 
-			FragmentsUtils.clearBackStack(getSupportFragmentManager());
+			// FragmentsUtils.clearBackStack(getSupportFragmentManager());
 			mCurrentFragment = CommentFragment.newInstance(path);
 		} else if (CommentFragment.class.equals(mCurrentFragment.getClass())) {
 			PictureItem item = null;
@@ -291,8 +285,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 			// Goto next drawable
 			if (++mWeProovStep == mOverlayDrawableArray.length) {
 				// We are at the end. Show last fragment;
-				mCurrentWeProov.save();
-				mCurrentWeProov.savePictures();
+				mCurrentWeProov.doSave();
 				AccountUtils.startSync();
 
 				mCurrentFragment = new DashboardFragment();

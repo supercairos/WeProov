@@ -3,6 +3,7 @@ package com.weproov.app.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.BaseColumns;
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
@@ -43,7 +44,20 @@ public class WeProov extends BaseModel implements Parcelable {
 		uploaded = in.readByte() != 0;
 	}
 
-	public void savePictures() {
+	public void doSave() {
+		ActiveAndroid.beginTransaction();
+		try {
+			renter.save();
+			car.save();
+			save();
+			savePictures();
+			ActiveAndroid.setTransactionSuccessful();
+		} finally {
+			ActiveAndroid.endTransaction();
+		}
+	}
+
+	private void savePictures() {
 		for (PictureItem item : pictures) {
 			item.parent = this;
 			item.save();

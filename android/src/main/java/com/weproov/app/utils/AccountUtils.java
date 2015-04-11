@@ -6,7 +6,7 @@ import android.accounts.AccountManager;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.content.ContentResolver;
-import android.content.SyncRequest;
+import android.os.Bundle;
 import android.util.Log;
 import com.weproov.app.MyApplication;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
@@ -51,15 +51,16 @@ public final class AccountUtils {
 	}
 
 	public static void startSync() {
+		Log.d("Test", "Start sync");
 		/*
 		 * Signal the framework to run your sync adapter. Assume that
 		 * app initialization has already created the account.
 		 */
-		ContentResolver.requestSync(new SyncRequest.Builder()
-				.setManual(true)
-				.syncOnce()
-				.setSyncAdapter(getAccount(), AuthenticatorConstants.AUTH_TOKEN_TYPE_FULL)
-				.build()
-		);
+		Account account = getAccount();
+		if (account != null) {
+			ContentResolver.requestSync(account, AuthenticatorConstants.ACCOUNT_TYPE, new Bundle());
+		} else {
+			Log.e("Test", "Account was null while starting sync...");
+		}
 	}
 }

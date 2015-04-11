@@ -68,8 +68,16 @@
                 android:windowSoftInputMode="adjustResize|stateHidden"
                 android:label="@string/app_name" />
 
+        <!-- Sync stuffs -->
+        <provider
+                android:name=".logic.providers.StubProvider"
+                android:authorities="com.weproov.app.provider"
+                android:exported="false"
+                android:syncable="true"/>
+
         <service
                 android:name=".logic.services.SyncService"
+                android:process=":sync"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter"/>
