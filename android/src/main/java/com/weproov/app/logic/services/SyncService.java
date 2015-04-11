@@ -1,10 +1,7 @@
 package com.weproov.app.logic.services;
 
 import android.accounts.Account;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
+import android.app.*;
 import android.content.*;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -14,6 +11,7 @@ import com.activeandroid.query.Select;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.PicturesTask;
 import com.weproov.app.models.PictureItem;
+import com.weproov.app.ui.LandingActivity;
 
 import java.util.List;
 
@@ -92,7 +90,7 @@ public class SyncService extends Service {
 					.setSmallIcon(R.drawable.ic_notification)
 					.setProgress(0, 0, true)
 					.setContentTitle(getContext().getString(R.string.notification_picture_download_title))
-					.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MyActivity.class), 0))
+					.setContentIntent(PendingIntent.getActivity(getContext(), 0, new Intent(getContext(), LandingActivity.class), 0))
 					.setContentText(getContext().getString(R.string.notification_picture_download_start));
 
 			Notification notification = mBuilder.build();
