@@ -13,6 +13,7 @@ import com.weproov.app.models.events.RegisterSuccessEvent;
 import com.weproov.app.models.exceptions.LoginException;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.logic.providers.BusProvider;
+import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.constants.AccountConstants;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 import retrofit.RetrofitError;
@@ -68,6 +69,7 @@ public final class UsersTask {
         accountManager.setAuthToken(myAccount, AuthenticatorConstants.AUTH_TOKEN_TYPE_FULL, user.token);
         accountManager.setUserData(myAccount, AccountConstants.KEY_FIRST_NAME, user.firstname);
         accountManager.setUserData(myAccount, AccountConstants.KEY_LAST_NAME, user.lastname);
-        accountManager.setUserData(myAccount, AccountConstants.KEY_LAST_NAME, user.lastname);
+
+        AccountUtils.setSyncable(true);
     }
 }

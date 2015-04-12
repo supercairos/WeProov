@@ -4,6 +4,7 @@ package com.weproov.app.ui.fragments;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import butterknife.InjectView;
 import butterknife.OnLongClick;
 import com.weproov.app.R;
 import com.weproov.app.utils.AccountUtils;
+import com.weproov.app.utils.OrientationUtils;
 import com.weproov.app.utils.constants.AccountConstants;
 
 public class DashboardFragment extends BaseFragment {
@@ -35,9 +37,16 @@ public class DashboardFragment extends BaseFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mAccountManager = (AccountManager) getActivity().getSystemService(Context.ACCOUNT_SERVICE);
+
 	}
 
-    @Override
+	@Override
+	public void onStart() {
+		super.onStart();
+		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
@@ -57,6 +66,12 @@ public class DashboardFragment extends BaseFragment {
 		}
 
 		mWelcomeText.setText(getString(R.string.welcome, firstName + " " + lastName));
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		OrientationUtils.unlockOrientation(getActivity());
 	}
 
 	@OnLongClick(R.id.profile_picture)

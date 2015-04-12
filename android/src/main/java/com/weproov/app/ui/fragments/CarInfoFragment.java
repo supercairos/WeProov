@@ -51,17 +51,17 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	TextView mPlateNumberError;
 
 	@InjectView(R.id.edit_car_brand)
-	TextView mBrand;
+	EditText mBrand;
 	@InjectView(R.id.edit_car_brand_error)
 	TextView mBrandError;
 
 	@InjectView(R.id.edit_car_model)
-	TextView mModel;
+	EditText mModel;
 	@InjectView(R.id.edit_car_model_error)
 	TextView mModelError;
 
 	@InjectView(R.id.edit_car_millage)
-	TextView mMillage;
+	EditText mMillage;
 	@InjectView(R.id.edit_car_millage_error)
 	TextView mMillageError;
 
@@ -69,7 +69,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	Spinner mMillageType;
 
 	@InjectView(R.id.edit_car_color)
-	TextView mColor;
+	EditText mColor;
 	@InjectView(R.id.edit_car_color_error)
 	TextView mColorError;
 

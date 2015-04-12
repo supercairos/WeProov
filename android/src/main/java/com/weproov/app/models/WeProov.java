@@ -13,14 +13,14 @@ import java.util.List;
 @Table(name = "weproov", id = BaseColumns._ID)
 public class WeProov extends BaseModel implements Parcelable {
 
+	@Column(name = "serverId", index = true)
+	private String serverId = null;
+
 	@Column(name = "renter")
 	public RenterInfo renter;
 
 	@Column(name = "car")
 	public CarInfo car;
-
-	@Column(name = "uploaded")
-	public boolean uploaded = false;
 
 	private List<PictureItem> pictures = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public class WeProov extends BaseModel implements Parcelable {
 		renter = in.readParcelable(RenterInfo.class.getClassLoader());
 		car = in.readParcelable(CarInfo.class.getClassLoader());
 		in.readList(pictures, PictureItem.class.getClassLoader());
-		uploaded = in.readByte() != 0;
+		serverId = in.readString();
 	}
 
 	public void doSave() {
@@ -74,7 +74,7 @@ public class WeProov extends BaseModel implements Parcelable {
 		dest.writeParcelable(renter, flags);
 		dest.writeParcelable(car, flags);
 		dest.writeList(pictures);
-		dest.writeByte((byte) (uploaded ? 1 : 0));
+		dest.writeString(serverId);
 	}
 
 	@SuppressWarnings("unused")
@@ -90,13 +90,5 @@ public class WeProov extends BaseModel implements Parcelable {
 		}
 	};
 
-	@Override
-	public String toString() {
-		return "WeProov{" +
-				"renter=" + renter +
-				", car=" + car +
-				", uploaded=" + uploaded +
-				", pictures=" + pictures +
-				'}';
-	}
+
 }

@@ -2,7 +2,6 @@ package com.weproov.app.models;
 
 import com.google.gson.annotations.Expose;
 import com.weproov.app.models.exceptions.LoginException;
-import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.utils.connections.Connection;
 import retrofit.http.*;
 
@@ -57,9 +56,9 @@ public class User {
         User login(@Header("Authorization") String basicAuth) throws LoginException;
 
         @POST(MODULE + POST_REGISTER)
-        User register(@Body User user) throws NetworkException;
+        User register(@Body User user) throws LoginException;
 
         @PUT(MODULE + PUT_GCM)
-        User registerGcm(@Path("gcm_token") String token) throws NetworkException;
+        User registerGcm(@Path("gcm_token") String token) throws LoginException;
     }
 }

@@ -31,10 +31,6 @@ android {
     }
 
     buildTypes {
-        debug {
-            // runProguard false
-        }
-
         release {
             minifyEnabled false
             shrinkResources true
@@ -103,4 +99,6 @@ dependencies {
         exclude module: 'rxjava'
     }
     compile 'com.squareup:otto:+'
+
+    compile 'com.github.castorflex.smoothprogressbar:library:+'
 }

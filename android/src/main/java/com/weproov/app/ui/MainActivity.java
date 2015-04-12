@@ -3,8 +3,10 @@ package com.weproov.app.ui;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SyncStatusObserver;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -35,6 +37,8 @@ import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.CameraUtils;
 import com.weproov.app.utils.FragmentsUtils;
 import com.weproov.app.utils.PlayServicesUtils;
+import com.weproov.app.utils.constants.AuthenticatorConstants;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 
 public class MainActivity extends BaseActivity implements DrawerFragment.OnNavigationInteractionListener, ActionBarIface, TunnelFragment.Tunnel {
@@ -49,6 +53,9 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 	@InjectView(R.id.left_frame)
 	FrameLayout mDrawerNavigation;
 
+	@InjectView(R.id.sync_progress)
+	SmoothProgressBar mSyncProgress;
+
 	private ActionBarDrawerToggle mDrawerToggle;
 
 	private Fragment mCurrentFragment;
@@ -58,6 +65,8 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 	private String[] mOverlaySubtitleArray;
 
 	private WeProov mCurrentWeProov;
+
+	Object mSyncObserverHandle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -133,12 +142,30 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
+	protected void onStart() {
+		super.onStart();
+		mSyncObserverHandle = ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE | ContentResolver.SYNC_OBSERVER_TYPE_PENDING, new SyncStatusObserver() {
+			@Override
+			public void onStatusChanged(final int which) {
+				if (ContentResolver.isSyncActive(AccountUtils.getAccount(), AuthenticatorConstants.ACCOUNT_PROVIDER))
+					mSyncProgress.setVisibility(View.VISIBLE);
+				else if (ContentResolver.isSyncPending(AccountUtils.getAccount(), AuthenticatorConstants.ACCOUNT_PROVIDER))
+					mSyncProgress.setVisibility(View.VISIBLE);
+				else
+					mSyncProgress.setVisibility(View.GONE);
+			}
+		});
+	}
 
-		return super.onOptionsItemSelected(item);
+	@Override
+	protected void onStop() {
+		ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
+		super.onStop();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -150,8 +177,8 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
 	private static void logout(final Activity ctx) {
 		Log.d("Test", "Loging out");
-		AccountManager accountManager =  AccountManager.get(ctx);
-		if(accountManager.removeAccountExplicitly(AccountUtils.getAccount())) {
+		AccountManager accountManager = AccountManager.get(ctx);
+		if (accountManager.removeAccountExplicitly(AccountUtils.getAccount())) {
 			Intent intent = new Intent(ctx, LandingActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			ctx.startActivity(intent);
@@ -176,8 +203,9 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 							public void onClick(DialogInterface dialog, int id) {
 								// User cancelled the dialog
 							}
-						});
-				builder.show();
+						})
+						.show();
+
 				return; // Keep the return here
 			case NavItem.NAV_WEPROOV:
 				mCurrentWeProov = new WeProov();
@@ -240,7 +268,6 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
 	@Override
 	public void next(Bundle data) {
-		Log.d("Test", "Next clicked (b = " + data + ")");
 		if (mCurrentFragment == null) {
 			// Restore
 			mCurrentFragment = getSupportFragmentManager().findFragmentByTag("tag");

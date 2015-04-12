@@ -12,4 +12,9 @@
     <color name="bottombar_pressed">#262626</color>
     <color name="overlay_subtitle_background_color">#33000000</color>
     <color name="overlay_subtitle_color">@android:color/white</color>
+
+    <color name="gplus_color_1">#3e802f</color>
+    <color name="gplus_color_2">#f4b400</color>
+    <color name="gplus_color_3">#427fed</color>
+    <color name="gplus_color_4">#b23424</color>
 </resources>

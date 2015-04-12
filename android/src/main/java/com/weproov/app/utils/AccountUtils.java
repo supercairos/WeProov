@@ -50,6 +50,16 @@ public final class AccountUtils {
 		}
 	}
 
+	public static void setSyncable(boolean enabled) {
+		Log.d("Test", "Start setSyncable");
+		Account account = getAccount();
+		if (account != null) {
+			ContentResolver.setIsSyncable(account, AuthenticatorConstants.ACCOUNT_PROVIDER, enabled ? 1 : 0);
+		} else {
+			Log.e("Test", "Account was null while starting sync...");
+		}
+	}
+
 	public static void startSync() {
 		Log.d("Test", "Start sync");
 		/*
@@ -58,7 +68,13 @@ public final class AccountUtils {
 		 */
 		Account account = getAccount();
 		if (account != null) {
-			ContentResolver.requestSync(account, AuthenticatorConstants.ACCOUNT_TYPE, new Bundle());
+			Bundle bundle = new Bundle();
+			bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+			bundle.putBoolean(ContentResolver.SYNC_EXTRAS_IGNORE_BACKOFF, true);
+			bundle.putBoolean(ContentResolver.SYNC_EXTRAS_IGNORE_SETTINGS, true);
+			bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+
+			ContentResolver.requestSync(account, AuthenticatorConstants.ACCOUNT_TYPE, bundle);
 		} else {
 			Log.e("Test", "Account was null while starting sync...");
 		}

@@ -15,15 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.squareup.picasso.RequestCreator;
 import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
 import com.weproov.app.models.RenterInfo;
+import com.weproov.app.ui.adapter.RenterAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.PixelUtils;
@@ -48,22 +47,24 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 	private Uri mIdCardUri;
 
 	@InjectView(R.id.edit_first_name)
-	TextView mFirstName;
+	AutoCompleteTextView mFirstName;
 	@InjectView(R.id.edit_first_name_error)
 	TextView mFirstNameError;
+	private RenterAutocompleteAdapter mFirstnameAutocompleteAdapter;
 
 	@InjectView(R.id.edit_last_name)
-	TextView mLastName;
+	AutoCompleteTextView mLastName;
 	@InjectView(R.id.edit_last_name_error)
 	TextView mLastNameError;
+	private RenterAutocompleteAdapter mLastnameAutocompleteAdapter;
 
 	@InjectView(R.id.edit_email)
-	TextView mEmail;
+	EditText mEmail;
 	@InjectView(R.id.edit_email_error)
 	TextView mEmailError;
 
 	@InjectView(R.id.edit_company)
-	TextView mCompany;
+	EditText mCompany;
 	@InjectView(R.id.edit_company_error)
 	TextView mCompanyError;
 
@@ -109,34 +110,58 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 		}
 
 		if (info != null) {
-			mFirstName.setText(info.firstname);
-			mLastName.setText(info.lastname);
-			mEmail.setText(info.email);
-			mCompany.setText(info.company);
-
-			int size = (int) PixelUtils.convertDpToPixel(100, getActivity());
-			mIdCardUri = info.id_card;
-			mDrivingLicenceUri = info.driving_licence;
-			PicassoUtils.PICASSO.load(mIdCardUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mIdCardPicture);
-			PicassoUtils.PICASSO.load(mDrivingLicenceUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mDrivingLicencePicture);
+			setRenterInfo(info);
 		}
+
+		mFirstnameAutocompleteAdapter = new RenterAutocompleteAdapter(getActivity(), RenterAutocompleteAdapter.TYPE_FIRST_NAME);
+		mFirstName.setAdapter(mFirstnameAutocompleteAdapter);
+		mFirstName.setThreshold(1);
+		mFirstName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				setRenterInfo(((RenterAutocompleteAdapter) parent.getAdapter()).getItem(position));
+			}
+		});
+
+		mLastnameAutocompleteAdapter = new RenterAutocompleteAdapter(getActivity(), RenterAutocompleteAdapter.TYPE_LAST_NAME);
+		mLastName.setAdapter(mLastnameAutocompleteAdapter);
+		mLastName.setThreshold(1);
+		mLastName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				setRenterInfo(((RenterAutocompleteAdapter) parent.getAdapter()).getItem(position));
+			}
+		});
+	}
+
+	private void setRenterInfo(RenterInfo info) {
+		mFirstName.setText(info.firstname);
+		mLastName.setText(info.lastname);
+		mEmail.setText(info.email);
+		mCompany.setText(info.company);
+
+		int size = (int) PixelUtils.convertDpToPixel(100, getActivity());
+		mIdCardUri = info.id_card;
+		mDrivingLicenceUri = info.driving_licence;
+		PicassoUtils.PICASSO.load(mIdCardUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mIdCardPicture);
+		PicassoUtils.PICASSO.load(mDrivingLicenceUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mDrivingLicencePicture);
 	}
 
 	private RenterInfo getRenterInfo() {
 		RenterInfo info = new RenterInfo();
-		if(mFirstName != null) {
+		if (mFirstName != null) {
 			info.firstname = mFirstName.getEditableText().toString();
 		}
 
-		if(mLastName != null) {
+		if (mLastName != null) {
 			info.lastname = mLastName.getEditableText().toString();
 		}
 
-		if(mEmail != null) {
+		if (mEmail != null) {
 			info.email = mEmail.getEditableText().toString();
 		}
 
-		if(mCompany != null) {
+		if (mCompany != null) {
 			info.company = mCompany.getEditableText().toString();
 		}
 

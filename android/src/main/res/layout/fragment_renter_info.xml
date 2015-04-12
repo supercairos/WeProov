@@ -40,6 +40,7 @@
 
             <LinearLayout
                     android:baselineAligned="false"
+                    android:id="@+id/renter_name_group"
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
@@ -55,11 +56,12 @@
                             android:layout_height="wrap_content"
                             app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
-                        <EditText
+                        <AutoCompleteTextView
                                 android:id="@+id/edit_first_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/renter_first_name"
+                                android:dropDownAnchor="@+id/renter_name_group"
                                 android:singleLine="true"
                                 android:inputType="textPersonName"
                                 android:imeOptions="actionNext"
@@ -88,10 +90,11 @@
                             android:layout_height="wrap_content"
                             app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
-                        <EditText
+                        <AutoCompleteTextView
                                 android:id="@+id/edit_last_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:dropDownAnchor="@+id/renter_name_group"
                                 android:hint="@string/renter_last_name"
                                 android:singleLine="true"
                                 android:inputType="textPersonName"
