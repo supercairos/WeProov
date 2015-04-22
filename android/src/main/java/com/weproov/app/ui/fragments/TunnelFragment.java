@@ -3,9 +3,6 @@ package com.weproov.app.ui.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 
-/**
- * Created by Romain on 06/04/2015.
- */
 public class TunnelFragment extends BaseFragment {
 
 	/**

@@ -1,64 +1,97 @@
 package com.weproov.app.models;
 
+import android.net.Uri;
 import com.google.gson.annotations.Expose;
-import com.weproov.app.models.exceptions.LoginException;
+import com.google.gson.annotations.SerializedName;
+import com.weproov.app.models.exceptions.NetworkException;
+import com.weproov.app.models.wrappers.ParseFile;
+import com.weproov.app.models.wrappers.ParseFileResponse;
+import com.weproov.app.models.wrappers.ParseGcmResponse;
+import com.weproov.app.models.wrappers.ParseRegisterResponse;
 import com.weproov.app.utils.connections.Connection;
+import com.weproov.app.utils.connections.TypedUri;
+import retrofit.client.Response;
 import retrofit.http.*;
 
 // This is not a persistable model since it will be saved onto the account manager;
 public class User {
-    // api endpoint
-    private static final String MODULE = "/users";
+	// api endpoint
+	private static final String MODULE = "/users";
 
-    // endpoints
-    private static final String POST_REGISTER = "/register";
-    private static final String GET_LOGIN = "/login";
-    private static final String PUT_GCM = "/gcm/{gcm_token}";
+	// endpoints
+	private static final String POST_FILE = "/files/{filename}";
+	private static final String POST_REGISTER = "/users";
+	private static final String GET_LOGIN = "/login";
+	private static final String PUT_GCM = "/installations";
+	// private static final String PUT_GCM = "/gcm/{gcm_token}";
 
-    private static final IUserService SERVICE = Connection.ADAPTER.create(IUserService.class);
+	private static final IUserService SERVICE = Connection.ADAPTER.create(IUserService.class);
 
-    @Expose
-    public String firstname;
-    @Expose
-    public String lastname;
-    @Expose
-    public String password;
-    @Expose
-    public String email;
-    @Expose
-    public String token;
+	@Expose
+	@SerializedName("prenom")
+	public String firstname;
 
-    public User(String email, String password, String firstname, String lastname) {
-        this.email = email;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
-    }
+	@Expose
+	@SerializedName("nom")
+	public String lastname;
 
-    public static IUserService getService() {
-        return SERVICE;
-    }
+	@Expose
+	@SerializedName("username")
+	public String email;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", token='" + token + '\'' +
-                '}';
-    }
+	@Expose
+	@SerializedName("sessionToken")
+	public String token;
 
-    public interface IUserService {
+	@Expose
+	@SerializedName("password")
+	public String password;
 
-        @GET(MODULE + GET_LOGIN)
-        User login(@Header("Authorization") String basicAuth) throws LoginException;
+	public Uri picture;
 
-        @POST(MODULE + POST_REGISTER)
-        User register(@Body User user) throws LoginException;
+	@Expose
+	@SerializedName("picture")
+	public ParseFile parsePictureFile;
 
-        @PUT(MODULE + PUT_GCM)
-        User registerGcm(@Path("gcm_token") String token) throws LoginException;
-    }
+	public User(String email, String password, String firstname, String lastname, Uri picture) {
+		this.email = email;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.password = password;
+		this.picture = picture;
+	}
+
+	public static IUserService getService() {
+		return SERVICE;
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"firstname='" + firstname + '\'' +
+				", lastname='" + lastname + '\'' +
+				", email='" + email + '\'' +
+				", token='" + token + '\'' +
+				'}';
+	}
+
+	public interface IUserService {
+
+		@GET(GET_LOGIN)
+			//User login(@Header("Authorization") String basicAuth) throws LoginException;
+		User login(@Query("username") String email, @Query("password") String password) throws NetworkException;
+
+		@POST(POST_FILE)
+			// User register(@Body User user) throws LoginException;
+		ParseFileResponse upload(@Path("filename") String filename, @Body TypedUri uri) throws NetworkException;
+
+		@POST(POST_REGISTER)
+			// User register(@Body User user) throws LoginException;
+		ParseRegisterResponse register(@Body User user) throws NetworkException;
+
+
+		@PUT(PUT_GCM)
+		Response registerGcm(@Body ParseGcmResponse gcm) throws NetworkException;
+		// User registerGcm(@Path("gcm_token") String token) throws LoginException;
+	}
 }

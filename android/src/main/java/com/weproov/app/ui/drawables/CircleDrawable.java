@@ -2,49 +2,48 @@ package com.weproov.app.ui.drawables;
 
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 public class CircleDrawable extends Drawable {
 
-    private final float mCornerRadius;
-    private final RectF mRect = new RectF();
+	private final RectF mRect = new RectF();
 
-    private final BitmapShader mBitmapShader;
-    private final Paint mPaint;
+	private final Paint mBitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	private final Paint mColorPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+	private float mPadding;
 
-    public CircleDrawable(Bitmap bitmap) {
-        mCornerRadius = bitmap.getHeight() > bitmap.getWidth() ? bitmap.getWidth() / 2 : bitmap.getHeight() / 2;
+	public CircleDrawable(Bitmap bitmap) {
+		mBitmapPaint.setShader(new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+		mColorPaint.setColor(Color.argb(255, 231, 231, 231));
+	}
 
-        mBitmapShader = new BitmapShader(bitmap,
-                Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+	@Override
+	protected void onBoundsChange(Rect bounds) {
+		super.onBoundsChange(bounds);
+		mRect.set(0, 0, bounds.width(), bounds.height());
+		mPadding = Math.min((float) bounds.width(), (float) bounds.height()) * (3f / 100f);
 
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mPaint.setShader(mBitmapShader);
-    }
+		Log.d("Test", "Padding is : " + mPadding);
+	}
 
-    @Override
-    protected void onBoundsChange(Rect bounds) {
-        super.onBoundsChange(bounds);
-        mRect.set(0, 0, bounds.width(), bounds.height());
-    }
+	@Override
+	public void draw(Canvas canvas) {
+		canvas.drawCircle(mRect.centerX(), mRect.centerY(), Math.min(mRect.centerX(), mRect.centerY()), mColorPaint);
+		canvas.drawCircle(mRect.centerX(), mRect.centerY(), Math.min(mRect.centerX(), mRect.centerY()) - mPadding, mBitmapPaint);
+	}
 
-    @Override
-    public void draw(Canvas canvas) {
-        canvas.drawCircle(mRect.centerX(), mRect.centerY(), mCornerRadius, mPaint);
-    }
+	@Override
+	public int getOpacity() {
+		return PixelFormat.TRANSLUCENT;
+	}
 
-    @Override
-    public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
-    }
+	@Override
+	public void setAlpha(int alpha) {
+		mBitmapPaint.setAlpha(alpha);
+	}
 
-    @Override
-    public void setAlpha(int alpha) {
-        mPaint.setAlpha(alpha);
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-        mPaint.setColorFilter(cf);
-    }
+	@Override
+	public void setColorFilter(ColorFilter cf) {
+		mBitmapPaint.setColorFilter(cf);
+	}
 }

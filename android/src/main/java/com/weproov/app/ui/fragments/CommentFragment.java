@@ -1,6 +1,5 @@
 package com.weproov.app.ui.fragments;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
 import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.models.PictureItem;
 import com.weproov.app.ui.ifaces.CommandIface;
-import com.weproov.app.ui.views.FingerPaintView;
-import com.weproov.app.utils.PicassoUtils;
+import com.weproov.app.ui.views.BitmapRegionTileSource;
+import com.weproov.app.ui.views.TiledImageView;
 
 public class CommentFragment extends TunnelFragment implements CommandIface.OnClickListener {
 
@@ -24,18 +23,12 @@ public class CommentFragment extends TunnelFragment implements CommandIface.OnCl
 	private static final String KEY_COMMENT_PICTURE_PATH = "comment_picture_path";
 
 	@InjectView(R.id.comment_image_view)
-	ImageView mImageView;
-	@InjectView(R.id.comment_finger_paint)
-	FingerPaintView mFingerPaint;
+	TiledImageView mImageView;
+
+	@InjectView(R.id.comment_edit_text)
+	EditText mEditText;
 
 	private Uri mRawPicturePath = null;
-
-	/**
-	 * The picture
-	 */
-	private Bitmap mBitmap;
-
-
 	public static CommentFragment newInstance(String picturePath) {
 		Bundle bundle = new Bundle();
 		bundle.putString(KEY_COMMENT_PICTURE_PATH, picturePath);
@@ -59,15 +52,14 @@ public class CommentFragment extends TunnelFragment implements CommandIface.OnCl
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_comment, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		PicassoUtils.PICASSO.load(mRawPicturePath).fit().centerInside().into(mImageView);
+		mImageView.setTileSource(new BitmapRegionTileSource(getActivity(), getArguments().getString(KEY_COMMENT_PICTURE_PATH), 0, 0), null);
 	}
 
 	@Override
@@ -77,14 +69,32 @@ public class CommentFragment extends TunnelFragment implements CommandIface.OnCl
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		mImageView.onResume();
+	}
+
+	@Override
+	public void onPause() {
+		mImageView.onPause();
+		super.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+		if(mImageView != null) {
+			mImageView.destroy();
+		}
+		super.onDestroy();
+	}
+
+	@Override
 	public void onPositiveButtonClicked(Button b) {
 		Bundle bundle = new Bundle();
 
 		PictureItem item = new PictureItem();
 		item.path = mRawPicturePath;
-		item.comment = "Test";
-
-		Log.d("Test", "Serializing item " + item);
+		item.comment = mEditText.getEditableText().toString();
 
 		bundle.putParcelable(TunnelFragment.KEY_PICTURE_ITEM, item);
 		getTunnel().next(bundle);
@@ -92,6 +102,6 @@ public class CommentFragment extends TunnelFragment implements CommandIface.OnCl
 
 	@Override
 	public void onNegativeButtonClicked(Button b) {
-		// Goto dashboard
+
 	}
 }

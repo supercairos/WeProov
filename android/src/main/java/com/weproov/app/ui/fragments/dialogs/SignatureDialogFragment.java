@@ -25,6 +25,7 @@ public class SignatureDialogFragment extends BaseDialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setIcon(R.drawable.ic_action_about)
                 .setTitle(R.string.title_signature_dialog)
+
                 .setView(mFingerPaintView)
                 .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {

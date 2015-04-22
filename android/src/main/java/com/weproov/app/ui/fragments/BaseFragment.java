@@ -9,7 +9,7 @@ import butterknife.ButterKnife;
 import com.weproov.app.ui.ifaces.CommandIface;
 
 
-public abstract class BaseFragment extends Fragment {
+abstract class BaseFragment extends Fragment {
 
 	CommandIface mListener;
 

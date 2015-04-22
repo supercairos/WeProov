@@ -6,10 +6,12 @@ import com.google.gson.annotations.SerializedName;
 public class NetworkException extends WeProovException {
 
     @Expose
-    @SerializedName("message")
+    @SerializedName("error")
     protected String errorMessage;
+
     @Expose
     protected int code;
+
     private int status;
 
     public NetworkException() {

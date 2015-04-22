@@ -26,7 +26,7 @@
     <string name="nav_logout">Logout</string>
     <string name="nav_about">About us</string>
     <string name="wrong_login">Either your password or login is wrong. Please correct it</string>
-    <string name="renter_info">Renter Info</string>
+    <string name="client_info">Client Info</string>
     <string name="car_info">Car Info</string>
 
     <string name="error_first_name">This is not a valid first name.</string>
@@ -39,7 +39,7 @@
     <string name="renter_last_name">Last name</string>
     <string name="renter_email">Email</string>
     <string name="renter_company">Company</string>
-    <string name="renter_document_info">Renter documents</string>
+    <string name="client_document_info">Client documents</string>
 
     <string name="car_type_hybrid">Hybrid</string>
     <string name="car_type_gpl">GPL</string>
@@ -78,5 +78,7 @@
     <string name="notification_picture_download_end">Upload complete</string>
     <string name="welcome">Welcome %s!</string>
     <string name="explore_weproov">Explore WeProov:</string>
+    <string name="signature_of">Signature of %s</string>
+    <string name="signature_renter">Renter</string>
 
 </resources>

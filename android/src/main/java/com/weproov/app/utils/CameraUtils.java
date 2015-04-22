@@ -28,12 +28,15 @@ import android.util.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Camera related utilities.
  */
-public class CameraUtils {
+public final class CameraUtils {
 
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
@@ -98,14 +101,15 @@ public class CameraUtils {
 	 * dimensions of the given view while maintaining the aspect ratio. If none can,
 	 * be lenient with the aspect ratio.
 	 *
-	 * @param sizes Supported camera preview sizes.
-	 * @param w     The width of the view.
-	 * @param h     The height of the view.
+	 * @param sizes 	 Camera sizes.
+	 * @param w          The width of the view.
+	 * @param h          The height of the view.
 	 * @return Best match camera preview size to fit in the view.
 	 */
-	public static  Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
+	public static Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
 		final double ASPECT_TOLERANCE = 0.1;
-		double targetRatio = (double) w / h;
+		double targetRatio = w > h ? (double) w / h : (double) h / w;
+
 		if (sizes == null) return null;
 
 		Camera.Size optimalSize = null;
@@ -131,6 +135,7 @@ public class CameraUtils {
 				}
 			}
 		}
+
 		return optimalSize;
 	}
 
@@ -205,7 +210,7 @@ public class CameraUtils {
 		@Override
 		public int compare(Camera.Size lhs, Camera.Size rhs) {
 			// We cast here to ensure the multiplications won't overflow
-			return Long.signum((long) lhs.width * lhs.height - (long) rhs.width * rhs.height);
+			return Long.signum((long) lhs.height - (long) rhs.height);
 		}
 
 	}

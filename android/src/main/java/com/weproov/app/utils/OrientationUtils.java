@@ -8,7 +8,7 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
 
-public class OrientationUtils {
+public final class OrientationUtils {
 
     public static void unlockOrientation(Activity activity) {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);

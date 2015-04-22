@@ -1,7 +1,5 @@
 package com.weproov.app.ui;
 
-import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
@@ -175,16 +173,6 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	private static void logout(final Activity ctx) {
-		Log.d("Test", "Loging out");
-		AccountManager accountManager = AccountManager.get(ctx);
-		if (accountManager.removeAccountExplicitly(AccountUtils.getAccount())) {
-			Intent intent = new Intent(ctx, LandingActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			ctx.startActivity(intent);
-			ctx.finish();
-		}
-	}
 
 	@Override
 	public void onNavItemSelected(NavItem item) {
@@ -196,7 +184,20 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 						.setTitle("Logout")
 						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								logout(MainActivity.this);
+								AccountUtils.removeAccount(MainActivity.this, new AccountUtils.AccountRemovedCallback() {
+									@Override
+									public void onSuccess() {
+										Intent intent = new Intent(MainActivity.this, LandingActivity.class);
+										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+										MainActivity.this.startActivity(intent);
+										MainActivity.this.finish();
+									}
+
+									@Override
+									public void onFailure() {
+										Toast.makeText(MainActivity.this, "Could not remove this account", Toast.LENGTH_LONG).show();
+									}
+								});
 							}
 						})
 						.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -311,17 +312,24 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 			mCurrentWeProov.addPicture(item);
 			// Goto next drawable
 			if (++mWeProovStep == mOverlayDrawableArray.length) {
-				// We are at the end. Show last fragment;
-				mCurrentWeProov.doSave();
-				AccountUtils.startSync();
+				String name = getString(R.string.signature_renter);
+				if (mCurrentWeProov.renter != null) {
+					name = mCurrentWeProov.renter.firstname + " " + mCurrentWeProov.renter.lastname;
+				}
 
-				mCurrentFragment = new DashboardFragment();
+				mCurrentFragment = SignatureFragment.newInstance(name);
 			} else {
 				// Progress with camera
 				mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
 			}
+		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep++ == mOverlayDrawableArray.length) {
+			mCurrentFragment = SignatureFragment.newInstance(AccountUtils.getDisplayName());
+		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep++ == (mOverlayDrawableArray.length + 1)) {
+			mCurrentFragment = new SummaryFragment();
 		} else {
-			throw new IllegalStateException("Called from a non nextable fragment");
+			mCurrentFragment = new DashboardFragment();
+			mCurrentWeProov.doSave();
+			// throw new IllegalStateException("Called from a non nextable fragment");
 		}
 
 		setCommandListener(null);

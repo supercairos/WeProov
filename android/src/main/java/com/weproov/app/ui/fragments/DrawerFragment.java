@@ -19,7 +19,6 @@ import com.weproov.app.models.NavItem;
 import com.weproov.app.ui.adapter.NavigationAdapter;
 import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.PicassoUtils;
-import com.weproov.app.utils.PixelUtils;
 import com.weproov.app.utils.constants.AccountConstants;
 
 public class DrawerFragment extends BaseFragment {
@@ -69,23 +68,18 @@ public class DrawerFragment extends BaseFragment {
 		// Check first item;
 		mDrawerList.setItemChecked(0, true);
 
-		String firstName = "Romain";
-		String lastName = "Caire";
-		String email = "romain@weproov.com";
-
 		Account account = AccountUtils.getAccount();
-		if(account != null) {
-			firstName = mAccountManager.getUserData(account, AccountConstants.KEY_FIRST_NAME);
-			lastName = mAccountManager.getUserData(account, AccountConstants.KEY_LAST_NAME);
-			email = account.name;
-		}
+		if (account != null) {
+			String firstName = mAccountManager.getUserData(account, AccountConstants.KEY_FIRST_NAME);
+			String lastName = mAccountManager.getUserData(account, AccountConstants.KEY_LAST_NAME);
+			String url = mAccountManager.getUserData(account, AccountConstants.KEY_PROFILE_PICTURE);
+			String email = account.name;
 
-		mDrawerTitle.setText(firstName + " " + lastName);
-		mDrawerSubtitle.setText(email);
-
-		String url = null; //PrefUtils.getString(Constants.KEY_PICTURE_URL, "");
-		if (!TextUtils.isEmpty(url)) {
-			PicassoUtils.PICASSO.load(url).resize((int) PixelUtils.convertDpToPixel(50f, getActivity()), (int) PixelUtils.convertDpToPixel(50f, getActivity())).into(mDrawerImageView);
+			mDrawerTitle.setText(firstName + " " + lastName);
+			mDrawerSubtitle.setText(email);
+			if (!TextUtils.isEmpty(url)) {
+				PicassoUtils.PICASSO.load(url).fit().centerCrop().error(R.drawable.ico_romain_caire).into(mDrawerImageView);
+			}
 		}
 
 

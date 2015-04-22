@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/content_fragment_root_view">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/client_info"
+                    android:id="@+id/client_info"/>
+
+            <ImageView
+                    android:contentDescription="@android:string/untitled"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_edit"
+                    android:id="@+id/edit_client_info"/>
+        </LinearLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primary_dark"
+                android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/client_document_info"
+                    android:id="@+id/renter_document_info"/>
+
+            <ImageView
+                    android:contentDescription="@android:string/untitled"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_edit"
+                    android:id="@+id/edit_client_document"/>
+        </LinearLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primary_dark"
+                android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/car_info"
+                    android:id="@+id/car_info"/>
+
+            <ImageView
+                    android:contentDescription="@android:string/untitled"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_edit"
+                    android:id="@+id/edit_car_info"/>
+        </LinearLayout>
+
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primary_dark"
+                android:layout_marginBottom="10dp"/>
+
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/car_additional_info"
+                    android:id="@+id/car_additional_info"/>
+
+            <ImageView
+                    android:contentDescription="@android:string/untitled"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_edit"
+                    android:id="@+id/edit_car_additional_info"/>
+        </LinearLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primary_dark"
+                android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/car_document_info"
+                    android:id="@+id/car_document_info"/>
+
+            <ImageView
+                    android:contentDescription="@android:string/untitled"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_edit"
+                    android:id="@+id/edit_car_document"/>
+        </LinearLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primary_dark"
+                android:layout_marginBottom="10dp"/>
+
+
+    </LinearLayout>
+</ScrollView>

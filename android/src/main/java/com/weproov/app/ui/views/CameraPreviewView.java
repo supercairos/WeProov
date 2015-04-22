@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.ViewGroup;
 import com.weproov.app.utils.CameraUtils;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.util.List;
  * because not all devices have cameras that support preview sizes at the same
  * aspect ratio as the device's display.
  */
-public class CameraPreviewView extends FrameLayout implements SurfaceHolder.Callback {
+public class CameraPreviewView extends ViewGroup implements SurfaceHolder.Callback {
 
 	SurfaceView mSurfaceView;
 	SurfaceHolder mHolder;
@@ -71,11 +71,11 @@ public class CameraPreviewView extends FrameLayout implements SurfaceHolder.Call
 		final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
 		setMeasuredDimension(width, height);
 
-		if (mSupportedPreviewSizes != null) {
+		if (mCamera != null && mSupportedPreviewSizes != null) {
 			mPreviewSize = CameraUtils.getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
 		}
 
-		if (mCamera != null) {
+		if (mPreviewSize != null && mCamera != null) {
 			Camera.Parameters parameters = mCamera.getParameters();
 			parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 
@@ -94,8 +94,8 @@ public class CameraPreviewView extends FrameLayout implements SurfaceHolder.Call
 			int previewWidth = width;
 			int previewHeight = height;
 			if (mPreviewSize != null) {
-				previewWidth = mPreviewSize.width;
-				previewHeight = mPreviewSize.height;
+				previewWidth = width > height ? mPreviewSize.width : mPreviewSize.height;
+				previewHeight = width > height ? mPreviewSize.height: mPreviewSize.width;
 			}
 
 			// Center the child SurfaceView within the parent.
@@ -140,6 +140,7 @@ public class CameraPreviewView extends FrameLayout implements SurfaceHolder.Call
 
 			mCamera.setParameters(parameters);
 			mCamera.startPreview();
+			mCamera.autoFocus(null);
 		}
 	}
 }

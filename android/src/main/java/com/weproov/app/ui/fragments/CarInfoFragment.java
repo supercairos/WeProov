@@ -132,7 +132,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			mGasLevel.setProgress(info.gas_level);
 			mCarType.setSelection(getServerIndex(mCarTypeServer, info.millage_type));
 
-			int size = (int) PixelUtils.convertDpToPixel(100, getActivity());
+			int size = (int) PixelUtils.convertDpToPixel(100);
 			mVehicleDocumentationUri = info.vehicle_documentation;
 			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mVehicleDocumentationPicture);
 		}
@@ -150,12 +150,12 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 				mColor.setText(info.color);
 				mCarType.setSelection(getServerIndex(mCarTypeServer, info.millage_type));
 
-				int size = (int) PixelUtils.convertDpToPixel(100, getActivity());
+				int size = (int) PixelUtils.convertDpToPixel(100);
 				mVehicleDocumentationUri = info.vehicle_documentation;
 				PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mVehicleDocumentationPicture);
 			}
 		});
-		mPlateNumber.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+		mPlateNumber.setFilters(new InputFilter[] {new InputFilter.AllCaps(), new InputFilter.LengthFilter(9)});
 		mPlateNumber.addTextChangedListener(new TextWatcher() {
 
 			boolean isDeletion = false;
@@ -333,7 +333,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 				mVehicleDocumentationUri = data.getData();
 			}
 
-			int size = (int) PixelUtils.convertDpToPixel(100, getActivity());
+			int size = (int) PixelUtils.convertDpToPixel(100);
 			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).into(mVehicleDocumentationPicture);
 
 			Log.d("Test", "Found picture : " + mVehicleDocumentationUri);

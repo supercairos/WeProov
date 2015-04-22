@@ -81,18 +81,21 @@ dependencies {
     // ORM & View Injection
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.michaelpardo:activeandroid:+'
+
     // GSON Parsing
     compile 'com.google.code.gson:gson:2.+'
-    compile 'io.reactivex:rxjava:1.0.+'
+    compile 'io.reactivex:rxjava:+'
+
     // OkHttp Parsing
-    compile 'com.squareup.okhttp:okhttp:2.+'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.+'
+    compile 'com.squareup.okhttp:okhttp:+'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:+'
+
     // Picasso lib
-    compile('com.squareup.picasso:picasso:2.+') {
+    compile('com.squareup.picasso:picasso:+') {
         exclude module: 'okhttp'
         exclude module: 'okhttp-urlconnection'
     }
-    compile('com.squareup.retrofit:retrofit:1.+') {
+    compile('com.squareup.retrofit:retrofit:+') {
         exclude module: 'gson'
         exclude module: 'okhttp'
         exclude module: 'okhttp-urlconnection'

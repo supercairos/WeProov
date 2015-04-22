@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
-import com.weproov.app.models.exceptions.LoginException;
+import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.utils.connections.Connection;
 import retrofit.client.Response;
 import retrofit.http.Multipart;
@@ -93,6 +93,6 @@ public class PictureItem extends BaseModel implements Parcelable {
 
 		@Multipart
 		@POST(MODULE + POST_PICTURE)
-		Response upload(@Part("picture") PictureItem item, @Part("file") TypedFile file) throws LoginException;
+		Response upload(@Part("picture") PictureItem item, @Part("file") TypedFile file) throws NetworkException;
 	}
 }

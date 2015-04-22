@@ -3,6 +3,7 @@ package com.weproov.app.ui.fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -179,23 +180,37 @@ public class CameraFragment extends TunnelFragment {
 			result = (info.orientation - degrees + 360) % 360;
 		}
 
+		Log.d("Test", "Result = " + result);
+
 		Camera.Parameters params = camera.getParameters();
 		params.setRotation(result);
 		camera.setParameters(params);
 		camera.setDisplayOrientation(result);
+
 	}
 
 	private static void setCameraFocusMode(Camera camera) {
 		// get Camera parameters
 		Camera.Parameters params = camera.getParameters();
 		List<String> focusModes = params.getSupportedFocusModes();
-		if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+		if (focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+			params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+			camera.setParameters(params);
+		} else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
 			params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
 			camera.setParameters(params);
 		}
 	}
 
-	private void setCameraBestPictureSize(Camera camera) {
+	private static void setCameraJPEGQuality(Camera camera) {
+		// get Camera parameters
+		Camera.Parameters params = camera.getParameters();
+		params.setJpegQuality(100);
+		params.setPictureFormat(ImageFormat.JPEG);
+		camera.setParameters(params);
+	}
+
+	private static void setCameraPictureSize(Camera camera) {
 		// get Camera parameters
 		Camera.Parameters params = camera.getParameters();
 		Camera.Size size = CameraUtils.getBestPictureSize(params.getSupportedPictureSizes());
@@ -295,7 +310,6 @@ public class CameraFragment extends TunnelFragment {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			mIcCamera.setVisibility(View.GONE);
 			mBtnSetFlash.setVisibility(View.GONE);
 			mBtnCamera.setEnabled(false);
 			mOverlaySubtitle.setVisibility(View.GONE);
@@ -308,7 +322,9 @@ public class CameraFragment extends TunnelFragment {
 			Camera camera = CameraUtils.getCameraInstance(id);
 			setCameraDisplayOrientation(getActivity(), camera, id);
 			setCameraFocusMode(camera);
-			setCameraBestPictureSize(camera);
+			setCameraPictureSize(camera);
+			setCameraJPEGQuality(camera);
+
 			return camera;
 		}
 

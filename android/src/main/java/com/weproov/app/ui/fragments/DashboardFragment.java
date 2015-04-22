@@ -6,21 +6,27 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnLongClick;
 import com.weproov.app.R;
 import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.OrientationUtils;
+import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.constants.AccountConstants;
 
 public class DashboardFragment extends BaseFragment {
 
 	@InjectView(R.id.text_welcome)
 	TextView mWelcomeText;
+
+	@InjectView(R.id.profile_picture)
+	ImageView mImageView;
 
 	private AccountManager mAccountManager;
 
@@ -37,7 +43,6 @@ public class DashboardFragment extends BaseFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mAccountManager = (AccountManager) getActivity().getSystemService(Context.ACCOUNT_SERVICE);
-
 	}
 
 	@Override
@@ -56,16 +61,17 @@ public class DashboardFragment extends BaseFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		String firstName = "Romain";
-		String lastName = "Caire";
-
 		Account account = AccountUtils.getAccount();
 		if(account != null) {
-			firstName = mAccountManager.getUserData(account, AccountConstants.KEY_FIRST_NAME);
-			lastName = mAccountManager.getUserData(account, AccountConstants.KEY_LAST_NAME);
-		}
+			String firstName = mAccountManager.getUserData(account, AccountConstants.KEY_FIRST_NAME);
+			String lastName = mAccountManager.getUserData(account, AccountConstants.KEY_LAST_NAME);
+			String url = mAccountManager.getUserData(account, AccountConstants.KEY_PROFILE_PICTURE);
+			if(!TextUtils.isEmpty(url)) {
+				PicassoUtils.PICASSO.load(url).fit().centerCrop().error(R.drawable.no_icon_profile).placeholder(android.R.drawable.progress_indeterminate_horizontal).into(mImageView);
+			}
 
-		mWelcomeText.setText(getString(R.string.welcome, firstName + " " + lastName));
+			mWelcomeText.setText(getString(R.string.welcome, firstName + " " + lastName));
+		}
 	}
 
 	@Override

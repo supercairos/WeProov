@@ -95,7 +95,7 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_renter_info, container, false);
+		return inflater.inflate(R.layout.fragment_client_info, container, false);
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 		mEmail.setText(info.email);
 		mCompany.setText(info.company);
 
-		int size = (int) PixelUtils.convertDpToPixel(100, getActivity());
+		int size = (int) PixelUtils.convertDpToPixel(100);
 		mIdCardUri = info.id_card;
 		mDrivingLicenceUri = info.driving_licence;
 		PicassoUtils.PICASSO.load(mIdCardUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mIdCardPicture);
@@ -295,7 +295,7 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 				selectedImageUri = data.getData();
 			}
 
-			int size = (int) PixelUtils.convertDpToPixel(100, getActivity());
+			int size = (int) PixelUtils.convertDpToPixel(100);
 			RequestCreator requestCreator = PicassoUtils.PICASSO.load(selectedImageUri).centerInside().resize(size, size);
 			switch (requestCode) {
 				case SELECT_ID_CARD_REQUEST_CODE:

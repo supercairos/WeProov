@@ -31,58 +31,89 @@
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp">
 
-            <com.weproov.app.ui.views.FloatLabelLayout
+            <LinearLayout
+                    android:baselineAligned="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                    android:orientation="horizontal">
 
-                <EditText
-                        android:id="@+id/edit_first_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/first_name"
-                        android:singleLine="true"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPersonName"
-                        android:nextFocusDown="@+id/edit_last_name"/>
-            </com.weproov.app.ui.views.FloatLabelLayout>
+                <com.weproov.app.ui.views.SquareLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_height="match_parent">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_first_name"
-                    android:id="@+id/edit_first_name_error"/>
+                    <com.weproov.app.ui.views.RoundedImageView
+                            android:id="@+id/profile_picture"
+                            android:contentDescription="@android:string/untitled"
+                            android:layout_width="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/no_icon_profile"
+                            android:layout_height="match_parent"/>
+                </com.weproov.app.ui.views.SquareLayout>
 
-            <com.weproov.app.ui.views.FloatLabelLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
 
-                <EditText
-                        android:id="@+id/edit_last_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/last_name"
-                        android:singleLine="true"
-                        android:inputType="textPersonName"
-                        android:imeOptions="actionNext"
-                        android:nextFocusDown="@+id/edit_email"/>
+                    <com.weproov.app.ui.views.FloatLabelLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
-            </com.weproov.app.ui.views.FloatLabelLayout>
+                        <EditText
+                                android:id="@+id/edit_first_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/first_name"
+                                android:singleLine="true"
+                                android:imeOptions="actionNext"
+                                android:inputType="textPersonName"
+                                android:nextFocusDown="@+id/edit_last_name"/>
+                    </com.weproov.app.ui.views.FloatLabelLayout>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_last_name"
-                    android:id="@+id/edit_last_name_error"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:paddingBottom="4dp"
+                            android:visibility="invisible"
+                            android:textColor="@color/material_red_700"
+                            android:text="@string/error_first_name"
+                            android:id="@+id/edit_first_name_error"/>
+
+                    <com.weproov.app.ui.views.FloatLabelLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+                        <EditText
+                                android:id="@+id/edit_last_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/last_name"
+                                android:singleLine="true"
+                                android:inputType="textPersonName"
+                                android:imeOptions="actionNext"
+                                android:nextFocusDown="@+id/edit_email"/>
+
+                    </com.weproov.app.ui.views.FloatLabelLayout>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:paddingBottom="4dp"
+                            android:visibility="invisible"
+                            android:textColor="@color/material_red_700"
+                            android:text="@string/error_last_name"
+                            android:id="@+id/edit_last_name_error"/>
+                </LinearLayout>
+            </LinearLayout>
 
             <com.weproov.app.ui.views.FloatLabelLayout
                     android:layout_width="match_parent"

@@ -21,7 +21,7 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp">
 
-            <ImageView
+            <com.weproov.app.ui.views.RoundedImageView
                     android:contentDescription="@android:string/untitled"
                     android:layout_width="50dp"
                     android:layout_height="50dp"

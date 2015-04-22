@@ -15,7 +15,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"/>
 
-    <ImageView
+    <com.weproov.app.ui.views.RoundedImageView
             android:contentDescription="@android:string/untitled"
             android:layout_width="200dp"
             android:layout_height="200dp"
@@ -39,5 +39,13 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/explore_weproov"
                 android:layout_marginTop="41dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/explore_weproov"
+                android:layout_marginTop="41dp"/>
+
     </LinearLayout>
 </RelativeLayout>

@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.weproov.app.ui.views.FingerPaintView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/finger_paint_view"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:focusable="true"
-        android:clickable="false"/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signature_of"
+            android:textColor="@color/material_grey_700"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:textSize="@dimen/sign_here_text_size"
+            android:id="@+id/signature_text_view"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+    <com.weproov.app.ui.views.FingerPaintView
+            android:id="@+id/finger_paint_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:clickable="false"/>
+
+
+</RelativeLayout>

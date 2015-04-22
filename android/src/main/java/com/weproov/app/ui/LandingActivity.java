@@ -1,20 +1,23 @@
 package com.weproov.app.ui;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.squareup.otto.Subscribe;
+import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.UsersTask;
-import com.weproov.app.models.events.LoginErrorEvent;
+import com.weproov.app.models.User;
 import com.weproov.app.models.events.LoginSuccessEvent;
+import com.weproov.app.models.events.NetworkErrorEvent;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.AccountUtils;
 
@@ -65,7 +68,12 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 		String email = mEmail.getEditableText().toString().trim();
 		String password = mPassword.getEditableText().toString().trim();
 
-		UsersTask.login(email, password);
+		if(!BuildConfig.DEBUG || (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password))) {
+			UsersTask.login(email, password);
+		} else {
+			UsersTask.save(new User("super.cairos@gmail.com", "password", "Romain", "Caire", null));
+			gotoMain();
+		}
 	}
 
 	@Override
@@ -80,9 +88,20 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 	}
 
 	@Subscribe
-	public void onLoginError(LoginErrorEvent event) {
+	public void onRegisterError(NetworkErrorEvent event) {
 		mDialog.dismiss();
-		Toast.makeText(this, "Error while login", Toast.LENGTH_SHORT).show();
+
+		Throwable throwable = event.throwable;
+		new AlertDialog.Builder(this)
+				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+					}
+				})
+				.setMessage(throwable.getMessage())
+				.setTitle(android.R.string.untitled)
+				.show();
 	}
 
 	private void gotoMain() {

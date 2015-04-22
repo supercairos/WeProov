@@ -260,4 +260,24 @@ public final class BitmapUtils {
 
 		}
 	}
+
+	// This computes a sample size which makes the longer side at least
+	// minSideLength long. If that's not possible, return 1.
+	public static int computeSampleSizeLarger(int w, int h,
+											  int minSideLength) {
+		int initialSize = Math.max(w / minSideLength, h / minSideLength);
+		if (initialSize <= 1) return 1;
+		return initialSize <= 8
+				? MathUtils.prevPowerOf2(initialSize)
+				: initialSize / 8 * 8;
+	}
+
+	// Find the min x that 1 / x >= scale
+	public static int computeSampleSizeLarger(float scale) {
+		int initialSize = (int) Math.floor(1d / scale);
+		if (initialSize <= 1) return 1;
+		return initialSize <= 8
+				? MathUtils.prevPowerOf2(initialSize)
+				: initialSize / 8 * 8;
+	}
 }

@@ -14,7 +14,7 @@ import com.activeandroid.query.Select;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.PicturesTask;
 import com.weproov.app.models.PictureItem;
-import com.weproov.app.models.exceptions.LoginException;
+import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.ui.LandingActivity;
 import retrofit.RetrofitError;
 
@@ -134,7 +134,7 @@ public class SyncService extends Service {
 				notification.flags |= Notification.FLAG_AUTO_CANCEL;
 				mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
 
-			} catch (LoginException e) {
+			} catch (NetworkException e) {
 				Log.e(TAG, "LoginException", e);
 				syncResult.stats.numAuthExceptions++;
 			} catch (final RetrofitError e) {
