@@ -16,8 +16,10 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -84,6 +86,18 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 
 		getPositiveButton().setText(R.string.register);
 		getNegativeButton().setText(android.R.string.cancel);
+
+		mPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				boolean handled = false;
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					onPositiveButtonClicked(null);
+					handled = true;
+				}
+				return handled;
+			}
+		});
 
 		setCommandListener(this);
 	}

@@ -18,7 +18,6 @@ import com.weproov.app.R;
 import com.weproov.app.models.NavItem;
 import com.weproov.app.ui.adapter.NavigationAdapter;
 import com.weproov.app.utils.AccountUtils;
-import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.constants.AccountConstants;
 
 public class DrawerFragment extends BaseFragment {
@@ -78,7 +77,7 @@ public class DrawerFragment extends BaseFragment {
 			mDrawerTitle.setText(firstName + " " + lastName);
 			mDrawerSubtitle.setText(email);
 			if (!TextUtils.isEmpty(url)) {
-				PicassoUtils.PICASSO.load(url).fit().centerCrop().error(R.drawable.ico_romain_caire).into(mDrawerImageView);
+				// PicassoUtils.PICASSO.load(url).fit().centerCrop().error(R.drawable.ico_romain_caire).placeholder(R.drawable.progress_medium).into(mDrawerImageView);
 			}
 		}
 

@@ -317,15 +317,17 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 					name = mCurrentWeProov.renter.firstname + " " + mCurrentWeProov.renter.lastname;
 				}
 
+				mWeProovStep = 0;
 				mCurrentFragment = SignatureFragment.newInstance(name);
 			} else {
 				// Progress with camera
 				mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
 			}
-		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep++ == mOverlayDrawableArray.length) {
+		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep == 0) {
 			mCurrentFragment = SignatureFragment.newInstance(AccountUtils.getDisplayName());
-		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep++ == (mOverlayDrawableArray.length + 1)) {
-			mCurrentFragment = new SummaryFragment();
+			mWeProovStep++;
+		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep == 1) {
+			mCurrentFragment = SummaryFragment.newInstance(mCurrentWeProov);
 		} else {
 			mCurrentFragment = new DashboardFragment();
 			mCurrentWeProov.doSave();

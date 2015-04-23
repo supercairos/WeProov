@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.models.WeProov;
 import com.weproov.app.ui.ifaces.CommandIface;
@@ -18,7 +16,6 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 	private WeProov mWeProov;
 
 	private static final String KEY_WEPROOV = "key_weproov";
-	private String mName;
 
 	public static SummaryFragment newInstance(WeProov weProov) {
 		Bundle bundle = new Bundle();
@@ -32,9 +29,6 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 	public SummaryFragment() {
 		super();
 	}
-
-	@InjectView(R.id.signature_text_view)
-	TextView mTextView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +60,8 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 						getTunnel().next();
 					}
 				})
-				.setNegativeButton(android.R.string.cancel, null);
+				.setNegativeButton(android.R.string.cancel, null)
+				.show();
 	}
 
 	@Override

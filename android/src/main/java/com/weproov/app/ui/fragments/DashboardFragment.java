@@ -3,8 +3,10 @@ package com.weproov.app.ui.fragments;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnLongClick;
+import com.squareup.picasso.RequestCreator;
 import com.weproov.app.R;
 import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.OrientationUtils;
@@ -31,13 +34,13 @@ public class DashboardFragment extends BaseFragment {
 	private AccountManager mAccountManager;
 
 	public DashboardFragment() {
-    }
+	}
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setCommmandListener(null);
-    }
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		setCommmandListener(null);
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,22 +55,32 @@ public class DashboardFragment extends BaseFragment {
 	}
 
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
-    }
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_dashboard, container, false);
+	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
 		Account account = AccountUtils.getAccount();
-		if(account != null) {
+		if (account != null) {
 			String firstName = mAccountManager.getUserData(account, AccountConstants.KEY_FIRST_NAME);
 			String lastName = mAccountManager.getUserData(account, AccountConstants.KEY_LAST_NAME);
 			String url = mAccountManager.getUserData(account, AccountConstants.KEY_PROFILE_PICTURE);
-			if(!TextUtils.isEmpty(url)) {
-				PicassoUtils.PICASSO.load(url).fit().centerCrop().error(R.drawable.no_icon_profile).placeholder(android.R.drawable.progress_indeterminate_horizontal).into(mImageView);
+			if (!TextUtils.isEmpty(url)) {
+				RequestCreator requestCreator = PicassoUtils.PICASSO.load(url).fit().centerCrop().error(R.drawable.no_icon_profile);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+					requestCreator.placeholder(getResources().getDrawable(R.drawable.progress_large, getActivity().getTheme()));
+				} else {
+					requestCreator.placeholder(R.drawable.progress_large);
+				}
+
+
+				mImageView.setImageDrawable(getResources().getDrawable(R.drawable.progress_large, getActivity().getTheme()));
+				requestCreator.into(mImageView);
 			}
 
 			mWelcomeText.setText(getString(R.string.welcome, firstName + " " + lastName));
@@ -81,8 +94,8 @@ public class DashboardFragment extends BaseFragment {
 	}
 
 	@OnLongClick(R.id.profile_picture)
-    boolean onDebugSyncClicked() {
-        AccountUtils.startSync();
+	boolean onDebugSyncClicked() {
+		AccountUtils.startSync();
 		return true;
-    }
+	}
 }

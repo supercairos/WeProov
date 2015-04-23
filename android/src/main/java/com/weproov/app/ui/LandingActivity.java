@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.squareup.otto.Subscribe;
@@ -39,6 +42,19 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 
 		getNegativeButton().setText(R.string.register);
 		getPositiveButton().setText(R.string.login);
+
+		mPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				boolean handled = false;
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					onPositiveButtonClicked(null);
+					handled = true;
+				}
+				return handled;
+			}
+		});
+
 		setCommandListener(this);
 	}
 

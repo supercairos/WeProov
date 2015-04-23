@@ -1,6 +1,8 @@
 package com.weproov.app.ui.fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +11,24 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.ui.ifaces.CommandIface;
+import com.weproov.app.ui.views.FingerPaintView;
+import com.weproov.app.utils.CameraUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class SignatureFragment extends TunnelFragment implements CommandIface.OnClickListener {
 
 	private static final String KEY_PERSON_NAME = "key_person_name";
+
+	@InjectView(R.id.finger_paint_view)
+	FingerPaintView mFingerPaint;
+
+	@InjectView(R.id.signature_text_view)
+	TextView mTextView;
+
 	private String mName;
 
 	public static SignatureFragment newInstance(String name) {
@@ -27,9 +43,6 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 	public SignatureFragment() {
 		super();
 	}
-
-	@InjectView(R.id.signature_text_view)
-	TextView mTextView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,11 +66,40 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 
 	@Override
 	public void onPositiveButtonClicked(Button b) {
+		save();
 		getTunnel().next();
 	}
 
 	@Override
 	public void onNegativeButtonClicked(Button b) {
 
+	}
+
+	private void save() {
+		File f = CameraUtils.getOutputMediaFile(CameraUtils.MEDIA_TYPE_IMAGE);
+
+		Bitmap bitmap = mFingerPaint.getBitmap();
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG, 0 /* ignored */, bos);
+
+		byte[] bitmapdata = bos.toByteArray();
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(f);
+			fos.write(bos.toByteArray());
+			fos.flush();
+		} catch (IOException e) {
+			Log.d("Test", "IO", e);
+		} finally {
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					Log.d("Test", "IO", e);
+				}
+			}
+		}
+
+		CameraUtils.sendMediaScannerBroadcast(getActivity(), f);
 	}
 }

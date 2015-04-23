@@ -15,8 +15,10 @@
 
     <EditText
             android:padding="10dp"
-            android:background="#33000000"
             android:layout_width="wrap_content"
+            android:hint="Any commments ?"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
             android:layout_height="wrap_content"
             android:id="@+id/comment_edit_text"
             android:layout_above="@+id/bottom_spacer"
