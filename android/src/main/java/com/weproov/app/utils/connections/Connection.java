@@ -3,10 +3,12 @@ package com.weproov.app.utils.connections;
 import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
+import com.google.gson.JsonSyntaxException;
 import com.squareup.okhttp.*;
 import com.weproov.app.MyApplication;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.utils.AccountUtils;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.GsonUtils;
 import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
@@ -109,7 +111,9 @@ public class Connection {
 
 					return exception;
 				} catch (IOException e) {
-					e.printStackTrace();
+					Dog.e("IOException", e);
+				} catch (JsonSyntaxException e) {
+					Dog.e("JsonSyntaxException", e);
 				}
 			}
 

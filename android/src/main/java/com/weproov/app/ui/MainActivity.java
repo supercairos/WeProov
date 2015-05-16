@@ -1,12 +1,14 @@
 package com.weproov.app.ui;
 
+import android.accounts.Account;
+import android.animation.Animator;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SyncStatusObserver;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -15,9 +17,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import butterknife.ButterKnife;
@@ -25,23 +27,17 @@ import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.logic.services.GcmRegisterService;
 import com.weproov.app.models.NavItem;
-import com.weproov.app.models.PictureItem;
-import com.weproov.app.models.WeProov;
-import com.weproov.app.ui.fragments.*;
+import com.weproov.app.ui.fragments.DashboardFragment;
+import com.weproov.app.ui.fragments.DrawerFragment;
 import com.weproov.app.ui.fragments.dialogs.AboutDialogFragment;
 import com.weproov.app.ui.fragments.dialogs.SignatureDialogFragment;
-import com.weproov.app.ui.ifaces.ActionBarIface;
-import com.weproov.app.utils.AccountUtils;
-import com.weproov.app.utils.CameraUtils;
-import com.weproov.app.utils.FragmentsUtils;
-import com.weproov.app.utils.PlayServicesUtils;
+import com.weproov.app.utils.*;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 
-public class MainActivity extends BaseActivity implements DrawerFragment.OnNavigationInteractionListener, ActionBarIface, TunnelFragment.Tunnel {
+public class MainActivity extends BaseActivity implements DrawerFragment.OnNavigationInteractionListener {
 
-	private static final String KEY_WE_PROOV_OBJECT = "key_we_proov_object";
 	@InjectView(R.id.action_bar)
 	Toolbar mActionBar;
 
@@ -51,20 +47,15 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 	@InjectView(R.id.left_frame)
 	FrameLayout mDrawerNavigation;
 
+	@InjectView(R.id.floating_action_button_container)
+	FrameLayout mFloatingActionButton;
+
 	@InjectView(R.id.sync_progress)
 	SmoothProgressBar mSyncProgress;
 
 	private ActionBarDrawerToggle mDrawerToggle;
 
-	private Fragment mCurrentFragment;
-
-	private int mWeProovStep;
-	private int[] mOverlayDrawableArray;
-	private String[] mOverlaySubtitleArray;
-
-	private WeProov mCurrentWeProov;
-
-	Object mSyncObserverHandle;
+	private Object mSyncObserverHandle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +96,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 		getSupportActionBar().setHomeButtonEnabled(true);
 
 		if (savedInstanceState == null) {
-			onNavItemSelected(NavItem.getNavItems().get(0));
-		} else {
-			mCurrentWeProov = savedInstanceState.getParcelable(KEY_WE_PROOV_OBJECT);
-			Log.d("Test", "Found weproov object : " + mCurrentWeProov);
+			FragmentsUtils.replace(this, new DashboardFragment(), R.id.content_fragment, "tag", false, 0, 0);
 		}
 
 		if (PlayServicesUtils.checkPlayServices(this)) {
@@ -116,17 +104,30 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 				startService(new Intent(this, GcmRegisterService.class));
 			}
 		} else {
-			Log.i("Test", "No valid Google Play Services APK found.");
+			Dog.i("No valid Google Play Services APK found.");
 		}
 
-		TypedArray ids = getResources().obtainTypedArray(R.array.camera_overlay);
-		mOverlayDrawableArray = new int[ids.length()];
-		for (int i = 0; i < ids.length(); i++) {
-			mOverlayDrawableArray[i] = ids.getResourceId(i, -1);
-		}
-		ids.recycle();
 
-		mOverlaySubtitleArray = getResources().getStringArray(R.array.camera_overlay_subtitle);
+		mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// get the center for the clipping circle
+				int cx = (mFloatingActionButton.getLeft() + mFloatingActionButton.getRight()) / 2;
+				int cy = (mFloatingActionButton.getTop() + mFloatingActionButton.getBottom()) / 2;
+
+				// get the final radius for the clipping circle
+				int finalRadius = Math.max(mFloatingActionButton.getWidth(), mFloatingActionButton.getHeight());
+
+				// create the animator for this view (the start radius is zero)
+				final Animator anim = null;
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+					ViewAnimationUtils.createCircularReveal(mDrawerLayout, cx, cy, 0, finalRadius);
+				}
+
+				anim.start();
+				startActivity(new Intent(MainActivity.this, WeproovActivity.class));
+			}
+		});
 	}
 
 	/**
@@ -142,17 +143,22 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 	@Override
 	protected void onStart() {
 		super.onStart();
-		mSyncObserverHandle = ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE | ContentResolver.SYNC_OBSERVER_TYPE_PENDING, new SyncStatusObserver() {
-			@Override
-			public void onStatusChanged(final int which) {
-				if (ContentResolver.isSyncActive(AccountUtils.getAccount(), AuthenticatorConstants.ACCOUNT_PROVIDER))
-					mSyncProgress.setVisibility(View.VISIBLE);
-				else if (ContentResolver.isSyncPending(AccountUtils.getAccount(), AuthenticatorConstants.ACCOUNT_PROVIDER))
-					mSyncProgress.setVisibility(View.VISIBLE);
-				else
-					mSyncProgress.setVisibility(View.GONE);
-			}
-		});
+		final Account account = AccountUtils.getAccount();
+		if (account != null) {
+			mSyncObserverHandle = ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE | ContentResolver.SYNC_OBSERVER_TYPE_PENDING, new SyncStatusObserver() {
+						@Override
+						public void onStatusChanged(final int which) {
+							if (ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
+								mSyncProgress.setVisibility(View.VISIBLE);
+							} else if (ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
+								mSyncProgress.setVisibility(View.VISIBLE);
+							} else {
+								mSyncProgress.setVisibility(View.GONE);
+							}
+						}
+					}
+			);
+		}
 	}
 
 	@Override
@@ -176,6 +182,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
 	@Override
 	public void onNavItemSelected(NavItem item) {
+		Fragment fragment = null;
 		switch (item.id) {
 			case NavItem.NAV_LOGOUT:
 				// Handle Logout;
@@ -209,27 +216,26 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
 				return; // Keep the return here
 			case NavItem.NAV_WEPROOV:
-				mCurrentWeProov = new WeProov();
-				mCurrentFragment = new RenterFragment();
-				break;
+				startActivity(new Intent(this, WeproovActivity.class));
+				return; // Keep the return here
 			case NavItem.NAV_DASHBOARD:
-				mCurrentFragment = new DashboardFragment();
+				fragment = new DashboardFragment();
 				break;
 			case NavItem.NAV_MY_DOCUMENTS:
-				mCurrentFragment = new SignatureDialogFragment();
+				fragment = new SignatureDialogFragment();
 				break;
 			case NavItem.NAV_ABOUT:
-				mCurrentFragment = new AboutDialogFragment();
+				fragment = new AboutDialogFragment();
 				break;
 			default:
 				throw new IllegalArgumentException();
 		}
 
 
-		if (mCurrentFragment instanceof DialogFragment) {
-			FragmentsUtils.showDialog(this, (DialogFragment) mCurrentFragment);
+		if (fragment instanceof DialogFragment) {
+			FragmentsUtils.showDialog(this, (DialogFragment) fragment);
 		} else {
-			FragmentsUtils.replace(this, mCurrentFragment, R.id.content_fragment);
+			FragmentsUtils.replace(this, fragment, R.id.content_fragment);
 			setTitle(item.getLabel());
 		}
 		mDrawerLayout.closeDrawer(mDrawerNavigation);
@@ -237,105 +243,10 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
 	@Override
 	public void onBackPressed() {
-		onNavItemSelected(NavItem.getNavItems().get(0));
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		outState.putParcelable(KEY_WE_PROOV_OBJECT, mCurrentWeProov);
-		super.onSaveInstanceState(outState);
-	}
-
-	public boolean isActionBarShowing() {
-		return mActionBar.getVisibility() == View.VISIBLE;
-	}
-
-	public void showActionBar() {
-		if (mActionBar != null) {
-			mActionBar.setVisibility(View.VISIBLE);
-		}
-	}
-
-	public void hideActionBar() {
-		if (mActionBar != null) {
-			mActionBar.setVisibility(View.GONE);
-		}
-	}
-
-	@Override
-	public void next() {
-		next(null);
-	}
-
-	@Override
-	public void next(Bundle data) {
-		if (mCurrentFragment == null) {
-			// Restore
-			mCurrentFragment = getSupportFragmentManager().findFragmentByTag("tag");
-		}
-
-		if (RenterFragment.class.equals(mCurrentFragment.getClass())) {
-			// Need to go to CarInfoFragment;
-			if (data != null) {
-				mCurrentWeProov.renter = data.getParcelable(TunnelFragment.KEY_RENTER_INFO);
-			}
-			Log.d("Test", "Got Renter info : " + mCurrentWeProov.renter);
-
-			mCurrentFragment = new CarInfoFragment();
-		} else if (CarInfoFragment.class.equals(mCurrentFragment.getClass())) {
-			// Need to go to CarInfoFragment;
-			if (data != null) {
-				mCurrentWeProov.car = data.getParcelable(TunnelFragment.KEY_CAR_INFO);
-			}
-
-
-			Log.d("Test", "Got Car info : " + mCurrentWeProov.car);
-			mWeProovStep = 0;
-			mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlaySubtitleArray[mWeProovStep]);
-		} else if (CameraFragment.class.equals(mCurrentFragment.getClass())) {
-			// Need to go to comment
-			String path = null;
-			if (data != null) {
-				path = data.getString(TunnelFragment.KEY_COMMENT_PICTURE_PATH);
-			}
-
-			// FragmentsUtils.clearBackStack(getSupportFragmentManager());
-			mCurrentFragment = CommentFragment.newInstance(path);
-		} else if (CommentFragment.class.equals(mCurrentFragment.getClass())) {
-			PictureItem item = null;
-			if (data != null) {
-				item = data.getParcelable(TunnelFragment.KEY_PICTURE_ITEM);
-			}
-
-			Log.d("Test", "Got picture = " + item);
-
-			mCurrentWeProov.addPicture(item);
-			// Goto next drawable
-			if (++mWeProovStep == mOverlayDrawableArray.length) {
-				String name = getString(R.string.signature_renter);
-				if (mCurrentWeProov.renter != null) {
-					name = mCurrentWeProov.renter.firstname + " " + mCurrentWeProov.renter.lastname;
-				}
-
-				mWeProovStep = 0;
-				mCurrentFragment = SignatureFragment.newInstance(name);
-			} else {
-				// Progress with camera
-				mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
-			}
-		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep == 0) {
-			mCurrentFragment = SignatureFragment.newInstance(AccountUtils.getDisplayName());
-			mWeProovStep++;
-		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep == 1) {
-			mCurrentFragment = SummaryFragment.newInstance(mCurrentWeProov);
+		if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
+			mDrawerLayout.closeDrawer(mDrawerNavigation);
 		} else {
-			mCurrentFragment = new DashboardFragment();
-			mCurrentWeProov.doSave();
-			// throw new IllegalStateException("Called from a non nextable fragment");
+			super.onBackPressed();
 		}
-
-		setCommandListener(null);
-		FragmentsUtils.replace(this, mCurrentFragment, R.id.content_fragment);
-		// Clear state
 	}
 }

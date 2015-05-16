@@ -14,6 +14,8 @@ apply plugin: 'com.android.application'
 
 repositories {
     jcenter()
+    mavenLocal()
+    mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
@@ -95,7 +97,8 @@ dependencies {
         exclude module: 'okhttp'
         exclude module: 'okhttp-urlconnection'
     }
-    compile('com.squareup.retrofit:retrofit:+') {
+
+    compile('com.squareup.retrofit:retrofit:1.+') {
         exclude module: 'gson'
         exclude module: 'okhttp'
         exclude module: 'okhttp-urlconnection'
@@ -104,4 +107,6 @@ dependencies {
     compile 'com.squareup:otto:+'
 
     compile 'com.github.castorflex.smoothprogressbar:library:+'
+
+    compile 'com.caverock:androidsvg:+'
 }

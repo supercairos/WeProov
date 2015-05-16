@@ -8,13 +8,13 @@ import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Choreographer;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import com.weproov.app.ui.glrender.BasicTexture;
 import com.weproov.app.ui.glrender.GLES20Canvas;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.GestureRecognizer;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -45,7 +45,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 
 		invalidate();
 
-		Log.d("Test", "Double tap : " + mRenderer);
+		Dog.d( "Double tap : " + mRenderer);
 		return true;
 	}
 
@@ -55,7 +55,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 		mRenderer.centerX = mRenderer.centerX + (int) (getInvertedScaleX() * dx);
 		invalidate();
 
-		Log.d("Test", "onScroll : " + mRenderer);
+		Dog.d("onScroll : " + mRenderer);
 		return true;
 	}
 
@@ -66,8 +66,8 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 		mRenderer.scale = mRenderer.scale * scale;
 		invalidate();
 
-		Log.d("Test", "onScale : " + focusX + " " + focusY + " " + scale);
-		Log.d("Test", "onScale : " + mRenderer);
+		Dog.d( "onScale : " + focusX + " " + focusY + " " + scale);
+		Dog.d( "onScale : " + mRenderer);
 		return true;
 	}
 
@@ -282,7 +282,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Log.d("Test", " onTouchEvent()");
+		Dog.d( " onTouchEvent()");
 		return mGestureRecognizer.onTouchEvent(event);
 	}
 

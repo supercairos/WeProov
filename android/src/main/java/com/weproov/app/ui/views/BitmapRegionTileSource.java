@@ -4,10 +4,10 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.*;
 import android.os.Build;
-import android.util.Log;
 import com.weproov.app.ui.glrender.BasicTexture;
 import com.weproov.app.ui.glrender.BitmapTexture;
 import com.weproov.app.utils.BitmapUtils;
+import com.weproov.app.utils.Dog;
 
 import java.io.IOException;
 
@@ -39,7 +39,7 @@ public class BitmapRegionTileSource implements TiledImageRenderer.TileSource {
 			mWidth = mDecoder.getWidth();
 			mHeight = mDecoder.getHeight();
 		} catch (IOException e) {
-			Log.w("BitmapRegionTileSource", "ctor failed", e);
+			Dog.w( "ctor failed", e);
 		}
 		mOptions = new BitmapFactory.Options();
 		mOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -54,7 +54,7 @@ public class BitmapRegionTileSource implements TiledImageRenderer.TileSource {
 			if (preview.getWidth() <= GL_SIZE_LIMIT && preview.getHeight() <= GL_SIZE_LIMIT) {
 				mPreview = new BitmapTexture(preview);
 			} else {
-				Log.w(TAG, String.format(
+				Dog.w(String.format(
 						"Failed to create preview of apropriate size! "
 								+ " in: %dx%d, out: %dx%d",
 						mWidth, mHeight,
@@ -109,7 +109,7 @@ public class BitmapRegionTileSource implements TiledImageRenderer.TileSource {
 			}
 		}
 		if (bitmap == null) {
-			Log.w("BitmapRegionTileSource", "fail in decoding region");
+			Dog.w( "fail in decoding region");
 		}
 		return bitmap;
 	}
@@ -122,7 +122,7 @@ public class BitmapRegionTileSource implements TiledImageRenderer.TileSource {
 		mOptions.inSampleSize = (1 << level);
 		Bitmap bitmap = mDecoder.decodeRegion(mOverlapRegion, mOptions);
 		if (bitmap == null) {
-			Log.w(TAG, "fail in decoding region");
+			Dog.w( "fail in decoding region");
 		}
 		if (mWantRegion.equals(mOverlapRegion)) {
 			return bitmap;

@@ -9,13 +9,13 @@ import android.content.*;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import com.activeandroid.query.Select;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.PicturesTask;
 import com.weproov.app.models.PictureItem;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.ui.LandingActivity;
+import com.weproov.app.utils.Dog;
 import retrofit.RetrofitError;
 
 import java.util.List;
@@ -106,12 +106,12 @@ public class SyncService extends Service {
 
 				List<PictureItem> items = (new Select()).all().from(PictureItem.class).where("uploaded = ?", false).execute();
 
-				Log.d(TAG, "Sync started ... ");
+				Dog.d( "Sync started ... ");
 
 				int size = items.size();
 				for (int i = 0; i < size; i++) {
 					PictureItem item = items.get(i);
-					Log.d(TAG, "Syncing item >> " + item);
+					Dog.d( "Syncing item >> " + item);
 					mBuilder.setProgress(size, i, false);
 					mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, mBuilder.build());
 
@@ -123,7 +123,7 @@ public class SyncService extends Service {
 					item.save();
 				}
 
-				Log.d(TAG, "Sync finished ... ");
+				Dog.d( "Sync finished ... ");
 
 				// When the loop is finished, updates the notification
 				mBuilder.setContentText(getContext().getString(R.string.notification_picture_download_end))
@@ -135,18 +135,18 @@ public class SyncService extends Service {
 				mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
 
 			} catch (NetworkException e) {
-				Log.e(TAG, "LoginException", e);
+				Dog.e("LoginException", e);
 				syncResult.stats.numAuthExceptions++;
 			} catch (final RetrofitError e) {
-				Log.e(TAG, "RetrofitError", e);
+				Dog.e( "RetrofitError", e);
 				if(e.getKind() == RetrofitError.Kind.CONVERSION) {
-					Log.e(TAG, "RetrofitError kind RetrofitError.Kind.CONVERSION");
+					Dog.e( "RetrofitError kind RetrofitError.Kind.CONVERSION");
 					syncResult.stats.numParseExceptions++;
 				} else if(e.getKind() == RetrofitError.Kind.HTTP) {
-					Log.e(TAG, "RetrofitError kind RetrofitError.Kind.HTTP");
+					Dog.e( "RetrofitError kind RetrofitError.Kind.HTTP");
 					syncResult.stats.numAuthExceptions++;
 				} else if (e.getKind() == RetrofitError.Kind.NETWORK) {
-					Log.e(TAG, "RetrofitError kind RetrofitError.Kind.NETWORK");
+					Dog.e( "RetrofitError kind RetrofitError.Kind.NETWORK");
 					syncResult.stats.numIoExceptions++;
 				}
 			}

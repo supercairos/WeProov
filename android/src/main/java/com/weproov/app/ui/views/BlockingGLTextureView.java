@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
-import android.util.Log;
 import android.view.TextureView;
+import com.weproov.app.utils.Dog;
 
 import javax.microedition.khronos.egl.*;
 import javax.microedition.khronos.opengles.GL10;
@@ -184,7 +184,7 @@ public class BlockingGLTextureView extends TextureView implements TextureView.Su
 			if (mEglSurface == null || mEglSurface == EGL10.EGL_NO_SURFACE) {
 				int error = mEgl.eglGetError();
 				if (error == EGL10.EGL_BAD_NATIVE_WINDOW) {
-					Log.e("EglHelper", "createWindowSurface returned EGL_BAD_NATIVE_WINDOW.");
+					Dog.e( "createWindowSurface returned EGL_BAD_NATIVE_WINDOW.");
 				}
 				return false;
 			}
@@ -257,7 +257,7 @@ public class BlockingGLTextureView extends TextureView implements TextureView.Su
 		}
 
 		public static void logEglErrorAsWarning(String tag, String function, int error) {
-			Log.w(tag, formatEglError(function, error));
+			Dog.w(formatEglError(function, error));
 		}
 
 		public static String formatEglError(String function, int error) {

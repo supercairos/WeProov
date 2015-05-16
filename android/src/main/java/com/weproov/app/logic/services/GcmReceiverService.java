@@ -7,11 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.weproov.app.R;
 import com.weproov.app.logic.receivers.GcmBroadcastReceiver;
 import com.weproov.app.ui.LandingActivity;
+import com.weproov.app.utils.Dog;
 
 public class GcmReceiverService extends IntentService {
 
@@ -55,7 +55,7 @@ public class GcmReceiverService extends IntentService {
                 case GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE:
                     // Post notification of received message.
                     sendNotification("Received: " + extras.toString());
-                    Log.i(TAG, "Received: " + extras.toString());
+                    Dog.i("Received: " + extras.toString());
                     break;
             }
         }

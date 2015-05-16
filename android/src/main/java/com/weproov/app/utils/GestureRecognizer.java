@@ -77,13 +77,13 @@ public class GestureRecognizer {
 
 		@Override
 		public boolean onDoubleTap(MotionEvent e) {
-			Log.d("Test", "onDoubleTap");
+			Dog.d( "onDoubleTap");
 			return mListener.onDoubleTap(e.getX(), e.getY());
 		}
 
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float dx, float dy) {
-			Log.d("Test", "onScroll");
+			Dog.d( "onScroll");
 			return mListener.onScroll(dx, dy, e2.getX() - e1.getX(), e2.getY() - e1.getY());
 		}
 
@@ -104,7 +104,7 @@ public class GestureRecognizer {
 
 		@Override
 		public boolean onScale(ScaleGestureDetector detector) {
-			Log.d("Test", "onScale");
+			Dog.d( "onScale");
 			return mListener.onScale(detector.getFocusX(), detector.getFocusY(), detector.getScaleFactor());
 		}
 

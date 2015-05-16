@@ -90,7 +90,7 @@ public final class CameraUtils {
 			c = Camera.open(id); // attempt to get a Camera instance
 		} catch (Exception e) {
 			// Camera is not available (in use or does not exist)
-			Log.v("Test", "Error", e);
+			Dog.v( "Error", e);
 		}
 
 		return c; // returns null if camera is unavailable
@@ -164,7 +164,7 @@ public final class CameraUtils {
 		// Create the storage directory if it does not exist
 		if (!mediaStorageDir.exists()) {
 			if (!mediaStorageDir.mkdirs()) {
-				Log.d("CameraSample", "failed to create directory");
+				Dog.d( "failed to create directory");
 				return null;
 			}
 		}
@@ -195,8 +195,8 @@ public final class CameraUtils {
 				new String[]{file.toString()}, null,
 				new MediaScannerConnection.OnScanCompletedListener() {
 					public void onScanCompleted(String path, Uri uri) {
-						Log.i("ExternalStorage", "Scanned " + path + ":");
-						Log.i("ExternalStorage", "-> uri=" + uri);
+						Dog.i( "Scanned " + path + ":");
+						Dog.i( "-> uri=" + uri);
 					}
 				});
 	}

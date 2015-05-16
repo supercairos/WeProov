@@ -5,12 +5,12 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 public final class FragmentsUtils {
 
-	public static void replace(ActionBarActivity attachTo, Fragment fragment, int rootView, String tag, boolean addToBackstack, int animIn, int animOut) {
+	public static void replace(AppCompatActivity attachTo, Fragment fragment, int rootView, String tag, boolean addToBackstack, int animIn, int animOut) {
 
 		if (fragment == null || attachTo == null) {
 			throw new RuntimeException("New fragment or Activity is null");
@@ -31,11 +31,11 @@ public final class FragmentsUtils {
 		fragmentTransaction.commit();
 	}
 
-	public static void replace(ActionBarActivity attachTo, Fragment fragment, int rootView) {
+	public static void replace(AppCompatActivity attachTo, Fragment fragment, int rootView) {
 		replace(attachTo, fragment, rootView, "tag", true, 0, 0);
 	}
 
-	public static void showDialog(ActionBarActivity attachTo, DialogFragment fragment) {
+	public static void showDialog(AppCompatActivity attachTo, DialogFragment fragment) {
 		FragmentTransaction ft = attachTo.getSupportFragmentManager().beginTransaction();
 		Fragment prev = attachTo.getSupportFragmentManager().findFragmentByTag("dialog");
 		if (prev != null) {

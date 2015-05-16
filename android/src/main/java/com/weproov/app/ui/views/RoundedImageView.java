@@ -4,9 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-import com.weproov.app.ui.drawables.CircleDrawable;
 
 public class RoundedImageView extends ImageView {
 
@@ -25,8 +26,9 @@ public class RoundedImageView extends ImageView {
 
 	@Override
 	public void setImageDrawable(Drawable drawable) {
-		if(drawable instanceof BitmapDrawable) {
-			super.setImageDrawable(new CircleDrawable(((BitmapDrawable) drawable).getBitmap()));
+		if (drawable instanceof BitmapDrawable) {
+			Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+			super.setImageDrawable(getDrawable(bitmap));
 		} else {
 			super.setImageDrawable(drawable);
 		}
@@ -34,6 +36,13 @@ public class RoundedImageView extends ImageView {
 
 	@Override
 	public void setImageBitmap(Bitmap bm) {
-		super.setImageDrawable(new CircleDrawable(bm));
+		super.setImageDrawable(getDrawable(bm));
+	}
+
+	private RoundedBitmapDrawable getDrawable(Bitmap bitmap) {
+		RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+		dr.setCornerRadius(Math.max(bitmap.getWidth(), bitmap.getHeight()) / 2.0f);
+
+		return dr;
 	}
 }

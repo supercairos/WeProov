@@ -49,8 +49,8 @@ public class PictureItem extends BaseModel implements Parcelable {
 
 	protected PictureItem(Parcel in) {
 		super();
-		path = in.readParcelable(Uri.class.getClassLoader());
-		comment = in.readString();
+		this.path = in.readParcelable(Uri.class.getClassLoader());
+		this.comment = in.readString();
 	}
 
 	public static IPictureService getService() {

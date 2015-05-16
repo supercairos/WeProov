@@ -2,7 +2,6 @@ package com.weproov.app.ui.adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.weproov.app.models.CarInfo;
+import com.weproov.app.utils.Dog;
 
 import java.util.Collection;
 import java.util.List;
@@ -48,7 +48,7 @@ public class PlateAutocompleteAdapter extends ArrayAdapter<CarInfo> implements F
 					infos = new Select().from(CarInfo.class).where("plate LIKE ?", constraint + "%").groupBy("plate COLLATE NOCASE").orderBy("plate DESC").execute();
 				}
 
-				Log.d("Test", "Found values => " + infos);
+				Dog.d("Found values => " + infos);
 
 				final FilterResults filterResults = new FilterResults();
 				filterResults.values = infos;

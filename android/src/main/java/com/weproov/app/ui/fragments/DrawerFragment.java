@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,10 +15,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.InjectView;
+import com.squareup.picasso.RequestCreator;
 import com.weproov.app.R;
 import com.weproov.app.models.NavItem;
 import com.weproov.app.ui.adapter.NavigationAdapter;
 import com.weproov.app.utils.AccountUtils;
+import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.constants.AccountConstants;
 
 public class DrawerFragment extends BaseFragment {
@@ -77,7 +80,14 @@ public class DrawerFragment extends BaseFragment {
 			mDrawerTitle.setText(firstName + " " + lastName);
 			mDrawerSubtitle.setText(email);
 			if (!TextUtils.isEmpty(url)) {
-				// PicassoUtils.PICASSO.load(url).fit().centerCrop().error(R.drawable.ico_romain_caire).placeholder(R.drawable.progress_medium).into(mDrawerImageView);
+				RequestCreator requestCreator = PicassoUtils.PICASSO.load(url).fit().centerCrop().error(R.drawable.no_icon_profile);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+					requestCreator.placeholder(getResources().getDrawable(R.drawable.progress_large, getActivity().getTheme()));
+				} else {
+					requestCreator.placeholder(R.drawable.progress_large);
+				}
+
+				requestCreator.into(mDrawerImageView);
 			}
 		}
 

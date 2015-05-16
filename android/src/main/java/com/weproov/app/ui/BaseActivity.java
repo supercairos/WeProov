@@ -2,7 +2,7 @@ package com.weproov.app.ui;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -17,7 +17,7 @@ import com.weproov.app.logic.providers.BusProvider;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.debug.ViewServer;
 
-public abstract class BaseActivity extends ActionBarActivity implements CommandIface {
+public abstract class BaseActivity extends AppCompatActivity implements CommandIface {
 
 	@InjectView(R.id.content_root_view)
 	ViewGroup mRootView;
@@ -102,7 +102,7 @@ public abstract class BaseActivity extends ActionBarActivity implements CommandI
 			@Override
 			public void onGlobalLayout() {
 				int heightDiff = mRootView.getRootView().getHeight() - mRootView.getHeight();
-				onKeyboardVisibilityChanged(heightDiff > 100);// if more than 100 pixels, its probably a keyboard...
+				onKeyboardVisibilityChanged(heightDiff > 300);// if more than 300 pixels, its probably a keyboard...
 			}
 		});
 		ViewServer.get(this).addWindow(this);
@@ -135,7 +135,7 @@ public abstract class BaseActivity extends ActionBarActivity implements CommandI
 		return mKeyboardShown;
 	}
 
-	private void onKeyboardVisibilityChanged(boolean shown) {
+	protected void onKeyboardVisibilityChanged(boolean shown) {
 		// empty
 		mKeyboardShown = shown;
 		if (mBottomCommands != null) {

@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import com.weproov.app.models.User;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.ui.LandingActivity;
 import com.weproov.app.ui.RegisterActivity;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 
 public class AuthenticatorService extends Service {
@@ -48,7 +48,7 @@ public class AuthenticatorService extends Service {
 
         @Override
         public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) {
-            Log.d("IBetYa", TAG + "> addAccount");
+            Dog.d( TAG + "> addAccount");
 
             final Intent intent = new Intent(mContext, RegisterActivity.class);
             intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
@@ -60,7 +60,7 @@ public class AuthenticatorService extends Service {
 
         @Override
         public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) throws NetworkErrorException {
-            Log.v("Test", TAG + "> getAuthToken (" + authTokenType + ")");
+            Dog.v( TAG + "> getAuthToken (" + authTokenType + ")");
 
             // If the caller requested an authToken type we don't support, then
             // return an error
@@ -75,7 +75,7 @@ public class AuthenticatorService extends Service {
 
             // Lets give another try to authenticate the user
             if (password != null) {
-                Log.d("Test", TAG + "> re-authenticating with the existing password");
+                Dog.d(TAG + "> re-authenticating with the existing password");
                 try {
                     User user = User.getService().login(account.name, password);
                     if (!TextUtils.isEmpty(user.token)) {

@@ -6,13 +6,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.v4.util.Pools;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.LongSparseArray;
 import android.view.View;
 import android.view.WindowManager;
 import com.android.gallery3d.glrenderer.UploadedTexture;
 import com.weproov.app.ui.glrender.BasicTexture;
 import com.weproov.app.ui.glrender.GLCanvas;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.MathUtils;
 
 public class TiledImageRenderer {
@@ -522,7 +522,7 @@ public class TiledImageRenderer {
 					tile.updateContent(canvas);
 					--quota;
 				} else {
-					Log.w(TAG, "Tile in upload queue has invalid state: " + tile.mTileState);
+					Dog.w( "Tile in upload queue has invalid state: " + tile.mTileState);
 				}
 			}
 		}
@@ -628,7 +628,7 @@ public class TiledImageRenderer {
 				}
 				mDecodedTile = mModel.getTile(mTileLevel, mX, mY, reuse);
 			} catch (Throwable t) {
-				Log.w(TAG, "fail to decode tile", t);
+				Dog.w("fail to decode tile", t);
 			}
 			return mDecodedTile != null;
 		}
@@ -700,7 +700,7 @@ public class TiledImageRenderer {
 
 		public boolean push(Tile tile) {
 			if (contains(tile)) {
-				Log.w(TAG, "Attempting to add a tile already in the queue!");
+				Dog.w( "Attempting to add a tile already in the queue!");
 				return false;
 			}
 			boolean wasEmpty = mHead == null;
@@ -731,7 +731,7 @@ public class TiledImageRenderer {
 			try {
 				join();
 			} catch (InterruptedException e) {
-				Log.w(TAG, "Interrupted while waiting for TileDecoder thread to finish!");
+				Dog.w( "Interrupted while waiting for TileDecoder thread to finish!");
 			}
 		}
 

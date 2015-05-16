@@ -15,7 +15,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,11 +27,14 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import com.squareup.otto.Subscribe;
 import com.weproov.app.R;
+import com.weproov.app.logic.controllers.ProfileLoader;
 import com.weproov.app.logic.controllers.UsersTask;
 import com.weproov.app.models.User;
+import com.weproov.app.models.UserProfile;
 import com.weproov.app.models.events.NetworkErrorEvent;
 import com.weproov.app.models.events.RegisterSuccessEvent;
 import com.weproov.app.ui.ifaces.CommandIface;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.validators.EmailValidator;
 import com.weproov.app.utils.validators.PasswordValidator;
@@ -44,6 +46,7 @@ import java.util.List;
 public class RegisterActivity extends BaseActivity implements CommandIface.OnClickListener {
 
 	private static final int SELECT_PROFILE_REQUEST_CODE = 1337;
+	private static final int LOADER_ID = 1338;
 
 	@InjectView(R.id.profile_picture)
 	ImageView mProfilePicture;
@@ -76,6 +79,8 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 	private Uri mProfilePictureUri;
 	private Uri mOutputFileUri;
 
+	private ProfileLoader mLoader;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,6 +105,23 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 		});
 
 		setCommandListener(this);
+
+		mLoader = new ProfileLoader(this) {
+			@Override
+			protected void onProfileLoaded(UserProfile profile) {
+				mEmail.setText(profile.email);
+				mFirstName.setText(profile.givenName);
+				mLastName.setText(profile.familyName);
+
+				if (mProfilePictureUri == null) {
+					mProfilePictureUri = profile.photo;
+					if (profile.photo != null) {
+						PicassoUtils.PICASSO.load(mProfilePictureUri).centerCrop().fit().into(mProfilePicture);
+					}
+				}
+			}
+		};
+		getSupportLoaderManager().initLoader(LOADER_ID, null, mLoader);
 	}
 
 	@Override
@@ -252,7 +274,7 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 			}
 
 			PicassoUtils.PICASSO.load(mProfilePictureUri).centerCrop().fit().into(mProfilePicture);
-			Log.d("Test", "Found picture : " + mProfilePictureUri);
+			Dog.d("Found picture : " + mProfilePictureUri);
 		}
 	}
 }

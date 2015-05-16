@@ -3,12 +3,12 @@ package com.weproov.app.ui.views;
 import android.content.Context;
 import android.hardware.Camera;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import com.weproov.app.utils.CameraUtils;
+import com.weproov.app.utils.Dog;
 
 import java.io.IOException;
 import java.util.List;
@@ -117,7 +117,7 @@ public class CameraPreviewView extends ViewGroup implements SurfaceHolder.Callba
 				mCamera.setPreviewDisplay(holder);
 			}
 		} catch (IOException exception) {
-			Log.e("Test", "IOException caused by setPreviewDisplay()", exception);
+			Dog.e("IOException caused by setPreviewDisplay()", exception);
 		}
 		if (mPreviewSize == null) requestLayout();
 		mSurfaceCreated = true;

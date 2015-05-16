@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import com.weproov.app.MyApplication;
 import com.weproov.app.utils.constants.AccountConstants;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
@@ -45,7 +44,7 @@ public final class AccountUtils {
 				return "";
 			}
 		} catch (AuthenticatorException | OperationCanceledException e) {
-			Log.e("Test", "Error " + e, e);
+			Dog.e( "Error " + e, e);
 			return "";
 		}
 	}
@@ -61,17 +60,17 @@ public final class AccountUtils {
 	}
 
 	public static void setSyncable(boolean enabled) {
-		Log.d("Test", "Start setSyncable");
+		Dog.d( "Start setSyncable");
 		Account account = getAccount();
 		if (account != null) {
 			ContentResolver.setIsSyncable(account, AuthenticatorConstants.ACCOUNT_PROVIDER, enabled ? 1 : 0);
 		} else {
-			Log.e("Test", "Account was null while starting sync...");
+			Dog.e( "Account was null while starting sync...");
 		}
 	}
 
 	public static void startSync() {
-		Log.d("Test", "Start sync");
+		Dog.d( "Start sync");
 		/*
 		 * Signal the framework to run your sync adapter. Assume that
 		 * app initialization has already created the account.
@@ -86,13 +85,13 @@ public final class AccountUtils {
 
 			ContentResolver.requestSync(account, AuthenticatorConstants.ACCOUNT_TYPE, bundle);
 		} else {
-			Log.e("Test", "Account was null while starting sync...");
+			Dog.e( "Account was null while starting sync...");
 		}
 	}
 
 	@SuppressWarnings("deprecation")
 	public static void removeAccount(final Activity ctx, final AccountRemovedCallback callback) {
-		Log.d("Test", "Loging out");
+		Dog.d( "Loging out");
 		AccountManager accountManager = AccountManager.get(ctx);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
 			accountManager.removeAccount(AccountUtils.getAccount(), ctx, new AccountManagerCallback<Bundle>() {
@@ -104,7 +103,7 @@ public final class AccountUtils {
 							callback.onSuccess();
 						}
 					} catch (OperationCanceledException | IOException | AuthenticatorException e) {
-						Log.e("Test", "Failed to delete the account... :(", e);
+						Dog.e( "Failed to delete the account... :(", e);
 						callback.onFailure();
 					}
 				}
@@ -118,7 +117,7 @@ public final class AccountUtils {
 							callback.onSuccess();
 						}
 					} catch (OperationCanceledException | IOException | AuthenticatorException e) {
-						Log.e("Test", "Failed to delete the account... :(", e);
+						Dog.e( "Failed to delete the account... :(", e);
 						callback.onFailure();
 					}
 				}

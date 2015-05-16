@@ -2,7 +2,6 @@ package com.weproov.app.ui.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import com.weproov.app.models.PictureItem;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.ui.views.BitmapRegionTileSource;
 import com.weproov.app.ui.views.TiledImageView;
+import com.weproov.app.utils.Dog;
 
 public class CommentFragment extends TunnelFragment implements CommandIface.OnClickListener {
 
@@ -47,7 +47,7 @@ public class CommentFragment extends TunnelFragment implements CommandIface.OnCl
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			mRawPicturePath = Uri.parse("file://" + getArguments().getString(KEY_COMMENT_PICTURE_PATH));
-			Log.d("Test", "Found picture = " + mRawPicturePath);
+			Dog.d("Found picture = " + mRawPicturePath);
 		}
 	}
 

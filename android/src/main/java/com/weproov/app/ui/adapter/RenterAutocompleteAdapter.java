@@ -2,7 +2,6 @@ package com.weproov.app.ui.adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.weproov.app.models.CarInfo;
 import com.weproov.app.models.RenterInfo;
+import com.weproov.app.utils.Dog;
 
 import java.util.Collection;
 import java.util.List;
@@ -60,7 +60,7 @@ public class RenterAutocompleteAdapter extends ArrayAdapter<RenterInfo> implemen
 					infos = new Select().from(RenterInfo.class).where((getType() == TYPE_FIRST_NAME ? "firstname" : "lastname")+" LIKE ?", constraint + "%").groupBy("firstname COLLATE NOCASE, lastname COLLATE NOCASE").orderBy("firstname DESC").execute();
 				}
 
-				Log.d("Test", "Found values => " + infos);
+				Dog.d("Found values => " + infos);
 
 				final FilterResults filterResults = new FilterResults();
 				filterResults.values = infos;

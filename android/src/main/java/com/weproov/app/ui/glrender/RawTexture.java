@@ -16,7 +16,7 @@
 
 package com.weproov.app.ui.glrender;
 
-import android.util.Log;
+import com.weproov.app.utils.Dog;
 
 import javax.microedition.khronos.opengles.GL11;
 
@@ -57,7 +57,7 @@ public class RawTexture extends BasicTexture {
     @Override
     protected boolean onBind(GLCanvas canvas) {
         if (isLoaded()) return true;
-        Log.w(TAG, "lost the content due to context change");
+        Dog.w("lost the content due to context change");
         return false;
     }
 

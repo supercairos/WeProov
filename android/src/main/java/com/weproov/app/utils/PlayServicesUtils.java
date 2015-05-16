@@ -54,7 +54,7 @@ public final class PlayServicesUtils {
     public static void storeRegistrationId(Context context, String regId) {
         final SharedPreferences prefs = getGcmPreferences(context);
         int appVersion = getAppVersion(context);
-        Log.i(TAG, "Saving regId on app version " + appVersion);
+        Dog.i( "Saving regId on app version " + appVersion);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PROPERTY_REG_ID, regId);
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
@@ -73,7 +73,7 @@ public final class PlayServicesUtils {
         final SharedPreferences prefs = getGcmPreferences(context);
         String registrationId = prefs.getString(PROPERTY_REG_ID, "");
         if (registrationId.isEmpty()) {
-            Log.i(TAG, "Registration not found.");
+            Dog.i( "Registration not found.");
             return "";
         }
         // Check if app was updated; if so, it must clear the registration ID
@@ -82,7 +82,7 @@ public final class PlayServicesUtils {
         int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
         int currentVersion = getAppVersion(context);
         if (registeredVersion != currentVersion) {
-            Log.i(TAG, "App version changed.");
+            Dog.i( "App version changed.");
             return "";
         }
         return registrationId;
@@ -96,7 +96,7 @@ public final class PlayServicesUtils {
     public static boolean checkPlayServices(Context context) {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
         if (resultCode != ConnectionResult.SUCCESS) {
-            Log.e("Test", "This device is not supported.");
+            Dog.e( "This device is not supported.");
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 if (context instanceof Activity) {
                     GooglePlayServicesUtil.getErrorDialog(resultCode, ((Activity) context), PLAY_SERVICES_RESOLUTION_REQUEST).show();

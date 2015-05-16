@@ -8,7 +8,6 @@ import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +19,7 @@ import com.weproov.app.R;
 import com.weproov.app.ui.ifaces.ActionBarIface;
 import com.weproov.app.ui.views.CameraPreviewView;
 import com.weproov.app.utils.CameraUtils;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.OrientationUtils;
 import com.weproov.app.utils.PicassoUtils;
 
@@ -148,7 +148,7 @@ public class CameraFragment extends TunnelFragment {
 
 	private static void setCameraDisplayOrientation(Context context, Camera camera, int id) {
 		if (camera == null) {
-			Log.d(TAG, "setCameraDisplayOrientation - camera null");
+			Dog.d( "setCameraDisplayOrientation - camera null");
 			return;
 		}
 
@@ -180,7 +180,7 @@ public class CameraFragment extends TunnelFragment {
 			result = (info.orientation - degrees + 360) % 360;
 		}
 
-		Log.d("Test", "Result = " + result);
+		Dog.d( "Result = " + result);
 
 		Camera.Parameters params = camera.getParameters();
 		params.setRotation(result);
@@ -249,7 +249,7 @@ public class CameraFragment extends TunnelFragment {
 		} catch (Exception e) {
 			// For some reason, the picture could not be taken.
 			Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
-			Log.e("Test", "Test", e);
+			Dog.e( "Test", e);
 		}
 	}
 
@@ -271,7 +271,7 @@ public class CameraFragment extends TunnelFragment {
 		} catch (Exception e) {
 			// For some reason, the picture could not be taken.
 			Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
-			Log.e("Test", "Test", e);
+			Dog.e("Test", e);
 		}
 
 		return false;
@@ -383,7 +383,7 @@ public class CameraFragment extends TunnelFragment {
 					f = new FileOutputStream(file);
 					f.write(params[0].bytes);
 				} catch (IOException e) {
-					Log.e("Test", "IOEx", e);
+					Dog.e( "IOEx", e);
 				} finally {
 					if (f != null) {
 						try {
@@ -407,7 +407,7 @@ public class CameraFragment extends TunnelFragment {
 				CameraUtils.sendMediaScannerBroadcast(getActivity(), s);
 				Bundle bundle = new Bundle();
 				bundle.putString(TunnelFragment.KEY_COMMENT_PICTURE_PATH, s.getAbsolutePath());
-				Log.d("Test", "File is = " + s.getAbsolutePath());
+				Dog.d( "File is = " + s.getAbsolutePath());
 				OrientationUtils.unlockOrientation(getActivity());
 				getTunnel().next(bundle);
 			} else {

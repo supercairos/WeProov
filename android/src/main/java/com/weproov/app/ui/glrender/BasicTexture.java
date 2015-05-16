@@ -16,7 +16,7 @@
 
 package com.weproov.app.ui.glrender;
 
-import android.util.Log;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.MathUtils;
 
 import java.util.WeakHashMap;
@@ -80,7 +80,7 @@ public abstract class BasicTexture implements Texture {
         mTextureWidth = width > 0 ? MathUtils.nextPowerOf2(width) : 0;
         mTextureHeight = height > 0 ? MathUtils.nextPowerOf2(height) : 0;
         if (mTextureWidth > MAX_TEXTURE_SIZE || mTextureHeight > MAX_TEXTURE_SIZE) {
-            Log.w(TAG, String.format("texture is too large: %d x %d",
+            Dog.w(String.format("texture is too large: %d x %d",
                     mTextureWidth, mTextureHeight), new Exception());
         }
     }

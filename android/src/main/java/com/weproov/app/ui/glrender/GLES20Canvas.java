@@ -21,7 +21,7 @@ import android.graphics.RectF;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
-import android.util.Log;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.IntArray;
 
 import java.nio.Buffer;
@@ -316,8 +316,8 @@ public class GLES20Canvas implements GLCanvas {
         int[] mLinkStatus = mTempIntArray;
         GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, mLinkStatus, 0);
         if (mLinkStatus[0] != GLES20.GL_TRUE) {
-            Log.e(TAG, "Could not link program: ");
-            Log.e(TAG, GLES20.glGetProgramInfoLog(program));
+            Dog.e( "Could not link program: ");
+            Dog.e( GLES20.glGetProgramInfoLog(program));
             GLES20.glDeleteProgram(program);
             program = 0;
         }
@@ -824,7 +824,7 @@ public class GLES20Canvas implements GLCanvas {
         mCountTextureRect = 0;
         mCountFillRect = 0;
         mCountDrawLine = 0;
-        Log.d(TAG, line);
+        Dog.d(line);
     }
 
     @Override
@@ -963,7 +963,7 @@ public class GLES20Canvas implements GLCanvas {
         int error = GLES20.glGetError();
         if (error != 0) {
             Throwable t = new Throwable();
-            Log.e(TAG, "GL error: " + error, t);
+            Dog.e( "GL error: " + error, t);
         }
     }
 
@@ -977,7 +977,7 @@ public class GLES20Canvas implements GLCanvas {
             }
             b.append(m[offset + i]);
         }
-        Log.v(TAG, b.toString());
+        Dog.v( b.toString());
     }
 
     @Override

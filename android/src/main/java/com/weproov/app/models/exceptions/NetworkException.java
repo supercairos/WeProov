@@ -5,44 +5,97 @@ import com.google.gson.annotations.SerializedName;
 
 public class NetworkException extends WeProovException {
 
-    @Expose
-    @SerializedName("error")
-    protected String errorMessage;
+	public static final int OTHER_CAUSE = -1;
+	public static final int INTERNAL_SERVER_ERROR = 1;
+	public static final int CONNECTION_FAILED = 100;
+	public static final int OBJECT_NOT_FOUND = 101;
+	public static final int INVALID_QUERY = 102;
+	public static final int INVALID_CLASS_NAME = 103;
+	public static final int MISSING_OBJECT_ID = 104;
+	public static final int INVALID_KEY_NAME = 105;
+	public static final int INVALID_POINTER = 106;
+	public static final int INVALID_JSON = 107;
+	public static final int COMMAND_UNAVAILABLE = 108;
+	public static final int NOT_INITIALIZED = 109;
+	public static final int INCORRECT_TYPE = 111;
+	public static final int INVALID_CHANNEL_NAME = 112;
+	public static final int PUSH_MISCONFIGURED = 115;
+	public static final int OBJECT_TOO_LARGE = 116;
+	public static final int OPERATION_FORBIDDEN = 119;
+	public static final int CACHE_MISS = 120;
+	public static final int INVALID_NESTED_KEY = 121;
+	public static final int INVALID_FILE_NAME = 122;
+	public static final int INVALID_ACL = 123;
+	public static final int TIMEOUT = 124;
+	public static final int INVALID_EMAIL_ADDRESS = 125;
+	public static final int DUPLICATE_VALUE = 137;
+	public static final int INVALID_ROLE_NAME = 139;
+	public static final int EXCEEDED_QUOTA = 140;
+	public static final int SCRIPT_ERROR = 141;
+	public static final int VALIDATION_ERROR = 142;
+	public static final int FILE_DELETE_ERROR = 153;
+	public static final int REQUEST_LIMIT_EXCEEDED = 155;
+	public static final int INVALID_EVENT_NAME = 160;
+	public static final int USERNAME_MISSING = 200;
+	public static final int PASSWORD_MISSING = 201;
+	public static final int USERNAME_TAKEN = 202;
+	public static final int EMAIL_TAKEN = 203;
+	public static final int EMAIL_MISSING = 204;
+	public static final int EMAIL_NOT_FOUND = 205;
+	public static final int SESSION_MISSING = 206;
+	public static final int MUST_CREATE_USER_THROUGH_SIGNUP = 207;
+	public static final int ACCOUNT_ALREADY_LINKED = 208;
+	public static final int INVALID_SESSION_TOKEN = 209;
+	public static final int LINKED_ID_MISSING = 250;
+	public static final int INVALID_LINKED_SESSION = 251;
+	public static final int UNSUPPORTED_SERVICE = 252;
 
-    @Expose
-    protected int code;
+	@Expose
+	@SerializedName("error")
+	protected String errorMessage;
 
-    private int status;
+	@Expose
+	protected int code;
 
-    public NetworkException() {
-        super();
-    }
+	private int status;
 
-    public NetworkException(String message) {
-        super(message);
-    }
+	public NetworkException() {
+		super();
+	}
 
-    public NetworkException(int status, int code, String message) {
-        this.status = status;
-        this.code = code;
-        this.errorMessage = message;
-    }
+	public NetworkException(String message) {
+		super(message);
+	}
 
-    /**
-     * @return the HTTP Response code
-     */
-    public int getStatus() {
-        return status;
-    }
+	public NetworkException(int status, int code, String message) {
+		this.status = status;
+		this.code = code;
+		this.errorMessage = message;
+	}
 
-    public void setStatus(int code) {
-        this.status = code;
-    }
+	/**
+	 * @return the HTTP Response code
+	 */
+	public int getStatus() {
+		return status;
+	}
 
-    @Override
-    public String getMessage() {
-        return "Server returned code " + code + " and message " + errorMessage + " HTTP status was " + status;
-    }
+	public void setStatus(int code) {
+		this.status = code;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	@Override
+	public String getMessage() {
+		return "Server returned code " + code + " and message " + errorMessage + " HTTP status was " + status;
+	}
 }
 
 

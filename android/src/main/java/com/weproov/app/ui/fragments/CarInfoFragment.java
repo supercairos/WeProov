@@ -14,7 +14,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import com.weproov.app.R;
 import com.weproov.app.models.CarInfo;
 import com.weproov.app.ui.adapter.PlateAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.PixelUtils;
 
@@ -336,7 +336,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			int size = (int) PixelUtils.convertDpToPixel(100);
 			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).into(mVehicleDocumentationPicture);
 
-			Log.d("Test", "Found picture : " + mVehicleDocumentationUri);
+			Dog.d("Found picture : " + mVehicleDocumentationUri);
 		}
 	}
 }

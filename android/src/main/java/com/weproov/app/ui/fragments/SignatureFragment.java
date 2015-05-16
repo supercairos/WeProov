@@ -2,7 +2,6 @@ package com.weproov.app.ui.fragments;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import com.weproov.app.R;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.ui.views.FingerPaintView;
 import com.weproov.app.utils.CameraUtils;
+import com.weproov.app.utils.Dog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -89,13 +89,13 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 			fos.write(bos.toByteArray());
 			fos.flush();
 		} catch (IOException e) {
-			Log.d("Test", "IO", e);
+			Dog.d("IO", e);
 		} finally {
 			if (fos != null) {
 				try {
 					fos.close();
 				} catch (IOException e) {
-					Log.d("Test", "IO", e);
+					Dog.d( "IO", e);
 				}
 			}
 		}

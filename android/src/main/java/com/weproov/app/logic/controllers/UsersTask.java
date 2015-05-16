@@ -6,7 +6,6 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import com.weproov.app.MyApplication;
 import com.weproov.app.logic.providers.BusProvider;
 import com.weproov.app.models.User;
@@ -18,6 +17,7 @@ import com.weproov.app.models.wrappers.ParseFile;
 import com.weproov.app.models.wrappers.ParseFileResponse;
 import com.weproov.app.models.wrappers.ParseRegisterResponse;
 import com.weproov.app.utils.AccountUtils;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.connections.TypedUri;
 import com.weproov.app.utils.constants.AccountConstants;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
@@ -35,11 +35,11 @@ public final class UsersTask {
 				try {
 					User user = SERVICE.login(email, password);
 					user.password = password;
-					Log.d("Test", "User found : " + user.toString());
+					Dog.d("User found : " + user.toString());
 					save(user);
 					BUS.post(new LoginSuccessEvent());
 				} catch (NetworkException | RetrofitError error) {
-					Log.e("Test", "Got an error while login :(", error);
+					Dog.e( "Got an error while login :(", error);
 					BUS.post(new NetworkErrorEvent(error));
 				}
 			}
@@ -60,11 +60,11 @@ public final class UsersTask {
 
 					ParseRegisterResponse server = SERVICE.register(user);
 					user.token = server.token;
-					Log.d("Test", "User found : " + server.toString());
+					Dog.d( "User found : " + server.toString());
 					save(user);
 					BUS.post(new RegisterSuccessEvent());
 				} catch (NetworkException | RetrofitError error) {
-					Log.e("Test", "Got an error while registering :(", error);
+					Dog.e( "Got an error while registering :(", error);
 					BUS.post(new NetworkErrorEvent(error));
 				}
 			}

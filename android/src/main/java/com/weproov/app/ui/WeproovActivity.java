@@ -1,0 +1,224 @@
+package com.weproov.app.ui;
+
+import android.accounts.Account;
+import android.content.ContentResolver;
+import android.content.SyncStatusObserver;
+import android.content.res.TypedArray;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import com.weproov.app.R;
+import com.weproov.app.models.PictureItem;
+import com.weproov.app.models.WeProov;
+import com.weproov.app.ui.fragments.*;
+import com.weproov.app.ui.ifaces.ActionBarIface;
+import com.weproov.app.utils.AccountUtils;
+import com.weproov.app.utils.Dog;
+import com.weproov.app.utils.FragmentsUtils;
+import com.weproov.app.utils.constants.AuthenticatorConstants;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
+
+public class WeproovActivity extends BaseActivity implements ActionBarIface, TunnelFragment.Tunnel {
+
+	private static final String KEY_WE_PROOV_OBJECT = "key_we_proov_object";
+
+	@InjectView(R.id.action_bar)
+	Toolbar mActionBar;
+
+	@InjectView(R.id.sync_progress)
+	SmoothProgressBar mSyncProgress;
+
+	private Object mSyncObserverHandle;
+
+	private int mWeProovStep;
+	private Fragment mCurrentFragment;
+
+	private int[] mOverlayDrawableArray;
+	private String[] mOverlaySubtitleArray;
+
+	private WeProov mCurrentWeProov = new WeProov();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_weproov);
+		ButterKnife.inject(this);
+		setSupportActionBar(mActionBar);
+
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+
+		if (savedInstanceState != null) {
+			mCurrentWeProov = savedInstanceState.getParcelable(KEY_WE_PROOV_OBJECT);
+			Dog.d( "Found weproov object : " + mCurrentWeProov);
+		} else {
+			FragmentsUtils.replace(this, new RenterFragment(), R.id.content_fragment, "tag", false, 0, 0);
+		}
+
+
+		TypedArray ids = getResources().obtainTypedArray(R.array.camera_overlay);
+		mOverlayDrawableArray = new int[ids.length()];
+		for (int i = 0; i < ids.length(); i++) {
+			mOverlayDrawableArray[i] = ids.getResourceId(i, -1);
+		}
+		ids.recycle();
+
+		mOverlaySubtitleArray = getResources().getStringArray(R.array.camera_overlay_subtitle);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		final Account account = AccountUtils.getAccount();
+		if (account != null) {
+			mSyncObserverHandle = ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE | ContentResolver.SYNC_OBSERVER_TYPE_PENDING, new SyncStatusObserver() {
+						@Override
+						public void onStatusChanged(final int which) {
+							if (ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
+								mSyncProgress.setVisibility(View.VISIBLE);
+							} else if (ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
+								mSyncProgress.setVisibility(View.VISIBLE);
+							} else {
+								mSyncProgress.setVisibility(View.GONE);
+							}
+						}
+					}
+			);
+		}
+	}
+
+	@Override
+	protected void onStop() {
+		ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
+		super.onStop();
+	}
+
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putParcelable(KEY_WE_PROOV_OBJECT, mCurrentWeProov);
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_weproov, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+
+		//noinspection SimplifiableIfStatement
+		if (id == R.id.action_settings) {
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	public boolean isActionBarShowing() {
+		return mActionBar.getVisibility() == View.VISIBLE;
+	}
+
+	public void showActionBar() {
+		if (mActionBar != null) {
+			mActionBar.setVisibility(View.VISIBLE);
+		}
+	}
+
+	public void hideActionBar() {
+		if (mActionBar != null) {
+			mActionBar.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
+	public void next() {
+		next(null);
+	}
+
+	@Override
+	public void next(Bundle data) {
+		if (mCurrentFragment == null) {
+			// Restore
+			mCurrentFragment = getSupportFragmentManager().findFragmentByTag("tag");
+		}
+
+		if (RenterFragment.class.equals(mCurrentFragment.getClass())) {
+			// Need to go to CarInfoFragment;
+			if (data != null) {
+				mCurrentWeProov.renter = data.getParcelable(TunnelFragment.KEY_RENTER_INFO);
+			}
+			Dog.d("Got Renter info : " + mCurrentWeProov.renter);
+
+			mCurrentFragment = new CarInfoFragment();
+		} else if (CarInfoFragment.class.equals(mCurrentFragment.getClass())) {
+			// Need to go to CarInfoFragment;
+			if (data != null) {
+				mCurrentWeProov.car = data.getParcelable(TunnelFragment.KEY_CAR_INFO);
+			}
+
+
+			Dog.d( "Got Car info : " + mCurrentWeProov.car);
+			mWeProovStep = 0;
+			mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlaySubtitleArray[mWeProovStep]);
+		} else if (CameraFragment.class.equals(mCurrentFragment.getClass())) {
+			// Need to go to comment
+			String path = null;
+			if (data != null) {
+				path = data.getString(TunnelFragment.KEY_COMMENT_PICTURE_PATH);
+			}
+
+			// FragmentsUtils.clearBackStack(getSupportFragmentManager());
+			mCurrentFragment = CommentFragment.newInstance(path);
+		} else if (CommentFragment.class.equals(mCurrentFragment.getClass())) {
+			PictureItem item = null;
+			if (data != null) {
+				item = data.getParcelable(TunnelFragment.KEY_PICTURE_ITEM);
+			}
+
+			Dog.d( "Got picture = " + item);
+
+			mCurrentWeProov.addPicture(item);
+			// Goto next drawable
+			if (++mWeProovStep == mOverlayDrawableArray.length) {
+				String name = getString(R.string.signature_renter);
+				if (mCurrentWeProov.renter != null) {
+					name = mCurrentWeProov.renter.firstname + " " + mCurrentWeProov.renter.lastname;
+				}
+
+				mWeProovStep = 0;
+				mCurrentFragment = SignatureFragment.newInstance(name);
+			} else {
+				// Progress with camera
+				mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
+			}
+		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep == 0) {
+			mCurrentFragment = SignatureFragment.newInstance(AccountUtils.getDisplayName());
+			mWeProovStep++;
+		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep == 1) {
+			mCurrentFragment = SummaryFragment.newInstance(mCurrentWeProov);
+		} else {
+			mCurrentWeProov.doSave();
+			finish();
+			return;
+			// throw new IllegalStateException("Called from a non nextable fragment");
+		}
+
+		setCommandListener(null);
+		FragmentsUtils.replace(this, mCurrentFragment, R.id.content_fragment);
+		// Clear state
+	}
+}

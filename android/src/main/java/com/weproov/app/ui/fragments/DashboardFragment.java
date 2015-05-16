@@ -78,8 +78,6 @@ public class DashboardFragment extends BaseFragment {
 					requestCreator.placeholder(R.drawable.progress_large);
 				}
 
-
-				mImageView.setImageDrawable(getResources().getDrawable(R.drawable.progress_large, getActivity().getTheme()));
 				requestCreator.into(mImageView);
 			}
 

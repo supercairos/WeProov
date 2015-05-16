@@ -4,77 +4,103 @@
                 android:id="@+id/content_root_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-    <ScrollView
+
+    <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_alignParentStart="true"
-            android:id="@+id/scrollView">
+            android:scaleType="centerCrop"
+            android:src="@drawable/welcome"
+            android:id="@+id/background"
+            android:contentDescription="@android:string/untitled"/>
 
-        <LinearLayout
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:scaleType="centerCrop"
+            android:src="@drawable/welcome_blur"
+            android:id="@+id/background_blur"
+            android:contentDescription="@android:string/untitled"/>
+
+    <com.weproov.app.ui.views.WeproovLogoView
+            android:layout_width="match_parent"
+            android:id="@+id/weproov_animated_logo"
+            android:layout_height="200dp"
+            android:layout_marginTop="40dp"
+            android:padding="16dp"
+            android:layout_alignParentTop="true"
+            app:fillColor="@android:color/white"
+            app:strokeWidth="2.0"
+            app:strokeColor="@android:color/white"
+            app:resource="@raw/logo"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_above="@+id/bottom_frame_layout"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_marginBottom="20dp"
+            android:paddingEnd="10dp"
+            android:id="@+id/login_group"
+            android:paddingStart="10dp">
+
+        <com.weproov.app.ui.views.FloatLabelLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
+                android:paddingBottom="8dp"
+                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
-                android:id="@+id/linearLayout">
-
-            <ImageView
-                    android:contentDescription="@android:string/untitled"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginBottom="10dp"
-                    android:src="@drawable/ic_launcher"
-                    android:scaleType="centerInside"
-                    android:layout_gravity="center"/>
-
-            <com.weproov.app.ui.views.FloatLabelLayout
+            <EditText
+                    android:id="@+id/edit_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                    android:hint="@string/email"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@+id/edit_password"/>
+        </com.weproov.app.ui.views.FloatLabelLayout>
 
-                <EditText
-                        android:id="@+id/edit_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/email"
-                        android:singleLine="true"
-                        android:inputType="textEmailAddress"
-                        android:imeOptions="actionNext"
-                        android:nextFocusDown="@+id/edit_password"/>
-            </com.weproov.app.ui.views.FloatLabelLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:paddingBottom="4dp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="@string/wrong_email"
+                android:id="@+id/edit_email_error"/>
 
-            <com.weproov.app.ui.views.FloatLabelLayout
+        <com.weproov.app.ui.views.FloatLabelLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+            <EditText
+                    android:id="@+id/edit_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                    android:hint="@string/password"
+                    android:singleLine="true"
+                    android:inputType="textPassword"
+                    android:imeOptions="actionDone"/>
 
-                <EditText
-                        android:id="@+id/edit_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/password"
-                        android:singleLine="true"
-                        android:inputType="textPassword"
-                        android:imeOptions="actionDone"/>
+        </com.weproov.app.ui.views.FloatLabelLayout>
 
-            </com.weproov.app.ui.views.FloatLabelLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:paddingBottom="4dp"
+                android:visibility="invisible"
+                android:textColor="@color/material_red_700"
+                android:text="@string/wrong_login"
+                android:id="@+id/edit_password_error"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/wrong_login"
-                    android:id="@+id/edit_password_error"/>
-
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
     <include
             layout="@layout/footer_button_bar"

@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import com.weproov.app.R;
 import com.weproov.app.models.RenterInfo;
 import com.weproov.app.ui.adapter.RenterAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.PixelUtils;
 import com.weproov.app.utils.validators.EmailValidator;
@@ -309,7 +309,7 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 				default:
 			}
 
-			Log.d("Test", "Found picture : " + selectedImageUri);
+			Dog.d("Found picture : " + selectedImageUri);
 		}
 	}
 }

@@ -7,9 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
@@ -18,6 +16,8 @@
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_PROFILE"/>
 
     <!-- Notify the play store that we use the camera and any device requires a camera to run the app. -->
     <uses-feature android:name="android.hardware.camera"/>
@@ -25,15 +25,15 @@
     <permission
             android:name="com.weproov.app.permission.C2D_MESSAGE"
             android:protectionLevel="signature"/>
+
     <uses-permission android:name="com.weproov.app.permission.C2D_MESSAGE"/>
 
     <application
+            android:name=".MyApplication"
             android:allowBackup="true"
-            android:icon="@drawable/ic_launcher"
-            android:name="com.weproov.app.MyApplication"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
-
+            android:theme="@style/AppTheme.Light">
         <meta-data
                 android:name="AA_DB_NAME"
                 android:value="weproov.db"/>
@@ -46,60 +46,58 @@
         <meta-data
                 android:name="AA_SERIALIZERS"
                 android:value="com.weproov.app.utils.serializers.UriSerializer"/>
-
         <meta-data
                 android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version"/>
 
-
         <activity
                 android:name=".ui.LandingActivity"
+                android:label="@string/app_name"
                 android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-                android:label="@string/app_name">
+                android:theme="@style/AppTheme"
+                android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
                 android:name=".ui.MainActivity"
                 android:label="@string/app_name"/>
-
         <activity
                 android:name=".ui.RegisterActivity"
+                android:label="@string/app_name"
                 android:parentActivityName=".ui.LandingActivity"
                 android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustResize|stateHidden"
-                android:label="@string/app_name"/>
+                android:windowSoftInputMode="adjustResize|stateHidden"/>
 
         <!-- Sync stuffs -->
         <provider
+                android:name="com.activeandroid.content.ContentProvider"
                 android:authorities="com.weproov.app.provider"
                 android:exported="false"
-                android:syncable="true"
-                android:name="com.activeandroid.content.ContentProvider"/>
-
+                android:syncable="true"/>
 
         <service
                 android:name=".logic.services.SyncService"
-                android:process=":sync"
-                android:exported="true">
+                android:exported="true"
+                android:process=":sync">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter"/>
             </intent-filter>
+
             <meta-data
                     android:name="android.content.SyncAdapter"
                     android:resource="@xml/syncadapter"/>
         </service>
-
         <service
                 android:name=".logic.services.AuthenticatorService"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
+
             <meta-data
                     android:name="android.accounts.AccountAuthenticator"
                     android:resource="@xml/authenticator"/>
@@ -115,8 +113,10 @@
                 android:name=".logic.receivers.GcmBroadcastReceiver"
                 android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
+
                 <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+
                 <category android:name="com.google.android.gcm.demo.app"/>
             </intent-filter>
         </receiver>
@@ -128,6 +128,14 @@
                 android:name=".logic.services.GcmRegisterService"
                 android:exported="false"/>
 
+        <activity
+                android:name=".ui.WeproovActivity"
+                android:label="@string/title_activity_weproov"
+                android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.weproov.app.ui.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>

@@ -90,7 +90,7 @@ public final class BitmapUtils {
 			fOut.flush();
 			fOut.close();
 		} catch (IOException e) {
-			Log.d("Test", "Ex", e);
+			Dog.d( "Ex", e);
 		}
 
 	}
