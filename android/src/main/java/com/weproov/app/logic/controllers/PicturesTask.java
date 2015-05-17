@@ -17,7 +17,7 @@ public final class PicturesTask {
 	public static boolean upload(PictureItem item) throws NetworkException, RetrofitError{
 			File file = new File(item.path.getPath());
 			Response response = SERVICE.upload(item, new TypedFile(MimeUtils.getMimeType(file), file));
-			Dog.d("Response found : " + response);
+			Dog.d("Response found : %s", response);
 			return response.getStatus() > 199 && response.getStatus() < 300;
 
 	}

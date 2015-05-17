@@ -51,6 +51,8 @@ public class PictureItem extends BaseModel implements Parcelable {
 		super();
 		this.path = in.readParcelable(Uri.class.getClassLoader());
 		this.comment = in.readString();
+		this.type = in.readString();
+		this.uploaded = in.readByte() == 1;
 	}
 
 	public static IPictureService getService() {
@@ -66,6 +68,8 @@ public class PictureItem extends BaseModel implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeParcelable(path, flags);
 		dest.writeString(comment);
+		dest.writeString(type);
+		dest.writeByte((byte) (uploaded ? 1 : 0));
 	}
 
 	@SuppressWarnings("unused")

@@ -89,13 +89,13 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 			fos.write(bos.toByteArray());
 			fos.flush();
 		} catch (IOException e) {
-			Dog.d("IO", e);
+			Dog.d(e, "IO");
 		} finally {
 			if (fos != null) {
 				try {
 					fos.close();
 				} catch (IOException e) {
-					Dog.d( "IO", e);
+					Dog.d(e, "IO");
 				}
 			}
 		}

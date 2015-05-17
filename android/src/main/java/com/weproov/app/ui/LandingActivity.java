@@ -74,7 +74,7 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 
 		String token = AccountUtils.peekToken();
 		if (!TextUtils.isEmpty(token)) {
-			Dog.d("Auto login : " + token);
+			Dog.d("Auto login : %s", token);
 			gotoMain();
 		}
 
@@ -160,7 +160,6 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 		mLoader = new ProfileLoader(this) {
 			@Override
 			protected void onProfileLoaded(UserProfile profile) {
-				Dog.d( "Found profile : " + profile);
 				mEmail.setText(profile.email);
 			}
 		};

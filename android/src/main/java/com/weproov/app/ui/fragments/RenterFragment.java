@@ -309,7 +309,7 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 				default:
 			}
 
-			Dog.d("Found picture : " + selectedImageUri);
+			Dog.d("Found picture : %s", selectedImageUri);
 		}
 	}
 }

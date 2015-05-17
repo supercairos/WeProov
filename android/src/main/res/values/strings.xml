@@ -81,6 +81,6 @@
     <string name="signature_of">Signature of %s</string>
     <string name="signature_renter">Renter</string>
     <string name="wrong_email">This email appears to be invalid</string>
-    <string name="title_activity_weproov">WeproovActivity</string>
+    <string name="title_activity_weproov">New Weproov</string>
 
 </resources>

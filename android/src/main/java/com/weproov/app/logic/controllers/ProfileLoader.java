@@ -125,7 +125,7 @@ public abstract class ProfileLoader implements LoaderManager.LoaderCallbacks<Cur
 
 				onProfileLoaded(profile);
 			} catch (final Exception e) {
-				Dog.e("Test", e);
+				Dog.e(e, "Exception");
 			}
 		}
 	}

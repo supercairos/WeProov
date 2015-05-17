@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
-import butterknife.OnLongClick;
+import butterknife.OnClick;
 import com.squareup.picasso.RequestCreator;
 import com.weproov.app.R;
 import com.weproov.app.utils.AccountUtils;
@@ -91,9 +91,8 @@ public class DashboardFragment extends BaseFragment {
 		OrientationUtils.unlockOrientation(getActivity());
 	}
 
-	@OnLongClick(R.id.profile_picture)
-	boolean onDebugSyncClicked() {
+	@OnClick(R.id.debug_start_sync)
+	protected void onDebugSyncClicked() {
 		AccountUtils.startSync();
-		return true;
 	}
 }

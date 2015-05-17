@@ -109,4 +109,8 @@ dependencies {
     compile 'com.github.castorflex.smoothprogressbar:library:+'
 
     compile 'com.caverock:androidsvg:+'
+
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:+'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:+'
 }

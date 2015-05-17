@@ -48,7 +48,7 @@ public class PlateAutocompleteAdapter extends ArrayAdapter<CarInfo> implements F
 					infos = new Select().from(CarInfo.class).where("plate LIKE ?", constraint + "%").groupBy("plate COLLATE NOCASE").orderBy("plate DESC").execute();
 				}
 
-				Dog.d("Found values => " + infos);
+				Dog.d("Found values => %s", infos);
 
 				final FilterResults filterResults = new FilterResults();
 				filterResults.values = infos;

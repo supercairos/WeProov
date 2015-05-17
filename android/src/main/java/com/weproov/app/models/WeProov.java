@@ -40,7 +40,7 @@ public class WeProov extends BaseModel implements Parcelable {
 		super();
 		renter = in.readParcelable(RenterInfo.class.getClassLoader());
 		car = in.readParcelable(CarInfo.class.getClassLoader());
-		in.readList(pictures, PictureItem.class.getClassLoader());
+		in.readList(pictures, List.class.getClassLoader());
 		serverId = in.readString();
 	}
 

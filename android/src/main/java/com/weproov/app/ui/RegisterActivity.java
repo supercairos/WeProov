@@ -274,7 +274,7 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 			}
 
 			PicassoUtils.PICASSO.load(mProfilePictureUri).centerCrop().fit().into(mProfilePicture);
-			Dog.d("Found picture : " + mProfilePictureUri);
+			Dog.d("Found picture : %s", mProfilePictureUri);
 		}
 	}
 }

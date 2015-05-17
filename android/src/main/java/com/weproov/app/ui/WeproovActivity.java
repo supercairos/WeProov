@@ -5,6 +5,8 @@ import android.content.ContentResolver;
 import android.content.SyncStatusObserver;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -22,6 +24,8 @@ import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.FragmentsUtils;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
+
+import java.lang.ref.WeakReference;
 
 public class WeproovActivity extends BaseActivity implements ActionBarIface, TunnelFragment.Tunnel {
 
@@ -51,12 +55,13 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 		setSupportActionBar(mActionBar);
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
+		//noinspection ConstantConditions
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 
 		if (savedInstanceState != null) {
 			mCurrentWeProov = savedInstanceState.getParcelable(KEY_WE_PROOV_OBJECT);
-			Dog.d( "Found weproov object : " + mCurrentWeProov);
+			Dog.d("Found weproov object : %s", mCurrentWeProov);
 		} else {
 			FragmentsUtils.replace(this, new RenterFragment(), R.id.content_fragment, "tag", false, 0, 0);
 		}
@@ -77,19 +82,10 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 		super.onStart();
 		final Account account = AccountUtils.getAccount();
 		if (account != null) {
-			mSyncObserverHandle = ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE | ContentResolver.SYNC_OBSERVER_TYPE_PENDING, new SyncStatusObserver() {
-						@Override
-						public void onStatusChanged(final int which) {
-							if (ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
-								mSyncProgress.setVisibility(View.VISIBLE);
-							} else if (ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
-								mSyncProgress.setVisibility(View.VISIBLE);
-							} else {
-								mSyncProgress.setVisibility(View.GONE);
-							}
-						}
-					}
-			);
+			// https://github.com/square/leakcanary/issues/86
+			mSyncObserverHandle = ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE | ContentResolver.SYNC_OBSERVER_TYPE_PENDING, new MySyncObserver(mSyncProgress));
+			boolean isRunning = ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER) || ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER);
+			mSyncProgress.setVisibility(isRunning ? View.VISIBLE : View.GONE);
 		}
 	}
 
@@ -161,7 +157,7 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 			if (data != null) {
 				mCurrentWeProov.renter = data.getParcelable(TunnelFragment.KEY_RENTER_INFO);
 			}
-			Dog.d("Got Renter info : " + mCurrentWeProov.renter);
+			Dog.d("Got Renter info : %s", mCurrentWeProov.renter);
 
 			mCurrentFragment = new CarInfoFragment();
 		} else if (CarInfoFragment.class.equals(mCurrentFragment.getClass())) {
@@ -171,7 +167,7 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 			}
 
 
-			Dog.d( "Got Car info : " + mCurrentWeProov.car);
+			Dog.d("Got Car info : %s", mCurrentWeProov.car);
 			mWeProovStep = 0;
 			mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlaySubtitleArray[mWeProovStep]);
 		} else if (CameraFragment.class.equals(mCurrentFragment.getClass())) {
@@ -189,7 +185,7 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 				item = data.getParcelable(TunnelFragment.KEY_PICTURE_ITEM);
 			}
 
-			Dog.d( "Got picture = " + item);
+			Dog.d("Got picture = %s", item);
 
 			mCurrentWeProov.addPicture(item);
 			// Goto next drawable
@@ -220,5 +216,46 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 		setCommandListener(null);
 		FragmentsUtils.replace(this, mCurrentFragment, R.id.content_fragment);
 		// Clear state
+	}
+
+	private static class MySyncObserver implements SyncStatusObserver {
+
+		private final Handler mMainThreadHandler;
+		private final WeakReference<View> mView;
+
+		public MySyncObserver(View view) {
+			this.mView = new WeakReference<>(view);
+			this.mMainThreadHandler = new Handler(Looper.getMainLooper());
+		}
+
+		@Override
+		public void onStatusChanged(final int which) {
+			final Account account = AccountUtils.getAccount();
+			final View view = mView.get();
+			if (account != null && view != null) {
+				if (ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
+					mMainThreadHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							view.setVisibility(View.VISIBLE);
+						}
+					});
+				} else if (ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
+					mMainThreadHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							view.setVisibility(View.VISIBLE);
+						}
+					});
+				} else {
+					mMainThreadHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							view.setVisibility(View.VISIBLE);
+						}
+					});
+				}
+			}
+		}
 	}
 }

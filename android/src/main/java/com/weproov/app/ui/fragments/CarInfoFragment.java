@@ -155,7 +155,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 				PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mVehicleDocumentationPicture);
 			}
 		});
-		mPlateNumber.setFilters(new InputFilter[] {new InputFilter.AllCaps(), new InputFilter.LengthFilter(9)});
+		mPlateNumber.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(9)});
 		mPlateNumber.addTextChangedListener(new TextWatcher() {
 
 			boolean isDeletion = false;
@@ -336,7 +336,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			int size = (int) PixelUtils.convertDpToPixel(100);
 			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).into(mVehicleDocumentationPicture);
 
-			Dog.d("Found picture : " + mVehicleDocumentationUri);
+			Dog.d("Found picture : %s", mVehicleDocumentationUri);
 		}
 	}
 }

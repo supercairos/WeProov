@@ -9,7 +9,6 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.RenderScript.Priority;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.util.Log;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -90,7 +89,7 @@ public final class BitmapUtils {
 			fOut.flush();
 			fOut.close();
 		} catch (IOException e) {
-			Dog.d( "Ex", e);
+			Dog.d(e, "Ex");
 		}
 
 	}

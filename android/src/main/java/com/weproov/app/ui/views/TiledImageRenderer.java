@@ -522,7 +522,7 @@ public class TiledImageRenderer {
 					tile.updateContent(canvas);
 					--quota;
 				} else {
-					Dog.w( "Tile in upload queue has invalid state: " + tile.mTileState);
+					Dog.w("Tile in upload queue has invalid state: %d", tile.mTileState);
 				}
 			}
 		}
@@ -628,14 +628,14 @@ public class TiledImageRenderer {
 				}
 				mDecodedTile = mModel.getTile(mTileLevel, mX, mY, reuse);
 			} catch (Throwable t) {
-				Dog.w("fail to decode tile", t);
+				Dog.w(t, "fail to decode tile");
 			}
 			return mDecodedTile != null;
 		}
 
 		@Override
 		protected Bitmap onGetBitmap() {
-			if(!(mTileState == STATE_DECODED)) {
+			if (!(mTileState == STATE_DECODED)) {
 				throw new AssertionError();
 			}
 			// We need to override the width and height, so that we won't
@@ -700,7 +700,7 @@ public class TiledImageRenderer {
 
 		public boolean push(Tile tile) {
 			if (contains(tile)) {
-				Dog.w( "Attempting to add a tile already in the queue!");
+				Dog.w("Attempting to add a tile already in the queue!");
 				return false;
 			}
 			boolean wasEmpty = mHead == null;
@@ -731,7 +731,7 @@ public class TiledImageRenderer {
 			try {
 				join();
 			} catch (InterruptedException e) {
-				Dog.w( "Interrupted while waiting for TileDecoder thread to finish!");
+				Dog.w("Interrupted while waiting for TileDecoder thread to finish!");
 			}
 		}
 
@@ -751,8 +751,7 @@ public class TiledImageRenderer {
 		public void run() {
 			try {
 				while (!isInterrupted()) {
-					Tile tile = waitForTile();
-					decodeTile(tile);
+					decodeTile(waitForTile());
 				}
 			} catch (InterruptedException ex) {
 				// We were finished

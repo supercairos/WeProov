@@ -1,7 +1,6 @@
 package com.weproov.app.ui;
 
 import android.accounts.Account;
-import android.animation.Animator;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
@@ -10,6 +9,8 @@ import android.content.SyncStatusObserver;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -21,19 +22,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.activeandroid.content.ContentProvider;
+import com.weproov.app.MyApplication;
 import com.weproov.app.R;
 import com.weproov.app.logic.services.GcmRegisterService;
-import com.weproov.app.models.NavItem;
+import com.weproov.app.models.*;
 import com.weproov.app.ui.fragments.DashboardFragment;
+import com.weproov.app.ui.fragments.DocumentListFragment;
 import com.weproov.app.ui.fragments.DrawerFragment;
 import com.weproov.app.ui.fragments.dialogs.AboutDialogFragment;
-import com.weproov.app.ui.fragments.dialogs.SignatureDialogFragment;
 import com.weproov.app.utils.*;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
+
+import java.lang.ref.WeakReference;
 
 
 public class MainActivity extends BaseActivity implements DrawerFragment.OnNavigationInteractionListener {
@@ -47,8 +53,8 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 	@InjectView(R.id.left_frame)
 	FrameLayout mDrawerNavigation;
 
-	@InjectView(R.id.floating_action_button_container)
-	FrameLayout mFloatingActionButton;
+	@InjectView(R.id.floating_action_button)
+	ImageButton mFloatingActionButton;
 
 	@InjectView(R.id.sync_progress)
 	SmoothProgressBar mSyncProgress;
@@ -119,13 +125,11 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 				int finalRadius = Math.max(mFloatingActionButton.getWidth(), mFloatingActionButton.getHeight());
 
 				// create the animator for this view (the start radius is zero)
-				final Animator anim = null;
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-					ViewAnimationUtils.createCircularReveal(mDrawerLayout, cx, cy, 0, finalRadius);
+					ViewAnimationUtils.createCircularReveal(mFloatingActionButton, cx, cy, 0, finalRadius).start();
 				}
 
-				anim.start();
-				startActivity(new Intent(MainActivity.this, WeproovActivity.class));
+				// startActivity(new Intent(MainActivity.this, WeproovActivity.class));
 			}
 		});
 	}
@@ -145,19 +149,10 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 		super.onStart();
 		final Account account = AccountUtils.getAccount();
 		if (account != null) {
-			mSyncObserverHandle = ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE | ContentResolver.SYNC_OBSERVER_TYPE_PENDING, new SyncStatusObserver() {
-						@Override
-						public void onStatusChanged(final int which) {
-							if (ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
-								mSyncProgress.setVisibility(View.VISIBLE);
-							} else if (ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
-								mSyncProgress.setVisibility(View.VISIBLE);
-							} else {
-								mSyncProgress.setVisibility(View.GONE);
-							}
-						}
-					}
-			);
+			// https://github.com/square/leakcanary/issues/86
+			mSyncObserverHandle = ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE | ContentResolver.SYNC_OBSERVER_TYPE_PENDING, new MySyncObserver(mSyncProgress));
+			boolean isRunning = ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER) || ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER);
+			mSyncProgress.setVisibility(isRunning ? View.VISIBLE : View.GONE);
 		}
 	}
 
@@ -182,7 +177,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
 	@Override
 	public void onNavItemSelected(NavItem item) {
-		Fragment fragment = null;
+		Fragment fragment;
 		switch (item.id) {
 			case NavItem.NAV_LOGOUT:
 				// Handle Logout;
@@ -198,6 +193,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 										MainActivity.this.startActivity(intent);
 										MainActivity.this.finish();
+										new CleanupThread().start();
 									}
 
 									@Override
@@ -216,13 +212,14 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
 				return; // Keep the return here
 			case NavItem.NAV_WEPROOV:
+				mDrawerLayout.closeDrawer(mDrawerNavigation);
 				startActivity(new Intent(this, WeproovActivity.class));
 				return; // Keep the return here
 			case NavItem.NAV_DASHBOARD:
 				fragment = new DashboardFragment();
 				break;
 			case NavItem.NAV_MY_DOCUMENTS:
-				fragment = new SignatureDialogFragment();
+				fragment = new DocumentListFragment();
 				break;
 			case NavItem.NAV_ABOUT:
 				fragment = new AboutDialogFragment();
@@ -247,6 +244,65 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 			mDrawerLayout.closeDrawer(mDrawerNavigation);
 		} else {
 			super.onBackPressed();
+		}
+	}
+
+	private static class MySyncObserver implements SyncStatusObserver {
+
+		private final Handler mMainThreadHandler;
+		private final WeakReference<View> mView;
+
+		public MySyncObserver(View view) {
+			this.mView = new WeakReference<>(view);
+			this.mMainThreadHandler = new Handler(Looper.getMainLooper());
+		}
+
+		@Override
+		public void onStatusChanged(final int which) {
+			final Account account = AccountUtils.getAccount();
+			final View view = mView.get();
+			if (account != null && view != null) {
+				if (ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
+					mMainThreadHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							view.setVisibility(View.VISIBLE);
+						}
+					});
+				} else if (ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER)) {
+					mMainThreadHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							view.setVisibility(View.VISIBLE);
+						}
+					});
+				} else {
+					mMainThreadHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							view.setVisibility(View.VISIBLE);
+						}
+					});
+				}
+			}
+		}
+	}
+
+	private static class CleanupThread extends Thread {
+		ContentResolver mContentResolver;
+
+		public CleanupThread() {
+			super("CleanupThread");
+			this.mContentResolver = MyApplication.getAppContext().getContentResolver();
+		}
+
+		@Override
+		public void run() {
+			Dog.d("Cleaning up the shit this user made MOFO!");
+			mContentResolver.delete(ContentProvider.createUri(CarInfo.class, null), null, null);
+			mContentResolver.delete(ContentProvider.createUri(PictureItem.class, null), null, null);
+			mContentResolver.delete(ContentProvider.createUri(RenterInfo.class, null), null, null);
+			mContentResolver.delete(ContentProvider.createUri(WeProov.class, null), null, null);
 		}
 	}
 }

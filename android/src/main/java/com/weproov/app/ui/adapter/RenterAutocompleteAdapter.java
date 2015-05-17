@@ -60,7 +60,7 @@ public class RenterAutocompleteAdapter extends ArrayAdapter<RenterInfo> implemen
 					infos = new Select().from(RenterInfo.class).where((getType() == TYPE_FIRST_NAME ? "firstname" : "lastname")+" LIKE ?", constraint + "%").groupBy("firstname COLLATE NOCASE, lastname COLLATE NOCASE").orderBy("firstname DESC").execute();
 				}
 
-				Dog.d("Found values => " + infos);
+				Dog.d("Found values => %s", infos);
 
 				final FilterResults filterResults = new FilterResults();
 				filterResults.values = infos;

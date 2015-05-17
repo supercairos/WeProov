@@ -1,259 +1,405 @@
 package com.weproov.app.utils;
 
-import android.text.TextUtils;
 import android.util.Log;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/**
- * Doro Logger (D(oroL)og(ger)
- */
-public class Dog {
+/** Logging for lazy people. */
+public final class Dog {
+	/** Log a verbose message with optional format args. */
+	public static void v(String message, Object... args) {
+		BONES_STASH.v(message, args);
+	}
 
-	private static final String DEFAULT_TAG = "TAG";
+	/** Log a verbose exception and a message with optional format args. */
+	public static void v(Throwable t, String message, Object... args) {
+		BONES_STASH.v(t, message, args);
+	}
 
-	private static final boolean SHOW_METHOD = true;
+	/** Log a debug message with optional format args. */
+	public static void d(String message, Object... args) {
+		BONES_STASH.d(message, args);
+	}
 
-	/**
-	 * Send a verbose log message.
-	 *
-	 * @param msg The message you would like logged.
-	 */
-	public static void v(String msg) {
-		Log.v(getTag(), msg);
+	/** Log a debug exception and a message with optional format args. */
+	public static void d(Throwable t, String message, Object... args) {
+		BONES_STASH.d(t, message, args);
+	}
+
+	/** Log an info message with optional format args. */
+	public static void i(String message, Object... args) {
+		BONES_STASH.i(message, args);
+	}
+
+	/** Log an info exception and a message with optional format args. */
+	public static void i(Throwable t, String message, Object... args) {
+		BONES_STASH.i(t, message, args);
+	}
+
+	/** Log a warning message with optional format args. */
+	public static void w(String message, Object... args) {
+		BONES_STASH.w(message, args);
+	}
+
+	/** Log a warning exception and a message with optional format args. */
+	public static void w(Throwable t, String message, Object... args) {
+		BONES_STASH.w(t, message, args);
+	}
+
+	/** Log an error message with optional format args. */
+	public static void e(String message, Object... args) {
+		BONES_STASH.e(message, args);
+	}
+
+	/** Log an error exception and a message with optional format args. */
+	public static void e(Throwable t, String message, Object... args) {
+		BONES_STASH.e(t, message, args);
+	}
+
+	/** Log an assert message with optional format args. */
+	public static void wtf(String message, Object... args) {
+		BONES_STASH.wtf(message, args);
+	}
+
+	/** Log an assert exception and a message with optional format args. */
+	public static void wtf(Throwable t, String message, Object... args) {
+		BONES_STASH.wtf(t, message, args);
 	}
 
 	/**
-	 * Send a verbose log message and log the exception.
-	 *
-	 * @param msg The message you would like logged.
-	 * @param tr  An exception to log
+	 * A view into Dog's buried bones as a bone itself. This can be used for injecting a logger
+	 * instance rather than using static methods or to facilitate testing.
 	 */
-	public static void v(String msg, Throwable tr) {
-		Log.v(getTag(), msg, tr);
+	public static Bone asBone() {
+		return BONES_STASH;
 	}
 
-	/**
-	 * Send a debug log message.
-	 *
-	 * @param tag Used to identify the source of a log message.  It usually identifies
-	 *            the class or activity where the log call occurs.
-	 * @param msg The message you would like logged.
-	 */
-	public static void v(String tag, String msg) {
-		Dog.v( msg);
+	/** Set a one-time tag for use on the next logging call. */
+	public static Bone tag(String tag) {
+		List<Bone> forest = GROUND;
+		//noinspection ForLoopReplaceableByForEach
+		for (int i = 0, count = forest.size(); i < count; i++) {
+			forest.get(i).explicitTag.set(tag);
+		}
+		return BONES_STASH;
 	}
 
-	/**
-	 * Send a verbose log message and log the exception.
-	 *
-	 * @param tag Used to identify the source of a log message.  It usually identifies
-	 *            the class or activity where the log call occurs.
-	 * @param msg The message you would like logged.
-	 * @param tr  An exception to log
-	 */
-	public static void v(String tag, String msg, Throwable tr) {
-		Dog.v( msg, tr);
+	/** Add a new logging tree. */
+	public static void bury(Bone bone) {
+		if (bone == null) {
+			throw new NullPointerException("tree == null");
+		}
+		if (bone == BONES_STASH) {
+			throw new IllegalArgumentException("Cannot bury Timber into itself.");
+		}
+		GROUND.add(bone);
 	}
 
-	/**
-	 * Send a debug log message.
-	 *
-	 * @param msg The message you would like logged.
-	 */
-	public static void d(String msg) {
-		Log.d(getTag(), msg);
+	/** Remove a planted tree. */
+	public static void unbury(Bone bone) {
+		if (!GROUND.remove(bone)) {
+			throw new IllegalArgumentException("Cannot unbury bone which is not buried: " + bone);
+		}
 	}
 
-	/**
-	 * Send a debug log message and log the exception.
-	 *
-	 * @param msg The message you would like logged.
-	 * @param tr  An exception to log
-	 */
-	public static void d(String msg, Throwable tr) {
-		Log.d(getTag(), msg, tr);
+	/** Remove all planted trees. */
+	public static void unburyAll() {
+		GROUND.clear();
 	}
 
-	/**
-	 * Send a debug log message.
-	 *
-	 * @param tag Used to identify the source of a log message.  It usually identifies
-	 *            the class or activity where the log call occurs.
-	 * @param msg The message you would like logged.
-	 */
-	public static void d(String tag, String msg) {
-		Dog.d( msg);
-	}
+	private static final List<Bone> GROUND = new CopyOnWriteArrayList<Bone>();
 
-	/**
-	 * Send a debug log message and log the exception.
-	 *
-	 * @param tag Used to identify the source of a log message.  It usually identifies
-	 *            the class or activity where the log call occurs.
-	 * @param msg The message you would like logged.
-	 * @param tr  An exception to log
-	 */
-	public static void d(String tag, String msg, Throwable tr) {
-		Dog.d( msg, tr);
-	}
-
-	/**
-	 * Send an info log message.
-	 *
-	 * @param msg The message you would like logged.
-	 */
-	public static void i(String msg) {
-		Log.i(getTag(), msg);
-	}
-
-	/**
-	 * Send a info log message and log the exception.
-	 *
-	 * @param msg The message you would like logged.
-	 * @param tr  An exception to log
-	 */
-	public static void i(String msg, Throwable tr) {
-		Log.i(getTag(), msg, tr);
-	}
-
-	/**
-	 * Send a info log message.
-	 *
-	 * @param tag Used to identify the source of a log message.  It usually identifies
-	 *            the class or activity where the log call occurs.
-	 * @param msg The message you would like logged.
-	 */
-	public static void i(String tag, String msg) {
-		Dog.i( msg);
-	}
-
-	/**
-	 * Send a info log message and log the exception.
-	 *
-	 * @param tag Used to identify the source of a log message.  It usually identifies
-	 *            the class or activity where the log call occurs.
-	 * @param msg The message you would like logged.
-	 * @param tr  An exception to log
-	 */
-	public static void i(String tag, String msg, Throwable tr) {
-		Dog.i( msg, tr);
-	}
-
-	/**
-	 * Send a warn log message.
-	 *
-	 * @param msg The message you would like logged.
-	 */
-	public static void w(String msg) {
-		Log.w(getTag(), msg);
-	}
-
-	/**
-	 * Send a warn log message and log the exception.
-	 *
-	 * @param msg The message you would like logged.
-	 * @param tr  An exception to log
-	 */
-	public static void w(String msg, Throwable tr) {
-		Log.w(getTag(), msg, tr);
-	}
-
-	/**
-	 * Send a warn log message and log the exception.
-	 *
-	 * @param tr An exception to log
-	 */
-	public static void w(Throwable tr) {
-		Log.w(getTag(), tr);
-	}
-
-	/**
-	 * Send a warn log message.
-	 *
-	 * @param tag Used to identify the source of a log message.  It usually identifies
-	 *            the class or activity where the log call occurs.
-	 * @param msg The message you would like logged.
-	 */
-	public static void w(String tag, String msg) {
-		Dog.w( msg);
-	}
-
-	/**
-	 * Send a warn log message and log the exception.
-	 *
-	 * @param tag Used to identify the source of a log message.  It usually identifies
-	 *            the class or activity where the log call occurs.
-	 * @param msg The message you would like logged.
-	 * @param tr  An exception to log
-	 */
-	public static void w(String tag, String msg, Throwable tr) {
-		Dog.w( msg, tr);
-	}
-
-
-	/**
-	 * Send an error log message.
-	 *
-	 * @param msg The message you would like logged.
-	 */
-	public static void e(String msg) {
-		Log.e(getTag(), msg);
-	}
-
-	/**
-	 * Send a error log message and log the exception.
-	 *
-	 * @param msg The message you would like logged.
-	 * @param tr  An exception to log
-	 */
-	public static void e(String msg, Throwable tr) {
-		Log.e(getTag(), msg, tr);
-	}
-
-	/**
-	 * Send a error log message and log the exception.
-	 *
-	 * @param tag Used to identify the source of a log message.  It usually identifies
-	 *            the class or activity where the log call occurs.
-	 * @param msg The message you would like logged.
-	 * @param tr  An exception to log
-	 */
-	public static void e(String tag, String msg, Throwable tr) {
-		Dog.e( msg, tr);
-	}
-
-	/**
-	 * Send a error log message and log the exception.
-	 *
-	 * @param tag Used to identify the source of a log message.  It usually identifies
-	 *            the class or activity where the log call occurs.
-	 * @param msg The message you would like logged.
-	 */
-	public static void e(String tag, String msg) {
-		Dog.e( msg);
-	}
-
-	private static String getTag() {
-		StackTraceElement[] elements = new Throwable().getStackTrace();
-		StringBuilder tag = new StringBuilder(DEFAULT_TAG);
-		if (elements != null && elements.length > 2) {
-			tag.setLength(0);
-
-			// Take the 3rd one as the first two are inside this class ;)
-			StackTraceElement top = elements[2];
-			String[] names = TextUtils.split(top.getClassName(), "\\.");
-
-			tag.append(names != null && names.length > 0 ? names[names.length - 1] : "Unknown");
-			//noinspection PointlessBooleanExpression,ConstantConditions
-			if (SHOW_METHOD && tag.length() > 0 && !TextUtils.isEmpty(top.getMethodName())) {
-				tag.append(".");
-				tag.append(top.getMethodName());
-				tag.append("(");
-				tag.append(top.getLineNumber());
-				tag.append(")");
+	/** A {@link Bone} that delegates to all planted trees in the {@linkplain #GROUND forest}. */
+	private static final Bone BONES_STASH = new Bone() {
+		@Override public void v(String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).v(message, args);
 			}
 		}
 
-		return tag.toString();
+		@Override public void v(Throwable t, String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).v(t, message, args);
+			}
+		}
+
+		@Override public void d(String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).d(message, args);
+			}
+		}
+
+		@Override public void d(Throwable t, String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).d(t, message, args);
+			}
+		}
+
+		@Override public void i(String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).i(message, args);
+			}
+		}
+
+		@Override public void i(Throwable t, String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).i(t, message, args);
+			}
+		}
+
+		@Override public void w(String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).w(message, args);
+			}
+		}
+
+		@Override public void w(Throwable t, String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).w(t, message, args);
+			}
+		}
+
+		@Override public void e(String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).e(message, args);
+			}
+		}
+
+		@Override public void e(Throwable t, String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).e(t, message, args);
+			}
+		}
+
+		@Override public void wtf(String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).wtf(message, args);
+			}
+		}
+
+		@Override public void wtf(Throwable t, String message, Object... args) {
+			List<Bone> forest = GROUND;
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0, count = forest.size(); i < count; i++) {
+				forest.get(i).wtf(t, message, args);
+			}
+		}
+
+		@Override protected void log(int priority, String tag, String message, Throwable t) {
+			throw new AssertionError("Missing override for log method.");
+		}
+	};
+
+	private Dog() {
+		throw new AssertionError("No instances.");
 	}
 
+	/** A facade for handling logging calls. Install instances via {@link #bury Timber.bury()}. */
+	public static abstract class Bone {
+		private final ThreadLocal<String> explicitTag = new ThreadLocal<String>();
+
+		String getTag() {
+			String tag = explicitTag.get();
+			if (tag != null) {
+				explicitTag.remove();
+			}
+			return tag;
+		}
+
+		/** Log a verbose message with optional format args. */
+		public void v(String message, Object... args) {
+			prepareLog(Log.VERBOSE, null, message, args);
+		}
+
+		/** Log a verbose exception and a message with optional format args. */
+		public void v(Throwable t, String message, Object... args) {
+			prepareLog(Log.VERBOSE, t, message, args);
+		}
+
+		/** Log a debug message with optional format args. */
+		public void d(String message, Object... args) {
+			prepareLog(Log.DEBUG, null, message, args);
+		}
+
+		/** Log a debug exception and a message with optional format args. */
+		public void d(Throwable t, String message, Object... args) {
+			prepareLog(Log.DEBUG, t, message, args);
+		}
+
+		/** Log an info message with optional format args. */
+		public void i(String message, Object... args) {
+			prepareLog(Log.INFO, null, message, args);
+		}
+
+		/** Log an info exception and a message with optional format args. */
+		public void i(Throwable t, String message, Object... args) {
+			prepareLog(Log.INFO, t, message, args);
+		}
+
+		/** Log a warning message with optional format args. */
+		public void w(String message, Object... args) {
+			prepareLog(Log.WARN, null, message, args);
+		}
+
+		/** Log a warning exception and a message with optional format args. */
+		public void w(Throwable t, String message, Object... args) {
+			prepareLog(Log.WARN, t, message, args);
+		}
+
+		/** Log an error message with optional format args. */
+		public void e(String message, Object... args) {
+			prepareLog(Log.ERROR, null, message, args);
+		}
+
+		/** Log an error exception and a message with optional format args. */
+		public void e(Throwable t, String message, Object... args) {
+			prepareLog(Log.ERROR, t, message, args);
+		}
+
+		/** Log an assert message with optional format args. */
+		public void wtf(String message, Object... args) {
+			prepareLog(Log.ASSERT, null, message, args);
+		}
+
+		/** Log an assert exception and a message with optional format args. */
+		public void wtf(Throwable t, String message, Object... args) {
+			prepareLog(Log.ASSERT, t, message, args);
+		}
+
+		/** Return whether a message at {@code priority} should be logged. */
+		protected boolean isLoggable(int priority) {
+			return true;
+		}
+
+		private void prepareLog(int priority, Throwable t, String message, Object... args) {
+			if (!isLoggable(priority)) {
+				return;
+			}
+			if (message != null && message.length() == 0) {
+				message = null;
+			}
+			if (message == null) {
+				if (t == null) {
+					return; // Swallow message if it's null and there's no throwable.
+				}
+				message = Log.getStackTraceString(t);
+			} else {
+				if (args.length > 0) {
+					message = String.format(message, args);
+				}
+				if (t != null) {
+					message += "\n" + Log.getStackTraceString(t);
+				}
+			}
+
+			log(priority, getTag(), message, t);
+		}
+
+		/**
+		 * Write a log message to its destination. Called for all level-specific methods by default.
+		 *
+		 * @param priority Log level. See {@link Log} for constants.
+		 * @param tag Explicit or inferred tag. May be {@code null}.
+		 * @param message Formatted log message. May be {@code null}, but then {@code t} will not be.
+		 * @param t Accompanying exceptions. May be {@code null}, but then {@code message} will not be.
+		 */
+		protected abstract void log(int priority, String tag, String message, Throwable t);
+	}
+
+	/** A {@link Bone Bone} for debug builds. Automatically infers the tag from the calling class. */
+	public static class DebugBone extends Bone {
+		private static final int MAX_LOG_LENGTH = 4000;
+		private static final int CALL_STACK_INDEX = 5;
+		private static final Pattern ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$");
+
+		/**
+		 * Extract the tag which should be used for the message from the {@code element}. By default
+		 * this will use the class name without any anonymous class suffixes (e.g., {@code Foo$1}
+		 * becomes {@code Foo}).
+		 * <p>
+		 * Note: This will not be called if a {@linkplain #tag(String) manual tag} was specified.
+		 */
+		protected String createStackElementTag(StackTraceElement element) {
+			String tag = element.getClassName();
+			Matcher m = ANONYMOUS_CLASS.matcher(tag);
+			if (m.find()) {
+				tag = m.replaceAll("");
+			}
+			return tag.substring(tag.lastIndexOf('.') + 1);
+		}
+
+		@Override final String getTag() {
+			String tag = super.getTag();
+			if (tag != null) {
+				return tag;
+			}
+
+			// DO NOT switch this to Thread.getCurrentThread().getStackTrace(). The test will pass
+			// because Robolectric runs them on the JVM but on Android the elements are different.
+			StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+			if (stackTrace.length <= CALL_STACK_INDEX) {
+				throw new IllegalStateException(
+						"Synthetic stacktrace didn't have enough elements: are you using proguard?");
+			}
+			return createStackElementTag(stackTrace[CALL_STACK_INDEX]);
+		}
+
+		/**
+		 * Break up {@code message} into maximum-length chunks (if needed) and send to either
+		 * {@link Log#println(int, String, String) Log.println()} or
+		 * {@link Log#wtf(String, String) Log.wtf()} for logging.
+		 *
+		 * {@inheritDoc}
+		 */
+		@Override protected void log(int priority, String tag, String message, Throwable t) {
+			if (message.length() < MAX_LOG_LENGTH) {
+				if (priority == Log.ASSERT) {
+					Log.wtf(tag, message);
+				} else {
+					Log.println(priority, tag, message);
+				}
+				return;
+			}
+
+			// Split by line, then ensure each line can fit into Log's maximum length.
+			for (int i = 0, length = message.length(); i < length; i++) {
+				int newline = message.indexOf('\n', i);
+				newline = newline != -1 ? newline : length;
+				do {
+					int end = Math.min(newline, i + MAX_LOG_LENGTH);
+					String part = message.substring(i, end);
+					if (priority == Log.ASSERT) {
+						Log.wtf(tag, part);
+					} else {
+						Log.println(priority, tag, part);
+					}
+					i = end;
+				} while (i < newline);
+			}
+		}
+	}
 }

@@ -114,13 +114,14 @@ public class DrawerFragment extends BaseFragment {
 		void onNavItemSelected(NavItem item);
 	}
 
-	/* The click listner for ListView in the navigation drawer */
+	/* The click listener for ListView in the navigation drawer */
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			mListener.onNavItemSelected(mAdapter.getItem(position));
-			mDrawerList.setItemChecked(position, true);
+			NavItem item = mAdapter.getItem(position);
+			mListener.onNavItemSelected(item);
+			if (item.isSelectable()) mDrawerList.setItemChecked(position, true);
 		}
 	}
 

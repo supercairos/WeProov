@@ -2,6 +2,7 @@ package com.weproov.app.ui.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class CommentFragment extends TunnelFragment implements CommandIface.OnCl
 	EditText mEditText;
 
 	private Uri mRawPicturePath = null;
+
 	public static CommentFragment newInstance(String picturePath) {
 		Bundle bundle = new Bundle();
 		bundle.putString(KEY_COMMENT_PICTURE_PATH, picturePath);
@@ -47,7 +49,7 @@ public class CommentFragment extends TunnelFragment implements CommandIface.OnCl
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			mRawPicturePath = Uri.parse("file://" + getArguments().getString(KEY_COMMENT_PICTURE_PATH));
-			Dog.d("Found picture = " + mRawPicturePath);
+			Dog.d("Found picture = %s", mRawPicturePath);
 		}
 	}
 
@@ -59,7 +61,10 @@ public class CommentFragment extends TunnelFragment implements CommandIface.OnCl
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mImageView.setTileSource(new BitmapRegionTileSource(getActivity(), getArguments().getString(KEY_COMMENT_PICTURE_PATH), 0, 0), null);
+		String path = getArguments().getString(KEY_COMMENT_PICTURE_PATH);
+		if (!TextUtils.isEmpty(path)) {
+			mImageView.setTileSource(new BitmapRegionTileSource(getActivity(), getArguments().getString(KEY_COMMENT_PICTURE_PATH), 0, 0), null);
+		}
 	}
 
 	@Override
@@ -82,9 +87,7 @@ public class CommentFragment extends TunnelFragment implements CommandIface.OnCl
 
 	@Override
 	public void onDestroy() {
-		if(mImageView != null) {
-			mImageView.destroy();
-		}
+		mImageView.destroy();
 		super.onDestroy();
 	}
 

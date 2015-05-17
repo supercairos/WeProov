@@ -111,9 +111,9 @@ public class Connection {
 
 					return exception;
 				} catch (IOException e) {
-					Dog.e("IOException", e);
+					Dog.e(e, "IOException");
 				} catch (JsonSyntaxException e) {
-					Dog.e("JsonSyntaxException", e);
+					Dog.e(e, "JsonSyntaxException");
 				}
 			}
 

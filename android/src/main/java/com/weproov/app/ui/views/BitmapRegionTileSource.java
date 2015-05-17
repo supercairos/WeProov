@@ -39,7 +39,7 @@ public class BitmapRegionTileSource implements TiledImageRenderer.TileSource {
 			mWidth = mDecoder.getWidth();
 			mHeight = mDecoder.getHeight();
 		} catch (IOException e) {
-			Dog.w( "ctor failed", e);
+			Dog.w(e, "ctor failed");
 		}
 		mOptions = new BitmapFactory.Options();
 		mOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -54,11 +54,11 @@ public class BitmapRegionTileSource implements TiledImageRenderer.TileSource {
 			if (preview.getWidth() <= GL_SIZE_LIMIT && preview.getHeight() <= GL_SIZE_LIMIT) {
 				mPreview = new BitmapTexture(preview);
 			} else {
-				Dog.w(String.format(
+				Dog.w(
 						"Failed to create preview of apropriate size! "
 								+ " in: %dx%d, out: %dx%d",
 						mWidth, mHeight,
-						preview.getWidth(), preview.getHeight()));
+						preview.getWidth(), preview.getHeight());
 			}
 		}
 	}
@@ -109,7 +109,7 @@ public class BitmapRegionTileSource implements TiledImageRenderer.TileSource {
 			}
 		}
 		if (bitmap == null) {
-			Dog.w( "fail in decoding region");
+			Dog.w("fail in decoding region");
 		}
 		return bitmap;
 	}
@@ -122,7 +122,7 @@ public class BitmapRegionTileSource implements TiledImageRenderer.TileSource {
 		mOptions.inSampleSize = (1 << level);
 		Bitmap bitmap = mDecoder.decodeRegion(mOverlapRegion, mOptions);
 		if (bitmap == null) {
-			Dog.w( "fail in decoding region");
+			Dog.w("fail in decoding region");
 		}
 		if (mWantRegion.equals(mOverlapRegion)) {
 			return bitmap;

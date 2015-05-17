@@ -35,7 +35,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 
 	@Override
 	public boolean onDoubleTap(float x, float y) {
-		if(mRenderer.scale < 1) {
+		if (mRenderer.scale < 1) {
 			mRenderer.centerY = (int) (getInvertedScaleY() * y);
 			mRenderer.centerX = (int) (getInvertedScaleX() * x);
 			mRenderer.scale = mRenderer.scale * 1.1f;
@@ -45,7 +45,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 
 		invalidate();
 
-		Dog.d( "Double tap : " + mRenderer);
+		Dog.d("Double tap : %s", mRenderer);
 		return true;
 	}
 
@@ -55,7 +55,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 		mRenderer.centerX = mRenderer.centerX + (int) (getInvertedScaleX() * dx);
 		invalidate();
 
-		Dog.d("onScroll : " + mRenderer);
+		Dog.d("onScroll : %s", mRenderer);
 		return true;
 	}
 
@@ -66,8 +66,8 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 		mRenderer.scale = mRenderer.scale * scale;
 		invalidate();
 
-		Dog.d( "onScale : " + focusX + " " + focusY + " " + scale);
-		Dog.d( "onScale : " + mRenderer);
+		Dog.d("onScale : %d %d %d", focusX, focusY, scale);
+		Dog.d("onScale : %s", mRenderer);
 		return true;
 	}
 
@@ -170,8 +170,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 	}
 
 	@Override
-	protected void onLayout(boolean changed, int left, int top, int right,
-							int bottom) {
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
 		super.onLayout(changed, left, top, right, bottom);
 		synchronized (mLock) {
 			updateScaleIfNecessaryLocked(mRenderer);
@@ -282,7 +281,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		Dog.d( " onTouchEvent()");
+		Dog.d(" onTouchEvent()");
 		return mGestureRecognizer.onTouchEvent(event);
 	}
 

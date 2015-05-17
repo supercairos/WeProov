@@ -44,7 +44,7 @@ public final class AccountUtils {
 				return "";
 			}
 		} catch (AuthenticatorException | OperationCanceledException e) {
-			Dog.e( "Error " + e, e);
+			Dog.e( e, "Error");
 			return "";
 		}
 	}
@@ -83,7 +83,7 @@ public final class AccountUtils {
 			bundle.putBoolean(ContentResolver.SYNC_EXTRAS_IGNORE_SETTINGS, true);
 			bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
 
-			ContentResolver.requestSync(account, AuthenticatorConstants.ACCOUNT_TYPE, bundle);
+			ContentResolver.requestSync(account, AuthenticatorConstants.ACCOUNT_PROVIDER, bundle);
 		} else {
 			Dog.e( "Account was null while starting sync...");
 		}
@@ -103,7 +103,7 @@ public final class AccountUtils {
 							callback.onSuccess();
 						}
 					} catch (OperationCanceledException | IOException | AuthenticatorException e) {
-						Dog.e( "Failed to delete the account... :(", e);
+						Dog.e(e, "Failed to delete the account... :(");
 						callback.onFailure();
 					}
 				}
@@ -117,7 +117,7 @@ public final class AccountUtils {
 							callback.onSuccess();
 						}
 					} catch (OperationCanceledException | IOException | AuthenticatorException e) {
-						Dog.e( "Failed to delete the account... :(", e);
+						Dog.e(e, "Failed to delete the account... :(");
 						callback.onFailure();
 					}
 				}

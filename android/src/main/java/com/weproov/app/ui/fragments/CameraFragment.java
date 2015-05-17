@@ -148,7 +148,7 @@ public class CameraFragment extends TunnelFragment {
 
 	private static void setCameraDisplayOrientation(Context context, Camera camera, int id) {
 		if (camera == null) {
-			Dog.d( "setCameraDisplayOrientation - camera null");
+			Dog.d("setCameraDisplayOrientation - camera null");
 			return;
 		}
 
@@ -180,7 +180,7 @@ public class CameraFragment extends TunnelFragment {
 			result = (info.orientation - degrees + 360) % 360;
 		}
 
-		Dog.d( "Result = " + result);
+		Dog.d("Result = %s", result);
 
 		Camera.Parameters params = camera.getParameters();
 		params.setRotation(result);
@@ -249,7 +249,7 @@ public class CameraFragment extends TunnelFragment {
 		} catch (Exception e) {
 			// For some reason, the picture could not be taken.
 			Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
-			Dog.e( "Test", e);
+			Dog.e(e, "Test");
 		}
 	}
 
@@ -271,7 +271,7 @@ public class CameraFragment extends TunnelFragment {
 		} catch (Exception e) {
 			// For some reason, the picture could not be taken.
 			Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
-			Dog.e("Test", e);
+			Dog.e(e, "Test");
 		}
 
 		return false;
@@ -383,7 +383,7 @@ public class CameraFragment extends TunnelFragment {
 					f = new FileOutputStream(file);
 					f.write(params[0].bytes);
 				} catch (IOException e) {
-					Dog.e( "IOEx", e);
+					Dog.e(e, "IOEx");
 				} finally {
 					if (f != null) {
 						try {
@@ -404,14 +404,14 @@ public class CameraFragment extends TunnelFragment {
 			mDialog.dismiss();
 			// Move to edit
 			if (s != null && s.exists()) {
-				CameraUtils.sendMediaScannerBroadcast(getActivity(), s);
+				CameraUtils.sendMediaScannerBroadcast(getActivity().getApplicationContext(), s);
 				Bundle bundle = new Bundle();
 				bundle.putString(TunnelFragment.KEY_COMMENT_PICTURE_PATH, s.getAbsolutePath());
-				Dog.d( "File is = " + s.getAbsolutePath());
+				Dog.d("File is = %s", s.getAbsolutePath());
 				OrientationUtils.unlockOrientation(getActivity());
 				getTunnel().next(bundle);
 			} else {
-				Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity().getApplicationContext(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
 				mIcCamera.setVisibility(View.VISIBLE);
 				mBtnSetFlash.setVisibility(View.VISIBLE);
 				mOverlay.setVisibility(View.VISIBLE);

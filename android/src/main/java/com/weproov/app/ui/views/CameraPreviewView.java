@@ -95,7 +95,7 @@ public class CameraPreviewView extends ViewGroup implements SurfaceHolder.Callba
 			int previewHeight = height;
 			if (mPreviewSize != null) {
 				previewWidth = width > height ? mPreviewSize.width : mPreviewSize.height;
-				previewHeight = width > height ? mPreviewSize.height: mPreviewSize.width;
+				previewHeight = width > height ? mPreviewSize.height : mPreviewSize.width;
 			}
 
 			// Center the child SurfaceView within the parent.
@@ -117,7 +117,7 @@ public class CameraPreviewView extends ViewGroup implements SurfaceHolder.Callba
 				mCamera.setPreviewDisplay(holder);
 			}
 		} catch (IOException exception) {
-			Dog.e("IOException caused by setPreviewDisplay()", exception);
+			Dog.e(exception, "IOException caused by setPreviewDisplay()");
 		}
 		if (mPreviewSize == null) requestLayout();
 		mSurfaceCreated = true;

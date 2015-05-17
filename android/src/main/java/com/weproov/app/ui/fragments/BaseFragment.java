@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import butterknife.ButterKnife;
+import com.squareup.leakcanary.RefWatcher;
+import com.weproov.app.MyApplication;
 import com.weproov.app.ui.ifaces.CommandIface;
 
 
@@ -27,6 +29,13 @@ abstract class BaseFragment extends Fragment {
 	public void onViewCreated(final View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		ButterKnife.inject(this, view);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		RefWatcher refWatcher = MyApplication.getRefWatcher();
+		refWatcher.watch(this);
 	}
 
 	@Override

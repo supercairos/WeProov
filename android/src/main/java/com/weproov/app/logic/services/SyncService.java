@@ -55,7 +55,7 @@ public class SyncService extends Service {
 	 */
 	@Override
 	public IBinder onBind(Intent intent) {
-        /*
+		/*
          * Get the object that allows external processes
          * to call onPerformSync(). The object is created
          * in the base class code when the SyncAdapter
@@ -106,12 +106,12 @@ public class SyncService extends Service {
 
 				List<PictureItem> items = (new Select()).all().from(PictureItem.class).where("uploaded = ?", false).execute();
 
-				Dog.d( "Sync started ... ");
+				Dog.d("Sync started ... ");
 
 				int size = items.size();
 				for (int i = 0; i < size; i++) {
 					PictureItem item = items.get(i);
-					Dog.d( "Syncing item >> " + item);
+					Dog.d("Syncing item >> %s", item);
 					mBuilder.setProgress(size, i, false);
 					mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, mBuilder.build());
 
@@ -123,7 +123,7 @@ public class SyncService extends Service {
 					item.save();
 				}
 
-				Dog.d( "Sync finished ... ");
+				Dog.d("Sync finished ... ");
 
 				// When the loop is finished, updates the notification
 				mBuilder.setContentText(getContext().getString(R.string.notification_picture_download_end))
@@ -135,18 +135,18 @@ public class SyncService extends Service {
 				mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
 
 			} catch (NetworkException e) {
-				Dog.e("LoginException", e);
+				Dog.e(e, "LoginException");
 				syncResult.stats.numAuthExceptions++;
 			} catch (final RetrofitError e) {
-				Dog.e( "RetrofitError", e);
-				if(e.getKind() == RetrofitError.Kind.CONVERSION) {
-					Dog.e( "RetrofitError kind RetrofitError.Kind.CONVERSION");
+				Dog.e(e, "RetrofitError");
+				if (e.getKind() == RetrofitError.Kind.CONVERSION) {
+					Dog.e("RetrofitError kind RetrofitError.Kind.CONVERSION");
 					syncResult.stats.numParseExceptions++;
-				} else if(e.getKind() == RetrofitError.Kind.HTTP) {
-					Dog.e( "RetrofitError kind RetrofitError.Kind.HTTP");
+				} else if (e.getKind() == RetrofitError.Kind.HTTP) {
+					Dog.e("RetrofitError kind RetrofitError.Kind.HTTP");
 					syncResult.stats.numAuthExceptions++;
 				} else if (e.getKind() == RetrofitError.Kind.NETWORK) {
-					Dog.e( "RetrofitError kind RetrofitError.Kind.NETWORK");
+					Dog.e("RetrofitError kind RetrofitError.Kind.NETWORK");
 					syncResult.stats.numIoExceptions++;
 				}
 			}

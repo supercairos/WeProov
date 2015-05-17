@@ -24,7 +24,6 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -90,7 +89,7 @@ public final class CameraUtils {
 			c = Camera.open(id); // attempt to get a Camera instance
 		} catch (Exception e) {
 			// Camera is not available (in use or does not exist)
-			Dog.v( "Error", e);
+			Dog.v(e, "Error");
 		}
 
 		return c; // returns null if camera is unavailable
@@ -101,9 +100,9 @@ public final class CameraUtils {
 	 * dimensions of the given view while maintaining the aspect ratio. If none can,
 	 * be lenient with the aspect ratio.
 	 *
-	 * @param sizes 	 Camera sizes.
-	 * @param w          The width of the view.
-	 * @param h          The height of the view.
+	 * @param sizes Camera sizes.
+	 * @param w     The width of the view.
+	 * @param h     The height of the view.
 	 * @return Best match camera preview size to fit in the view.
 	 */
 	public static Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
@@ -164,7 +163,7 @@ public final class CameraUtils {
 		// Create the storage directory if it does not exist
 		if (!mediaStorageDir.exists()) {
 			if (!mediaStorageDir.mkdirs()) {
-				Dog.d( "failed to create directory");
+				Dog.d("failed to create directory");
 				return null;
 			}
 		}
@@ -191,14 +190,7 @@ public final class CameraUtils {
 	}
 
 	public static void sendMediaScannerBroadcast(Context context, File file) {
-		MediaScannerConnection.scanFile(context,
-				new String[]{file.toString()}, null,
-				new MediaScannerConnection.OnScanCompletedListener() {
-					public void onScanCompleted(String path, Uri uri) {
-						Dog.i( "Scanned " + path + ":");
-						Dog.i( "-> uri=" + uri);
-					}
-				});
+		MediaScannerConnection.scanFile(context.getApplicationContext(), new String[]{file.toString()}, null, new MyMediaScannerListener());
 	}
 
 
@@ -213,5 +205,21 @@ public final class CameraUtils {
 			return Long.signum((long) lhs.height - (long) rhs.height);
 		}
 
+	}
+
+	private static class MyMediaScannerListener implements MediaScannerConnection.OnScanCompletedListener {
+
+		/**
+		 * Called to notify the client when the media scanner has finished
+		 * scanning a file.
+		 *
+		 * @param path the path to the file that has been scanned.
+		 * @param uri  the Uri for the file if the scanning operation succeeded
+		 */
+		@Override
+		public void onScanCompleted(String path, Uri uri) {
+			Dog.i("Scanned: %s", path);
+			Dog.i("-> uri=%s", uri);
+		}
 	}
 }

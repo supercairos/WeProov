@@ -24,7 +24,7 @@ public class NavigationAdapter extends ArrayAdapter<NavItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         final NavItem service = getItem(position);
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_navigation, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_navigation, parent, false);
         }
 
         // Lookup view for data population
