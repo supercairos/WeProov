@@ -2,6 +2,11 @@ package com.weproov.app.utils;
 
 public final class MathUtils {
 
+
+	public static float constrain(float min, float max, float v) {
+		return Math.max(min, Math.min(max, v));
+	}
+
 	// Returns the next power of two.
 	// Returns the input if it is already power of 2.
 	// Throws IllegalArgumentException if the input is <= 0 or

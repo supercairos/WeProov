@@ -10,9 +10,15 @@ import android.provider.ContactsContract;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import com.weproov.app.models.UserProfile;
 import com.weproov.app.utils.Dog;
+
+import java.util.Locale;
 
 public abstract class ProfileLoader implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -106,7 +112,7 @@ public abstract class ProfileLoader implements LoaderManager.LoaderCallbacks<Cur
 						case ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE:
 							isPrimary = cursor.getInt(PHONE_IS_PRIMARY) > 0;
 							if (TextUtils.isEmpty(profile.phoneNumber) || isPrimary) {
-								profile.phoneNumber = cursor.getString(PHONE_NUMBER);
+								profile.phoneNumber = formatNumber(cursor.getString(PHONE_NUMBER));
 							}
 							break;
 						case ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE:
@@ -123,11 +129,28 @@ public abstract class ProfileLoader implements LoaderManager.LoaderCallbacks<Cur
 					profile.email = getGoogleEmail();
 				}
 
+				if (TextUtils.isEmpty(profile.phoneNumber)) {
+					TelephonyManager manager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+					profile.phoneNumber = formatNumber(manager.getLine1Number());
+				}
+
 				onProfileLoaded(profile);
 			} catch (final Exception e) {
 				Dog.e(e, "Exception");
 			}
 		}
+	}
+
+	private static String formatNumber(String number) {
+		PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+		try {
+			Phonenumber.PhoneNumber proto = phoneUtil.parse(number, Locale.getDefault().getCountry());
+			return phoneUtil.format(proto, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+		} catch (NumberParseException e) {
+			Dog.e(e, "NumberParseException");
+		}
+
+		return number;
 	}
 
 	private String getGoogleEmail() {

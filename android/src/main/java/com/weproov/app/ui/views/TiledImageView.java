@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.Choreographer;
 import android.view.MotionEvent;
@@ -64,9 +65,10 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 		mRenderer.centerY = (int) (getInvertedScaleY() * focusY);
 		mRenderer.centerX = (int) (getInvertedScaleX() * focusX);
 		mRenderer.scale = mRenderer.scale * scale;
+		// mRenderer.scale = Math.max(mMinScale, mRenderer.scale);
 		invalidate();
 
-		Dog.d("onScale : %d %d %d", focusX, focusY, scale);
+		Dog.d("onScale : %f %f %f", focusX, focusY, scale);
 		Dog.d("onScale : %s", mRenderer);
 		return true;
 	}
@@ -107,6 +109,8 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 	public TiledImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
+		Dog.d("TiledImageView()");
+
 		mRenderer = new ImageRendererWrapper();
 		mRenderer.image = new TiledImageRenderer(this);
 		View view;
@@ -130,6 +134,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 	}
 
 	public void destroy() {
+		Dog.d("destroy()");
 		if (USE_TEXTURE_VIEW) {
 			mTextureView.destroy();
 		} else {
@@ -146,12 +151,14 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 	};
 
 	public void onPause() {
+		Dog.d("onPause()");
 		if (!USE_TEXTURE_VIEW) {
 			mGLSurfaceView.onPause();
 		}
 	}
 
 	public void onResume() {
+		Dog.d("onResume()");
 		if (!USE_TEXTURE_VIEW) {
 			mGLSurfaceView.onResume();
 		}
@@ -207,6 +214,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 
 	@Override
 	public void invalidate() {
+		Dog.d("invalidate()");
 		if (USE_TEXTURE_VIEW) {
 			super.invalidate();
 			mTextureView.invalidate();
@@ -281,7 +289,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public boolean onTouchEvent(@NonNull MotionEvent event) {
 		Dog.d(" onTouchEvent()");
 		return mGestureRecognizer.onTouchEvent(event);
 	}

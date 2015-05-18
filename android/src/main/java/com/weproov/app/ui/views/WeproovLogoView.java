@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import com.weproov.app.R;
+import com.weproov.app.utils.MathUtils;
 import com.weproov.app.utils.PixelUtils;
 import com.weproov.app.utils.SvgHelper;
 
@@ -147,7 +148,7 @@ public class WeproovLogoView extends View {
 			for (int i = 0; i < count; i++) {
 				SvgHelper.SvgPath svgPath = mPaths.get(i);
 
-				float phase = constrain(0, 1, (t - (TRACE_TIME - TRACE_TIME_PER_GLYPH) * i * 1f / mPaths.size()) * 1f / TRACE_TIME_PER_GLYPH);
+				float phase = MathUtils.constrain(0, 1, (t - (TRACE_TIME - TRACE_TIME_PER_GLYPH) * i * 1f / mPaths.size()) * 1f / TRACE_TIME_PER_GLYPH);
 				float distance = INTERPOLATOR.getInterpolation(phase) * svgPath.length;
 
 				mStrokePaint.setPathEffect(new DashPathEffect(new float[]{distance, svgPath.length}, 0));
@@ -163,7 +164,7 @@ public class WeproovLogoView extends View {
 				}
 
 				// If after fill start, draw fill
-				float phase = constrain(0, 1, (t - FILL_START) * 1f / FILL_TIME);
+				float phase = MathUtils.constrain(0, 1, (t - FILL_START) * 1f / FILL_TIME);
 				mFillPaint.setARGB((int) (phase * 255), 255, 255, 255);
 				for (int i = 0; i < count; i++) {
 					SvgHelper.SvgPath svgPath = mPaths.get(i);
@@ -181,10 +182,6 @@ public class WeproovLogoView extends View {
 		} else {
 			changeState(STATE_FINISHED);
 		}
-	}
-
-	public static float constrain(float min, float max, float v) {
-		return Math.max(min, Math.min(max, v));
 	}
 
 	@Override

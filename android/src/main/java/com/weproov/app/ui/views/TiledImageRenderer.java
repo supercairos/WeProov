@@ -17,7 +17,6 @@ import com.weproov.app.utils.MathUtils;
 
 public class TiledImageRenderer {
 	public static final int SIZE_UNKNOWN = -1;
-	private static final String TAG = "TiledImageRenderer";
 	private static final int UPLOAD_LIMIT = 1;
 	/*
 	 *  This is the tile state in the CPU side.

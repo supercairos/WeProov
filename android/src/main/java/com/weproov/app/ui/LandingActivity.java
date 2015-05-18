@@ -208,7 +208,7 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 		if (!BuildConfig.DEBUG || (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password))) {
 			UsersTask.login(email, password);
 		} else {
-			UsersTask.save(new User("super.cairos@gmail.com", "password", "Romain", "Caire", null));
+			UsersTask.save(new User("super.cairos@gmail.com", "+33 6 84 72 17 98", "password", "Romain", "Caire", null));
 			gotoMain();
 		}
 	}

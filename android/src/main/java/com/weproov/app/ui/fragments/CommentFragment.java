@@ -87,7 +87,11 @@ public class CommentFragment extends TunnelFragment implements CommandIface.OnCl
 
 	@Override
 	public void onDestroy() {
-		mImageView.destroy();
+		if(mImageView != null) {
+			mImageView.destroy();
+		} else {
+			Dog.d("onDestroy > WTF, ImageView was null :(");
+		}
 		super.onDestroy();
 	}
 

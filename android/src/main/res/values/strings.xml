@@ -83,5 +83,9 @@
     <string name="wrong_email">This email appears to be invalid</string>
     <string name="title_activity_weproov">New Weproov</string>
     <string name="notification_upload_failed">Upload failed</string>
+    <string name="title_activity_fullscreen_image_display">FullscreenImageDisplayActivity</string>
+    <string name="error_phone">This number doesn\'t seams to be a phone number</string>
+    <string name="phone">Phone</string>
+    <string name="send_comments">Send comments</string>
 
 </resources>

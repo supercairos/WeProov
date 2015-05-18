@@ -18,6 +18,7 @@ import com.weproov.app.R;
 import com.weproov.app.models.PictureItem;
 import com.weproov.app.models.WeProov;
 import com.weproov.app.ui.fragments.*;
+import com.weproov.app.ui.fragments.dialogs.CommentDialogFragment;
 import com.weproov.app.ui.ifaces.ActionBarIface;
 import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.Dog;
@@ -118,7 +119,8 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 		int id = item.getItemId();
 
 		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_report_bug) {
+			FragmentsUtils.showDialog(this, new CommentDialogFragment());
 			return true;
 		}
 

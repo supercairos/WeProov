@@ -36,6 +36,10 @@ public class User {
 	public String lastname;
 
 	@Expose
+	@SerializedName("phone")
+	private String phone;
+
+	@Expose
 	@SerializedName("username")
 	private String email;
 
@@ -68,8 +72,9 @@ public class User {
 	@SerializedName("picture")
 	public ParseFile parsePictureFile;
 
-	public User(String email, String password, String firstname, String lastname, Uri picture) {
+	public User(String email, String phone, String password, String firstname, String lastname, Uri picture) {
 		this.email = email;
+		this.phone = phone;
 		this.username = email;
 		this.firstname = firstname;
 		this.lastname = lastname;

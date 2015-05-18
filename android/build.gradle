@@ -113,4 +113,6 @@ dependencies {
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:+'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:+'
+
+    compile 'com.googlecode.libphonenumber:libphonenumber:+'
 }

@@ -14,25 +14,27 @@ import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.squareup.otto.Subscribe;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.ProfileLoader;
 import com.weproov.app.logic.controllers.UsersTask;
+import com.weproov.app.models.Country;
 import com.weproov.app.models.User;
 import com.weproov.app.models.UserProfile;
 import com.weproov.app.models.events.NetworkErrorEvent;
 import com.weproov.app.models.events.RegisterSuccessEvent;
+import com.weproov.app.ui.adapter.CountryAutocompleteAdapter;
+import com.weproov.app.ui.adapter.CountrySpinnerAdapter;
+import com.weproov.app.ui.adapter.CustomPhoneNumberFormattingTextWatcher;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PicassoUtils;
@@ -74,12 +76,22 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 	@InjectView(R.id.action_bar)
 	Toolbar mActionBar;
 
+	@InjectView(R.id.spinner_country)
+	Spinner mCountrySpinner;
+	@InjectView(R.id.edit_phone)
+	AutoCompleteTextView mPhone;
+	@InjectView(R.id.edit_phone_error)
+	TextView mPhoneError;
+
 	ProgressDialog mDialog;
 
 	private Uri mProfilePictureUri;
 	private Uri mOutputFileUri;
 
 	private ProfileLoader mLoader;
+
+	private CountryAutocompleteAdapter mAutocompleteAdapter;
+	private CountrySpinnerAdapter mSpinnerAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +116,43 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 			}
 		});
 
+		mSpinnerAdapter = new CountrySpinnerAdapter(this);
+		mCountrySpinner.setAdapter(mSpinnerAdapter);
+		mCountrySpinner.setSelection(72);
+		mCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				Country country = (Country) parent.getItemAtPosition(position);
+				String ind = "+" + String.valueOf(country.phone);
+				mPhone.setText(ind);
+				mPhone.setSelection(ind.length());
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
+		mAutocompleteAdapter = new CountryAutocompleteAdapter(this);
+		mPhone.setAdapter(mAutocompleteAdapter);
+		mPhone.setThreshold(1);
+		mPhone.setText("+33");
+		mPhone.addTextChangedListener(new CustomPhoneNumberFormattingTextWatcher());
+		mPhone.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Country country = (Country) parent.getItemAtPosition(position);
+				int positionSpinner = mSpinnerAdapter.getPosition(country);
+				if (positionSpinner >= 0) {
+					mCountrySpinner.setSelection(positionSpinner);
+				}
+				String ind = "+" + String.valueOf(country.phone);
+				mPhone.setText(ind);
+				mPhone.setSelection(ind.length());
+			}
+		});
+
 		setCommandListener(this);
 
 		mLoader = new ProfileLoader(this) {
@@ -112,6 +161,7 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 				mEmail.setText(profile.email);
 				mFirstName.setText(profile.givenName);
 				mLastName.setText(profile.familyName);
+				mPhone.setText(profile.phoneNumber);
 
 				if (mProfilePictureUri == null) {
 					mProfilePictureUri = profile.photo;
@@ -145,6 +195,7 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 		String first_name = mFirstName.getEditableText().toString();
 		String last_name = mLastName.getEditableText().toString();
 		String email = mEmail.getEditableText().toString();
+		String phone = mPhone.getEditableText().toString();
 		String password = mPassword.getEditableText().toString();
 
 		boolean isEverythingOk = true;
@@ -180,12 +231,20 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 			mFirstNameError.setVisibility(View.INVISIBLE);
 		}
 
+		if (!PhoneNumberUtils.isGlobalPhoneNumber(phone)) {
+			mPhoneError.setVisibility(View.VISIBLE);
+			mPhone.requestFocus();
+			isEverythingOk = false;
+		} else {
+			mPhoneError.setVisibility(View.INVISIBLE);
+		}
+
 		if (isEverythingOk) {
 			// Register
 			mDialog = ProgressDialog.show(this, "Register", "Please wait...", true);
 			mDialog.show();
 
-			UsersTask.register(new User(email, password, first_name, last_name, mProfilePictureUri));
+			UsersTask.register(new User(email, phone, password, first_name, last_name, mProfilePictureUri));
 		}
 	}
 
