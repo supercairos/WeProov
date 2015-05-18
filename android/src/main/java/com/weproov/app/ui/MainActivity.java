@@ -2,10 +2,7 @@ package com.weproov.app.ui;
 
 import android.accounts.Account;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SyncStatusObserver;
+import android.content.*;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +36,7 @@ import com.weproov.app.utils.*;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 
@@ -148,12 +146,13 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 	protected void onStart() {
 		super.onStart();
 		final Account account = AccountUtils.getAccount();
+		boolean isRunning = false;
 		if (account != null) {
 			// https://github.com/square/leakcanary/issues/86
 			mSyncObserverHandle = ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE | ContentResolver.SYNC_OBSERVER_TYPE_PENDING, new MySyncObserver(mSyncProgress));
-			boolean isRunning = ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER) || ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER);
-			mSyncProgress.setVisibility(isRunning ? View.VISIBLE : View.GONE);
+			isRunning = ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER) || ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER);
 		}
+		mSyncProgress.setVisibility(isRunning ? View.VISIBLE : View.GONE);
 	}
 
 	@Override
@@ -299,10 +298,44 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 		@Override
 		public void run() {
 			Dog.d("Cleaning up the shit this user made MOFO!");
+			mContentResolver.delete(ContentProvider.createUri(WeProov.class, null), null, null);
 			mContentResolver.delete(ContentProvider.createUri(CarInfo.class, null), null, null);
 			mContentResolver.delete(ContentProvider.createUri(PictureItem.class, null), null, null);
 			mContentResolver.delete(ContentProvider.createUri(RenterInfo.class, null), null, null);
-			mContentResolver.delete(ContentProvider.createUri(WeProov.class, null), null, null);
+			trimCache(MyApplication.getAppContext());
+		}
+
+		public static void trimCache(Context context) {
+			File dir = context.getCacheDir();
+			if (dir != null && dir.isDirectory()) {
+				String[] children = dir.list();
+				for (String child : children) {
+					File f = new File(dir, child);
+					if (f.isDirectory()) {
+						deleteDir(new File(dir, child));
+					} else if (f.isFile()) {
+						if (!f.delete()) {
+							Dog.e("Could not delete file : %s", f);
+						}
+					}
+
+				}
+			}
+		}
+
+		public static boolean deleteDir(File dir) {
+			if (dir != null && dir.isDirectory()) {
+				String[] children = dir.list();
+				for (String child : children) {
+					boolean success = deleteDir(new File(dir, child));
+					if (!success) {
+						return false;
+					}
+				}
+			}
+
+			// The directory is now empty so delete it
+			return dir != null && dir.delete();
 		}
 	}
 }

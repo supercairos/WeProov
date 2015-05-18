@@ -3,7 +3,6 @@ package com.weproov.app.logic.controllers;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import com.weproov.app.MyApplication;
@@ -25,54 +24,12 @@ import retrofit.RetrofitError;
 
 public final class UsersTask {
 
-	private static final User.IUserService SERVICE = User.getService();
-	private static final BusProvider.MainThreadBus BUS = BusProvider.getInstance();
-
 	public static void login(final String email, final String password) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					User user = SERVICE.login(email, password);
-					user.password = password;
-					Dog.d("User found : %s", user.toString());
-					save(user);
-					BUS.post(new LoginSuccessEvent());
-				} catch (NetworkException | RetrofitError error) {
-					Dog.e(error, "Got an error while login :(");
-					BUS.post(new NetworkErrorEvent(error));
-				}
-			}
-		}).start();
+		new LoginTask(email, password).start();
 	}
 
 	public static void register(final User user) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					if (user.picture != null) {
-						ContentResolver contentResolver = MyApplication.getAppContext().getContentResolver();
-						TypedUri file = new TypedUri(contentResolver, user.picture);
-						ParseFileResponse server = SERVICE.upload(file.fileName(), file);
-						user.parsePictureFile = new ParseFile(server.name, server.url);
-					}
-
-					ParseRegisterResponse server = SERVICE.register(user);
-					user.token = server.token;
-					Dog.d("User found : %s", server.toString());
-					save(user);
-					BUS.post(new RegisterSuccessEvent());
-				} catch (NetworkException | RetrofitError error) {
-					Dog.e(error, "Got an error while registering :(");
-					BUS.post(new NetworkErrorEvent(error));
-				}
-			}
-		}).start();
-	}
-
-	private void copyPictureToCache(Uri picture) {
-
+		new RegisterTask(user).start();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -87,7 +44,7 @@ public final class UsersTask {
 			}
 		}
 
-		Account myAccount = new Account(user.email, AuthenticatorConstants.ACCOUNT_TYPE);
+		Account myAccount = new Account(user.getEmail(), AuthenticatorConstants.ACCOUNT_TYPE);
 
 		Bundle data = new Bundle();
 		data.putString(AccountConstants.KEY_FIRST_NAME, user.firstname);
@@ -98,5 +55,68 @@ public final class UsersTask {
 		accountManager.setAuthToken(myAccount, AuthenticatorConstants.AUTH_TOKEN_TYPE_FULL, user.token);
 
 		AccountUtils.setSyncable(true);
+	}
+
+	private static class RegisterTask extends Thread {
+
+		private static final User.IUserService SERVICE = User.getService();
+		private static final BusProvider.MainThreadBus BUS = BusProvider.getInstance();
+
+		private User mUser;
+
+		public RegisterTask(User user) {
+			super("RegisterTask");
+			this.mUser = user;
+		}
+
+		@Override
+		public void run() {
+			try {
+				if (mUser.picture != null) {
+					ContentResolver contentResolver = MyApplication.getAppContext().getContentResolver();
+					TypedUri file = new TypedUri(contentResolver, mUser.picture);
+					ParseFileResponse server = SERVICE.upload(file.fileName(), file);
+					mUser.parsePictureFile = new ParseFile(server.name, server.url);
+				}
+
+				ParseRegisterResponse server = SERVICE.register(mUser);
+				mUser.token = server.token;
+				Dog.d("User found : %s", server.toString());
+				save(mUser);
+				BUS.post(new RegisterSuccessEvent());
+			} catch (NetworkException | RetrofitError error) {
+				Dog.e(error, "Got an error while registering :(");
+				BUS.post(new NetworkErrorEvent(error));
+			}
+		}
+	}
+
+	private static class LoginTask extends Thread {
+
+		private static final User.IUserService SERVICE = User.getService();
+		private static final BusProvider.MainThreadBus BUS = BusProvider.getInstance();
+
+		private String mUsername;
+		private String mPassword;
+
+		public LoginTask(String username, String password) {
+			super("LoginTask");
+			this.mUsername = username;
+			this.mPassword = password;
+		}
+
+		@Override
+		public void run() {
+			try {
+				User user = SERVICE.login(mUsername, mPassword);
+				user.password = mPassword;
+				Dog.d("User found : %s", user.toString());
+				save(user);
+				BUS.post(new LoginSuccessEvent());
+			} catch (NetworkException | RetrofitError error) {
+				Dog.e(error, "Got an error while login :(");
+				BUS.post(new NetworkErrorEvent(error));
+			}
+		}
 	}
 }

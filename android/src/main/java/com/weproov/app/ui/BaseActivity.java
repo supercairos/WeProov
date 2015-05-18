@@ -15,11 +15,12 @@ import butterknife.Optional;
 import com.weproov.app.R;
 import com.weproov.app.logic.providers.BusProvider;
 import com.weproov.app.ui.ifaces.CommandIface;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.debug.ViewServer;
 
 public abstract class BaseActivity extends AppCompatActivity implements CommandIface {
 
-	@InjectView(R.id.content_root_view)
+	@InjectView(android.R.id.content)
 	ViewGroup mRootView;
 
 	@Optional
@@ -97,7 +98,6 @@ public abstract class BaseActivity extends AppCompatActivity implements CommandI
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-
 		mRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
@@ -111,6 +111,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CommandI
 	@Override
 	protected void onStart() {
 		super.onStart();
+		Dog.d("Registering : " + this);
 		BusProvider.getInstance().register(this);
 	}
 
@@ -121,7 +122,13 @@ public abstract class BaseActivity extends AppCompatActivity implements CommandI
 	}
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
+	@Override
 	protected void onStop() {
+		Dog.d("Registering : " + this);
 		BusProvider.getInstance().unregister(this);
 		super.onStop();
 	}

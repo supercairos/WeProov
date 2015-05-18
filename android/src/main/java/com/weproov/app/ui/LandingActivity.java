@@ -190,16 +190,11 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
 	protected void onStop() {
-		super.onPause();
 		if (mDialog != null) {
 			mDialog.dismiss();
 		}
+		super.onStop();
 	}
 
 	@Override

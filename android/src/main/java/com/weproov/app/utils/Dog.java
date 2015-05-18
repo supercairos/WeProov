@@ -362,8 +362,7 @@ public final class Dog {
 			// because Robolectric runs them on the JVM but on Android the elements are different.
 			StackTraceElement[] stackTrace = new Throwable().getStackTrace();
 			if (stackTrace.length <= CALL_STACK_INDEX) {
-				throw new IllegalStateException(
-						"Synthetic stacktrace didn't have enough elements: are you using proguard?");
+				throw new IllegalStateException("Synthetic stacktrace didn't have enough elements: are you using proguard?");
 			}
 			return createStackElementTag(stackTrace[CALL_STACK_INDEX]);
 		}

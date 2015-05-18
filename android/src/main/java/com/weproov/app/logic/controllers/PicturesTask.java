@@ -19,6 +19,5 @@ public final class PicturesTask {
 			Response response = SERVICE.upload(item, new TypedFile(MimeUtils.getMimeType(file), file));
 			Dog.d("Response found : %s", response);
 			return response.getStatus() > 199 && response.getStatus() < 300;
-
 	}
 }

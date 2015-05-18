@@ -333,8 +333,10 @@ public class TiledImageRenderer {
 	}
 
 	public void freeTextures() {
+		Dog.d("Free texture from Renderer");
 		mLayoutTiles = true;
 		mTileDecoder.finishAndWait();
+		mTileDecoder = null;
 		synchronized (mQueueLock) {
 			mUploadQueue.clean();
 			mDecodeQueue.clean();
@@ -351,8 +353,8 @@ public class TiledImageRenderer {
 		}
 		mActiveTiles.clear();
 		mTileRange.set(0, 0, 0, 0);
-		while (sTilePool.acquire() != null) {
-		}
+		while (sTilePool.acquire() != null) {}
+		mParent = null;
 	}
 
 	public boolean draw(GLCanvas canvas) {

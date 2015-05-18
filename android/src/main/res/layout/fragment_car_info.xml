@@ -215,8 +215,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/seekbar_car_gas_level"
-                    android:progress="50"
-                    android:max="100"
+                    android:progress="4"
+                    android:max="8"
                     android:layout_toEndOf="@+id/textView2"
                     android:indeterminate="false"/>
 

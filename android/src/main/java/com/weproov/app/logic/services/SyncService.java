@@ -92,15 +92,17 @@ public class SyncService extends Service {
 
 		@Override
 		public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-			try {
-				mBuilder = new NotificationCompat.Builder(getContext())
-						.setSmallIcon(R.drawable.ic_notification)
-						.setProgress(0, 0, true)
-						.setContentTitle(getContext().getString(R.string.notification_picture_download_title))
-						.setContentIntent(PendingIntent.getActivity(getContext(), 0, new Intent(getContext(), LandingActivity.class), 0))
-						.setContentText(getContext().getString(R.string.notification_picture_download_start));
 
-				Notification notification = mBuilder.build();
+			mBuilder = new NotificationCompat.Builder(getContext())
+					.setSmallIcon(R.drawable.ic_notification)
+					.setProgress(0, 0, true)
+					.setContentTitle(getContext().getString(R.string.notification_picture_download_title))
+					.setContentIntent(PendingIntent.getActivity(getContext(), 0, new Intent(getContext(), LandingActivity.class), 0))
+					.setContentText(getContext().getString(R.string.notification_picture_download_start));
+
+			Notification notification;
+			try {
+				notification = mBuilder.build();
 				notification.flags |= Notification.FLAG_ONGOING_EVENT;
 				mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
 
@@ -113,11 +115,12 @@ public class SyncService extends Service {
 					PictureItem item = items.get(i);
 					Dog.d("Syncing item >> %s", item);
 					mBuilder.setProgress(size, i, false);
-					mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, mBuilder.build());
+					notification = mBuilder.build();
+					notification.flags |= Notification.FLAG_ONGOING_EVENT;
+					mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
 
 					// Upload picture
 					PicturesTask.upload(item);
-
 
 					item.uploaded = true;
 					item.save();
@@ -150,6 +153,15 @@ public class SyncService extends Service {
 					syncResult.stats.numIoExceptions++;
 				}
 			}
+
+			// When the loop is finished, updates the notification
+			mBuilder.setContentText(getContext().getString(R.string.notification_upload_failed))
+					// Removes the progress bar
+					.setProgress(0, 0, false);
+
+			notification = mBuilder.build();
+			notification.flags |= Notification.FLAG_AUTO_CANCEL;
+			mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
 		}
 	}
 

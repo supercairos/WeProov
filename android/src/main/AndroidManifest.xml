@@ -89,7 +89,7 @@
         <!-- Sync stuffs -->
         <provider
                 android:name="com.activeandroid.content.ContentProvider"
-                android:authorities="com.weproov.app.provider"
+                android:authorities="com.weproov.app"
                 android:exported="false"
                 android:syncable="true"/>
 

@@ -82,5 +82,6 @@
     <string name="signature_renter">Renter</string>
     <string name="wrong_email">This email appears to be invalid</string>
     <string name="title_activity_weproov">New Weproov</string>
+    <string name="notification_upload_failed">Upload failed</string>
 
 </resources>

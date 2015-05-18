@@ -140,6 +140,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 	private Runnable mFreeTextures = new Runnable() {
 		@Override
 		public void run() {
+			Dog.d("Freeing texture from the TiledImageView Runnable");
 			mRenderer.image.freeTextures();
 		}
 	};

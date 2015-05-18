@@ -81,12 +81,13 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 	protected void onStart() {
 		super.onStart();
 		final Account account = AccountUtils.getAccount();
+		boolean isRunning = false;
 		if (account != null) {
 			// https://github.com/square/leakcanary/issues/86
 			mSyncObserverHandle = ContentResolver.addStatusChangeListener(ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE | ContentResolver.SYNC_OBSERVER_TYPE_PENDING, new MySyncObserver(mSyncProgress));
-			boolean isRunning = ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER) || ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER);
-			mSyncProgress.setVisibility(isRunning ? View.VISIBLE : View.GONE);
+			isRunning = ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER) || ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER);
 		}
+		mSyncProgress.setVisibility(isRunning ? View.VISIBLE : View.GONE);
 	}
 
 	@Override
@@ -147,11 +148,8 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 
 	@Override
 	public void next(Bundle data) {
-		if (mCurrentFragment == null) {
-			// Restore
-			mCurrentFragment = getSupportFragmentManager().findFragmentByTag("tag");
-		}
-
+		// Restore
+		mCurrentFragment = getSupportFragmentManager().findFragmentByTag("tag");
 		if (RenterFragment.class.equals(mCurrentFragment.getClass())) {
 			// Need to go to CarInfoFragment;
 			if (data != null) {

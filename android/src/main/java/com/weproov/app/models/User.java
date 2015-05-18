@@ -37,7 +37,22 @@ public class User {
 
 	@Expose
 	@SerializedName("username")
-	public String email;
+	private String email;
+
+	// Parse hack to use the username as email and viceversa
+	@SuppressWarnings("unused")
+	@Expose
+	@SerializedName("email")
+	private String username;
+
+	public void setEmail(String email) {
+		this.email = email;
+		this.username = email;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
 
 	@Expose
 	@SerializedName("sessionToken")
@@ -55,6 +70,7 @@ public class User {
 
 	public User(String email, String password, String firstname, String lastname, Uri picture) {
 		this.email = email;
+		this.username = email;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.password = password;
