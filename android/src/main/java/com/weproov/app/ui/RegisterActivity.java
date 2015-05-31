@@ -1,5 +1,6 @@
 package com.weproov.app.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -10,8 +11,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
@@ -42,7 +45,10 @@ import com.weproov.app.utils.validators.EmailValidator;
 import com.weproov.app.utils.validators.PasswordValidator;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RegisterActivity extends BaseActivity implements CommandIface.OnClickListener {
@@ -55,23 +61,23 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 
 	@InjectView(R.id.edit_first_name)
 	EditText mFirstName;
-	@InjectView(R.id.edit_first_name_error)
-	TextView mFirstNameError;
+	@InjectView(R.id.edit_first_name_layout)
+	TextInputLayout mFirstNameLayout;
 
 	@InjectView(R.id.edit_last_name)
 	EditText mLastName;
-	@InjectView(R.id.edit_last_name_error)
-	TextView mLastNameError;
+	@InjectView(R.id.edit_last_name_layout)
+	TextInputLayout mLastNameLayout;
 
 	@InjectView(R.id.edit_email)
 	EditText mEmail;
-	@InjectView(R.id.edit_email_error)
-	TextView mEmailError;
+	@InjectView(R.id.edit_email_layout)
+	TextInputLayout mEmailLayout;
 
 	@InjectView(R.id.edit_password)
 	EditText mPassword;
-	@InjectView(R.id.edit_password_error)
-	TextView mPasswordError;
+	@InjectView(R.id.edit_password_layout)
+	TextInputLayout mPasswordLayout;
 
 	@InjectView(R.id.action_bar)
 	Toolbar mActionBar;
@@ -80,8 +86,8 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 	Spinner mCountrySpinner;
 	@InjectView(R.id.edit_phone)
 	AutoCompleteTextView mPhone;
-	@InjectView(R.id.edit_phone_error)
-	TextView mPhoneError;
+	@InjectView(R.id.edit_phone_layout)
+	TextInputLayout mPhoneLayout;
 
 	ProgressDialog mDialog;
 
@@ -172,6 +178,12 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 			}
 		};
 		getSupportLoaderManager().initLoader(LOADER_ID, null, mLoader);
+		findViewById(R.id.edit_email).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(RegisterActivity.this, LandingActivity.class));
+			}
+		});
 	}
 
 	@Override
@@ -195,48 +207,48 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 		String first_name = mFirstName.getEditableText().toString();
 		String last_name = mLastName.getEditableText().toString();
 		String email = mEmail.getEditableText().toString();
-		String phone = mPhone.getEditableText().toString();
+		String phone = mPhone.getEditableText().toString().replaceAll("[^0-9+]*", "");
 		String password = mPassword.getEditableText().toString();
 
 		boolean isEverythingOk = true;
 		if (!EmailValidator.getInstance().validate(email)) {
-			mEmailError.setVisibility(View.VISIBLE);
+			mEmailLayout.setError(getString(R.string.error_email));
 			mEmail.requestFocus();
 			isEverythingOk = false;
 		} else {
-			mEmailError.setVisibility(View.INVISIBLE);
+			mEmailLayout.setError(null);
 		}
 
 		if (!PasswordValidator.isAcceptablePassword(password)) {
-			mPasswordError.setVisibility(View.VISIBLE);
+			mPasswordLayout.setError(getString(R.string.error_password));
 			mPassword.requestFocus();
 			isEverythingOk = false;
 		} else {
-			mPasswordError.setVisibility(View.INVISIBLE);
+			mPasswordLayout.setError(null);
 		}
 
 		if (TextUtils.isEmpty(last_name)) {
-			mLastNameError.setVisibility(View.VISIBLE);
+			mLastNameLayout.setError(getString(R.string.error_last_name));
 			mLastName.requestFocus();
 			isEverythingOk = false;
 		} else {
-			mLastNameError.setVisibility(View.INVISIBLE);
+			mLastNameLayout.setError(null);
 		}
 
 		if (TextUtils.isEmpty(first_name)) {
-			mFirstNameError.setVisibility(View.VISIBLE);
+			mFirstNameLayout.setError(getString(R.string.error_first_name));
 			mFirstName.requestFocus();
 			isEverythingOk = false;
 		} else {
-			mFirstNameError.setVisibility(View.INVISIBLE);
+			mFirstNameLayout.setError(null);
 		}
 
 		if (!PhoneNumberUtils.isGlobalPhoneNumber(phone)) {
-			mPhoneError.setVisibility(View.VISIBLE);
+			mPhoneLayout.setError(getString(R.string.error_phone));
 			mPhone.requestFocus();
 			isEverythingOk = false;
 		} else {
-			mPhoneError.setVisibility(View.INVISIBLE);
+			mPhoneLayout.setError(null);
 		}
 
 		if (isEverythingOk) {
@@ -254,8 +266,8 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
+	protected void onStop() {
+		super.onStop();
 		if (mDialog != null) {
 			mDialog.dismiss();
 		}
@@ -263,13 +275,17 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 
 	@Subscribe
 	public void onRegisterSuccess(RegisterSuccessEvent event) {
-		mDialog.dismiss();
+		if(mDialog != null) {
+			mDialog.dismiss();
+		}
 		gotoMain();
 	}
 
 	@Subscribe
 	public void onRegisterError(NetworkErrorEvent event) {
-		mDialog.dismiss();
+		if(mDialog != null) {
+			mDialog.dismiss();
+		}
 
 		Throwable throwable = event.throwable;
 		new AlertDialog.Builder(this)
@@ -293,34 +309,52 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 	}
 
 	private void startImageIntent(int requestCode) {
-		final File file = new File(getCacheDir(), "renter_" + System.currentTimeMillis() + ".jpg");
-		mOutputFileUri = Uri.fromFile(file);
+		try {
+			mOutputFileUri = Uri.fromFile(createImageFile());
 
-		// Camera.
-		final List<Intent> cameraIntents = new ArrayList<>();
-		final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		final PackageManager packageManager = getPackageManager();
-		final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
-		for (ResolveInfo res : listCam) {
-			final String packageName = res.activityInfo.packageName;
-			final Intent intent = new Intent(captureIntent);
-			intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-			intent.setPackage(packageName);
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
-			cameraIntents.add(intent);
+			// Camera.
+			final List<Intent> cameraIntents = new ArrayList<>();
+			final Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			final PackageManager packageManager = getPackageManager();
+			final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+			for (ResolveInfo res : listCam) {
+				final String packageName = res.activityInfo.packageName;
+				final Intent intent = new Intent(captureIntent);
+				intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+				intent.setPackage(packageName);
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
+				cameraIntents.add(intent);
+			}
+
+			// Filesystem.
+			final Intent galleryIntent = new Intent();
+			galleryIntent.setType("image/*");
+			galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+			// Chooser of filesystem options.
+			final Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.picker_select_source));
+
+			// Add the camera options.
+			chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
+			startActivityForResult(chooserIntent, requestCode);
+		} catch (IOException e) {
+			Toast.makeText(this, "Error creating picture", Toast.LENGTH_LONG).show();
+			Dog.e(e, "IOException");
 		}
+	}
 
-		// Filesystem.
-		final Intent galleryIntent = new Intent();
-		galleryIntent.setType("image/*");
-		galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+	@SuppressLint("SimpleDateFormat")
+	private File createImageFile() throws IOException {
+		// Create an image file name
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String imageFileName = "renter_" + timeStamp;
+		File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-		// Chooser of filesystem options.
-		final Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.picker_select_source));
-
-		// Add the camera options.
-		chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
-		startActivityForResult(chooserIntent, requestCode);
+		return File.createTempFile(
+				imageFileName,  /* prefix */
+				".jpg",         /* suffix */
+				storageDir     /* directory */
+		);
 	}
 
 	@Override
@@ -329,6 +363,11 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 			if (data == null || (data.getAction() != null && data.getAction().equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE))) {
 				mProfilePictureUri = mOutputFileUri;
 			} else {
+				Uri uri = data.getData();
+				if(!mOutputFileUri.equals(uri)) {
+					new File(mOutputFileUri.getPath()).delete();
+				}
+
 				mProfilePictureUri = data.getData();
 			}
 

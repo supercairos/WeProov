@@ -27,12 +27,10 @@ proguard/
 
 # IDE project files
 .idea/
-.gradle/
 gradle-wrapper.jar
 gradlew.bat
 gradlew
 .settings/
-build
 *.iml
 
 # SVN

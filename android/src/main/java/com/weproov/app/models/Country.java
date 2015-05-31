@@ -191,7 +191,7 @@ public class Country {
 			new Country("Romania", "ro", 40, 0, R.drawable.ro),
 			new Country("Russia", "ru", 7, 0, R.drawable.ru),
 			new Country("Rwanda", "rw", 250, 0, R.drawable.rw),
-			// new Country("Saint Barthélemy", "bl", 590, 1, R.drawable.bl),
+			// new Country("Saint Barthelemy", "bl", 590, 1, R.drawable.bl),
 			new Country("Saint Helena", "sh", 290, 0, R.drawable.sh),
 			new Country("Saint Kitts and Nevis", "kn", 1869, 0, R.drawable.kn),
 			new Country("Saint Lucia", "lc", 1758, 0, R.drawable.lc),

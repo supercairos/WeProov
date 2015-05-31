@@ -1,5 +1,6 @@
 package com.weproov.app.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -27,10 +29,12 @@ import com.weproov.app.ui.adapter.PlateAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PicassoUtils;
-import com.weproov.app.utils.PixelUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -85,6 +89,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	TextView mVehicleDocumentationText;
 
 
+	@SuppressWarnings("unused")
 	public static CarInfoFragment newInstance(CarInfo info) {
 		CarInfoFragment fragment = new CarInfoFragment();
 		Bundle bundle = new Bundle();
@@ -122,19 +127,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 		}
 
 		if (info != null) {
-			mPlateNumber.setText(info.plate);
-			mBrand.setText(info.brand);
-			mModel.setText(info.model);
-			mMillage.setText(String.valueOf(info.millage));
-			mMillageType.setSelection(getServerIndex(mMillageTypeServer, info.millage_type));
-			mColor.setText(info.color);
-
-			mGasLevel.setProgress(info.gas_level);
-			mCarType.setSelection(getServerIndex(mCarTypeServer, info.millage_type));
-
-			int size = (int) PixelUtils.convertDpToPixel(100);
-			mVehicleDocumentationUri = info.vehicle_documentation;
-			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mVehicleDocumentationPicture);
+			bindCarInfo(info, false);
 		}
 
 		mAutocompleteAdapter = new PlateAutocompleteAdapter(getActivity());
@@ -143,16 +136,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 		mPlateNumber.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				CarInfo info = mAutocompleteAdapter.getItem(position);
-				mBrand.setText(info.brand);
-				mModel.setText(info.model);
-				mMillageType.setSelection(getServerIndex(mMillageTypeServer, info.millage_type));
-				mColor.setText(info.color);
-				mCarType.setSelection(getServerIndex(mCarTypeServer, info.millage_type));
-
-				int size = (int) PixelUtils.convertDpToPixel(100);
-				mVehicleDocumentationUri = info.vehicle_documentation;
-				PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mVehicleDocumentationPicture);
+				bindCarInfo(mAutocompleteAdapter.getItem(position), true);
 			}
 		});
 		mPlateNumber.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(9)});
@@ -179,6 +163,23 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 		});
 	}
 
+	private void bindCarInfo(CarInfo info, boolean omit) {
+		mPlateNumber.setText(info.plate);
+		mBrand.setText(info.brand);
+		mModel.setText(info.model);
+		if(!omit) {
+			mMillage.setText(String.valueOf(info.millage));
+		}
+		mMillageType.setSelection(getServerIndex(mMillageTypeServer, info.millage_type));
+		mColor.setText(info.color);
+
+		mGasLevel.setProgress(info.gas_level);
+		mCarType.setSelection(getServerIndex(mCarTypeServer, info.millage_type));
+
+		mVehicleDocumentationUri = info.vehicle_documentation;
+		PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerCrop().fit().placeholder(R.drawable.card1).into(mVehicleDocumentationPicture);
+	}
+
 	private int getServerIndex(String[] serverValues, String serverVal) {
 		for (int i = 0; i < serverValues.length; i++) {
 			String val = serverValues[i];
@@ -199,13 +200,13 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			info.color = mColor.getEditableText().toString();
 
 			try {
-				info.millage = Float.parseFloat(mMillage.getEditableText().toString().replaceAll("[^\\d.,-]", ""));
+				info.millage = Float.parseFloat(mMillage.getEditableText().toString().replaceAll("[^\\d\\.,-]", ""));
 			} catch (NumberFormatException e) {
 				info.millage = -1;
 			}
 			info.millage_type = mMillageTypeServer[mMillageType.getSelectedItemPosition()];
 
-			info.gas_level = mGasLevel.getProgress();
+			info.gas_level = (mGasLevel.getProgress() * 100) / mGasLevel.getMax();
 			info.car_type = mCarTypeServer[mCarType.getSelectedItemPosition()];
 
 			info.vehicle_documentation = mVehicleDocumentationUri;
@@ -294,34 +295,52 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	}
 
 	private void startImageIntent(int requestCode) {
-		final File file = new File(getActivity().getCacheDir(), "renter_" + System.currentTimeMillis() + ".jpg");
-		mOutputFileUri = Uri.fromFile(file);
+		try {
+			mOutputFileUri = Uri.fromFile(createImageFile());
 
-		// Camera.
-		final List<Intent> cameraIntents = new ArrayList<>();
-		final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		final PackageManager packageManager = getActivity().getPackageManager();
-		final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
-		for (ResolveInfo res : listCam) {
-			final String packageName = res.activityInfo.packageName;
-			final Intent intent = new Intent(captureIntent);
-			intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-			intent.setPackage(packageName);
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
-			cameraIntents.add(intent);
+			// Camera.
+			final List<Intent> cameraIntents = new ArrayList<>();
+			final Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			final PackageManager packageManager = getActivity().getPackageManager();
+			final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+			for (ResolveInfo res : listCam) {
+				final String packageName = res.activityInfo.packageName;
+				final Intent intent = new Intent(captureIntent);
+				intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+				intent.setPackage(packageName);
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
+				cameraIntents.add(intent);
+			}
+
+			// Filesystem.
+			final Intent galleryIntent = new Intent();
+			galleryIntent.setType("image/*");
+			galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+			// Chooser of filesystem options.
+			final Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.picker_select_source));
+
+			// Add the camera options.
+			chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
+			startActivityForResult(chooserIntent, requestCode);
+		} catch (IOException e) {
+			Toast.makeText(getActivity(), "Error creating picture", Toast.LENGTH_LONG).show();
+			Dog.e(e, "IOException");
 		}
+	}
 
-		// Filesystem.
-		final Intent galleryIntent = new Intent();
-		galleryIntent.setType("image/*");
-		galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+	@SuppressLint("SimpleDateFormat")
+	private File createImageFile() throws IOException {
+		// Create an image file name
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String imageFileName = "renter_" + timeStamp;
+		File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-		// Chooser of filesystem options.
-		final Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.picker_select_source));
-
-		// Add the camera options.
-		chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
-		startActivityForResult(chooserIntent, requestCode);
+		return File.createTempFile(
+				imageFileName,  /* prefix */
+				".jpg",         /* suffix */
+				storageDir     /* directory */
+		);
 	}
 
 	@Override
@@ -330,11 +349,16 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			if (data == null || (data.getAction() != null && data.getAction().equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE))) {
 				mVehicleDocumentationUri = mOutputFileUri;
 			} else {
+				Uri uri = data.getData();
+				if (!mOutputFileUri.equals(uri)) {
+					//noinspection ResultOfMethodCallIgnored
+					new File(mOutputFileUri.getPath()).delete();
+				}
+
 				mVehicleDocumentationUri = data.getData();
 			}
 
-			int size = (int) PixelUtils.convertDpToPixel(100);
-			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerInside().resize(size, size).into(mVehicleDocumentationPicture);
+			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerCrop().fit().into(mVehicleDocumentationPicture);
 
 			Dog.d("Found picture : %s", mVehicleDocumentationUri);
 		}

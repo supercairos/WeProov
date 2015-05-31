@@ -8,8 +8,8 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 
-@Table(name = "renter", id = BaseColumns._ID)
-public class RenterInfo extends BaseModel implements Parcelable {
+@Table(name = "client", id = BaseColumns._ID)
+public class ClientInfo extends BaseModel implements Parcelable {
 
 
 	@Expose
@@ -38,11 +38,11 @@ public class RenterInfo extends BaseModel implements Parcelable {
 	public boolean uploaded = false;
 
 
-	public RenterInfo() {
+	public ClientInfo() {
 		super();
 	}
 
-	protected RenterInfo(Parcel in) {
+	protected ClientInfo(Parcel in) {
 		super();
 		lastname = in.readString();
 		firstname = in.readString();
@@ -71,15 +71,15 @@ public class RenterInfo extends BaseModel implements Parcelable {
 	}
 
 	@SuppressWarnings("unused")
-	public static final Parcelable.Creator<RenterInfo> CREATOR = new Parcelable.Creator<RenterInfo>() {
+	public static final Parcelable.Creator<ClientInfo> CREATOR = new Parcelable.Creator<ClientInfo>() {
 		@Override
-		public RenterInfo createFromParcel(Parcel in) {
-			return new RenterInfo(in);
+		public ClientInfo createFromParcel(Parcel in) {
+			return new ClientInfo(in);
 		}
 
 		@Override
-		public RenterInfo[] newArray(int size) {
-			return new RenterInfo[size];
+		public ClientInfo[] newArray(int size) {
+			return new ClientInfo[size];
 		}
 	};
 

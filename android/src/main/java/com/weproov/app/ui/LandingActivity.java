@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -42,6 +43,9 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 	private static final int LOADER_ID = 1337;
 
 	private Handler mHandler = new Handler();
+
+	@InjectView(R.id.content_root_view)
+	View mRootView;
 
 	@InjectView(R.id.background)
 	ImageView mBackground;
@@ -138,6 +142,13 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 						@Override
 						public void onAnimationEnd(Animator animation) {
 							mBackground.setVisibility(View.GONE);
+
+							String text = mEmail.getEditableText().toString();
+							if (!TextUtils.isEmpty(text)) {
+								mPassword.requestFocus();
+							} else {
+								mEmail.requestFocus();
+							}
 						}
 
 						@Override
@@ -164,6 +175,12 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 			}
 		};
 		getSupportLoaderManager().initLoader(LOADER_ID, null, mLoader);
+		findViewById(R.id.background).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(LandingActivity.this, MainActivity.class));
+			}
+		});
 	}
 
 	@Override
@@ -220,21 +237,25 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 
 	@Subscribe
 	public void onLoginSuccess(LoginSuccessEvent event) {
-		mDialog.dismiss();
+		if (mDialog != null) {
+			mDialog.dismiss();
+		}
 		gotoMain();
 	}
 
 	@Subscribe
 	public void onRegisterError(NetworkErrorEvent event) {
-		mDialog.dismiss();
-
+		if (mDialog != null) {
+			mDialog.dismiss();
+		}
 		Throwable throwable = event.throwable;
 		String message;
 		if (throwable instanceof NetworkException) {
 			switch (((NetworkException) throwable).getCode()) {
 				case NetworkException.OBJECT_NOT_FOUND:
-					message = "This account doesn't exit or the password is wrong";
-					break;
+					// message = getString(R.string.wrong_login);
+					Snackbar.make(mRootView, R.string.wrong_login_snack, Snackbar.LENGTH_LONG).show();
+					return;
 				default:
 					message = throwable.getMessage();
 					break;

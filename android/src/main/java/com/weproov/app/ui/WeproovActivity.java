@@ -12,13 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.models.PictureItem;
 import com.weproov.app.models.WeProov;
 import com.weproov.app.ui.fragments.*;
-import com.weproov.app.ui.fragments.dialogs.CommentDialogFragment;
+import com.weproov.app.ui.fragments.dialogs.BugReportDialogFragment;
 import com.weproov.app.ui.ifaces.ActionBarIface;
 import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.Dog;
@@ -52,7 +51,6 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_weproov);
-		ButterKnife.inject(this);
 		setSupportActionBar(mActionBar);
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
@@ -64,7 +62,7 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 			mCurrentWeProov = savedInstanceState.getParcelable(KEY_WE_PROOV_OBJECT);
 			Dog.d("Found weproov object : %s", mCurrentWeProov);
 		} else {
-			FragmentsUtils.replace(this, new RenterFragment(), R.id.content_fragment, "tag", false, 0, 0);
+			FragmentsUtils.replace(this, new ClientFragment(), R.id.content_fragment, "tag", false, 0, 0);
 		}
 
 
@@ -120,7 +118,7 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_report_bug) {
-			FragmentsUtils.showDialog(this, new CommentDialogFragment());
+			FragmentsUtils.showDialog(this, new BugReportDialogFragment());
 			return true;
 		}
 
@@ -152,12 +150,12 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 	public void next(Bundle data) {
 		// Restore
 		mCurrentFragment = getSupportFragmentManager().findFragmentByTag("tag");
-		if (RenterFragment.class.equals(mCurrentFragment.getClass())) {
+		if (ClientFragment.class.equals(mCurrentFragment.getClass())) {
 			// Need to go to CarInfoFragment;
 			if (data != null) {
-				mCurrentWeProov.renter = data.getParcelable(TunnelFragment.KEY_RENTER_INFO);
+				mCurrentWeProov.client = data.getParcelable(TunnelFragment.KEY_RENTER_INFO);
 			}
-			Dog.d("Got Renter info : %s", mCurrentWeProov.renter);
+			Dog.d("Got Renter info : %s", mCurrentWeProov.client);
 
 			mCurrentFragment = new CarInfoFragment();
 		} else if (CarInfoFragment.class.equals(mCurrentFragment.getClass())) {
@@ -191,8 +189,8 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 			// Goto next drawable
 			if (++mWeProovStep == mOverlayDrawableArray.length) {
 				String name = getString(R.string.signature_renter);
-				if (mCurrentWeProov.renter != null) {
-					name = mCurrentWeProov.renter.firstname + " " + mCurrentWeProov.renter.lastname;
+				if (mCurrentWeProov.client != null) {
+					name = mCurrentWeProov.client.firstname + " " + mCurrentWeProov.client.lastname;
 				}
 
 				mWeProovStep = 0;
@@ -202,9 +200,11 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 				mCurrentFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
 			}
 		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep == 0) {
+			mCurrentWeProov.clientSignature = data.getParcelable(TunnelFragment.KEY_SIGNATURE_ITEM);
 			mCurrentFragment = SignatureFragment.newInstance(AccountUtils.getDisplayName());
 			mWeProovStep++;
 		} else if (SignatureFragment.class.equals(mCurrentFragment.getClass()) && mWeProovStep == 1) {
+			mCurrentWeProov.renterSignature = data.getParcelable(TunnelFragment.KEY_SIGNATURE_ITEM);
 			mCurrentFragment = SummaryFragment.newInstance(mCurrentWeProov);
 		} else {
 			mCurrentWeProov.doSave();

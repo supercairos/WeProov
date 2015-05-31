@@ -12,6 +12,7 @@ public class TunnelFragment extends BaseFragment {
 	public static final String KEY_RENTER_INFO = "key_renter_info";
 	public static final String KEY_CAR_INFO = "key_car_info";
 	public static final String KEY_PICTURE_ITEM = "key_picture_item";
+	public static final String KEY_SIGNATURE_ITEM = "key_signature_item";
 
 	public interface Tunnel {
 		void next();

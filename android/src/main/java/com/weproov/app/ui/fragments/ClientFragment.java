@@ -1,5 +1,6 @@
 package com.weproov.app.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -20,23 +22,24 @@ import butterknife.OnClick;
 import com.squareup.picasso.RequestCreator;
 import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
-import com.weproov.app.models.RenterInfo;
+import com.weproov.app.models.ClientInfo;
 import com.weproov.app.ui.adapter.RenterAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PicassoUtils;
-import com.weproov.app.utils.PixelUtils;
 import com.weproov.app.utils.validators.EmailValidator;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class RenterFragment extends TunnelFragment implements CommandIface.OnClickListener {
+public class ClientFragment extends TunnelFragment implements CommandIface.OnClickListener {
 
 	private static final int SELECT_ID_CARD_REQUEST_CODE = 999;
 	private static final int SELECT_DRIVING_LICENCE_REQUEST_CODE = 666;
-
 
 	/**
 	 * For Camera URI return intent *
@@ -50,12 +53,14 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 	AutoCompleteTextView mFirstName;
 	@InjectView(R.id.edit_first_name_error)
 	TextView mFirstNameError;
+	@SuppressWarnings("FieldCanBeLocal")
 	private RenterAutocompleteAdapter mFirstnameAutocompleteAdapter;
 
 	@InjectView(R.id.edit_last_name)
 	AutoCompleteTextView mLastName;
 	@InjectView(R.id.edit_last_name_error)
 	TextView mLastNameError;
+	@SuppressWarnings("FieldCanBeLocal")
 	private RenterAutocompleteAdapter mLastnameAutocompleteAdapter;
 
 	@InjectView(R.id.edit_email)
@@ -80,8 +85,9 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 
 	private EmailValidator mEmailValidator = EmailValidator.getInstance();
 
-	public static RenterFragment newInstance(RenterInfo info) {
-		RenterFragment fragment = new RenterFragment();
+	@SuppressWarnings("unused")
+	public static ClientFragment newInstance(ClientInfo info) {
+		ClientFragment fragment = new ClientFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(TunnelFragment.KEY_RENTER_INFO, info);
 		fragment.setArguments(bundle);
@@ -89,7 +95,7 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 		return fragment;
 	}
 
-	public RenterFragment() {
+	public ClientFragment() {
 	}
 
 
@@ -102,7 +108,7 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setCommmandListener(this);
-		RenterInfo info = null;
+		ClientInfo info = null;
 		if (savedInstanceState != null) {
 			info = savedInstanceState.getParcelable(TunnelFragment.KEY_RENTER_INFO);
 		} else if (getArguments() != null) {
@@ -134,21 +140,20 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 		});
 	}
 
-	private void setRenterInfo(RenterInfo info) {
+	private void setRenterInfo(ClientInfo info) {
 		mFirstName.setText(info.firstname);
 		mLastName.setText(info.lastname);
 		mEmail.setText(info.email);
 		mCompany.setText(info.company);
 
-		int size = (int) PixelUtils.convertDpToPixel(100);
 		mIdCardUri = info.id_card;
 		mDrivingLicenceUri = info.driving_licence;
-		PicassoUtils.PICASSO.load(mIdCardUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mIdCardPicture);
-		PicassoUtils.PICASSO.load(mDrivingLicenceUri).centerInside().resize(size, size).placeholder(R.drawable.card1).into(mDrivingLicencePicture);
+		PicassoUtils.PICASSO.load(mIdCardUri).centerCrop().fit().placeholder(R.drawable.card1).into(mIdCardPicture);
+		PicassoUtils.PICASSO.load(mDrivingLicenceUri).centerCrop().fit().placeholder(R.drawable.card1).into(mDrivingLicencePicture);
 	}
 
-	private RenterInfo getRenterInfo() {
-		RenterInfo info = new RenterInfo();
+	private ClientInfo getRenterInfo() {
+		ClientInfo info = new ClientInfo();
 		if (mFirstName != null) {
 			info.firstname = mFirstName.getEditableText().toString();
 		}
@@ -190,7 +195,7 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 	@Override
 	public void onPositiveButtonClicked(Button b) {
 
-		RenterInfo info = getRenterInfo();
+		ClientInfo info = getRenterInfo();
 
 		boolean valid;
 		if (TextUtils.isEmpty(info.firstname)) {
@@ -255,48 +260,71 @@ public class RenterFragment extends TunnelFragment implements CommandIface.OnCli
 
 
 	private void startImageIntent(int requestCode) {
-		final File file = new File(getActivity().getCacheDir(), "renter_" + System.currentTimeMillis() + ".jpg");
-		mOutputFileUri = Uri.fromFile(file);
+		try {
+			mOutputFileUri = Uri.fromFile(createImageFile());
 
-		// Camera.
-		final List<Intent> cameraIntents = new ArrayList<>();
-		final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		final PackageManager packageManager = getActivity().getPackageManager();
-		final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
-		for (ResolveInfo res : listCam) {
-			final String packageName = res.activityInfo.packageName;
-			final Intent intent = new Intent(captureIntent);
-			intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-			intent.setPackage(packageName);
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
-			cameraIntents.add(intent);
+			// Camera.
+			final List<Intent> cameraIntents = new ArrayList<>();
+			final Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			final PackageManager packageManager = getActivity().getPackageManager();
+			final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+			for (ResolveInfo res : listCam) {
+				final String packageName = res.activityInfo.packageName;
+				final Intent intent = new Intent(captureIntent);
+				intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+				intent.setPackage(packageName);
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
+				cameraIntents.add(intent);
+			}
+
+			// Filesystem.
+			final Intent galleryIntent = new Intent();
+			galleryIntent.setType("image/*");
+			galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+			// Chooser of filesystem options.
+			final Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.picker_select_source));
+
+			// Add the camera options.
+			chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
+			startActivityForResult(chooserIntent, requestCode);
+		} catch (IOException e) {
+			Toast.makeText(getActivity(), "Error creating picture", Toast.LENGTH_LONG).show();
+			Dog.e(e, "IOException");
 		}
+	}
 
-		// Filesystem.
-		final Intent galleryIntent = new Intent();
-		galleryIntent.setType("image/*");
-		galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+	@SuppressLint("SimpleDateFormat")
+	private File createImageFile() throws IOException {
+		// Create an image file name
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String imageFileName = "renter_" + timeStamp;
+		File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-		// Chooser of filesystem options.
-		final Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.picker_select_source));
-
-		// Add the camera options.
-		chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
-		startActivityForResult(chooserIntent, requestCode);
+		return File.createTempFile(
+				imageFileName,  /* prefix */
+				".jpg",         /* suffix */
+				storageDir     /* directory */
+		);
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if ((requestCode == SELECT_ID_CARD_REQUEST_CODE || requestCode == SELECT_DRIVING_LICENCE_REQUEST_CODE) && resultCode == Activity.RESULT_OK) {
 			Uri selectedImageUri;
-			if (data == null || (data.getAction() != null && data.getAction().equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE))) {
+			if (data == null || (data.getAction() != null && data.getAction().equals(MediaStore.ACTION_IMAGE_CAPTURE))) {
 				selectedImageUri = mOutputFileUri;
 			} else {
-				selectedImageUri = data.getData();
+				Uri uri = data.getData();
+				if(!mOutputFileUri.equals(uri)) {
+					//noinspection ResultOfMethodCallIgnored
+					new File(mOutputFileUri.getPath()).delete();
+				}
+
+				selectedImageUri = uri;
 			}
 
-			int size = (int) PixelUtils.convertDpToPixel(100);
-			RequestCreator requestCreator = PicassoUtils.PICASSO.load(selectedImageUri).centerInside().resize(size, size);
+			RequestCreator requestCreator = PicassoUtils.PICASSO.load(selectedImageUri).centerCrop().fit();
 			switch (requestCode) {
 				case SELECT_ID_CARD_REQUEST_CODE:
 					mIdCardUri = selectedImageUri;

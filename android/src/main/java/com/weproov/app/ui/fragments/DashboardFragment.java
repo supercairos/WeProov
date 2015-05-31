@@ -22,6 +22,7 @@ import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.OrientationUtils;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.constants.AccountConstants;
+import com.weproov.app.utils.constants.AuthenticatorConstants;
 
 public class DashboardFragment extends BaseFragment {
 
@@ -93,6 +94,6 @@ public class DashboardFragment extends BaseFragment {
 
 	@OnClick(R.id.debug_start_sync)
 	protected void onDebugSyncClicked() {
-		AccountUtils.startSync();
+		AccountUtils.startSync(AuthenticatorConstants.ACCOUNT_PROVIDER);
 	}
 }

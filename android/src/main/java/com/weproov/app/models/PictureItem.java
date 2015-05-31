@@ -8,7 +8,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.weproov.app.models.exceptions.NetworkException;
-import com.weproov.app.utils.connections.Connection;
+import com.weproov.app.utils.connections.ParseConnection;
 import retrofit.client.Response;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
@@ -23,9 +23,9 @@ public class PictureItem extends BaseModel implements Parcelable {
 
 	// endpoints
 	private static final String POST_PICTURE = "/";
-	private static final IPictureService SERVICE = Connection.ADAPTER.create(IPictureService.class);
+	private static final IPictureService SERVICE = ParseConnection.ADAPTER.create(IPictureService.class);
 
-	@Column(name = "parent")
+	@Column(name = "parent", onDelete = Column.ForeignKeyAction.CASCADE)
 	public WeProov parent;
 
 	@Column(name = "path")

@@ -11,13 +11,13 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.weproov.app.models.CarInfo;
-import com.weproov.app.models.RenterInfo;
+import com.weproov.app.models.ClientInfo;
 import com.weproov.app.utils.Dog;
 
 import java.util.Collection;
 import java.util.List;
 
-public class RenterAutocompleteAdapter extends ArrayAdapter<RenterInfo> implements Filterable {
+public class RenterAutocompleteAdapter extends ArrayAdapter<ClientInfo> implements Filterable {
 
 	public static final int TYPE_FIRST_NAME = 0;
 	public static final int TYPE_LAST_NAME = 1;
@@ -45,7 +45,7 @@ public class RenterAutocompleteAdapter extends ArrayAdapter<RenterInfo> implemen
 			tv = (TextView) mInflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
 		}
 
-		RenterInfo info = getItem(position);
+		ClientInfo info = getItem(position);
 		tv.setText(info.firstname + " " + info.lastname);
 		return tv;
 	}
@@ -57,7 +57,7 @@ public class RenterAutocompleteAdapter extends ArrayAdapter<RenterInfo> implemen
 			protected FilterResults performFiltering(final CharSequence constraint) {
 				List<CarInfo> infos = null;
 				if (constraint != null) {
-					infos = new Select().from(RenterInfo.class).where((getType() == TYPE_FIRST_NAME ? "firstname" : "lastname")+" LIKE ?", constraint + "%").groupBy("firstname COLLATE NOCASE, lastname COLLATE NOCASE").orderBy("firstname DESC").execute();
+					infos = new Select().from(ClientInfo.class).where((getType() == TYPE_FIRST_NAME ? "firstname" : "lastname")+" LIKE ?", constraint + "%").groupBy("firstname COLLATE NOCASE, lastname COLLATE NOCASE").orderBy("firstname DESC").execute();
 				}
 
 				Dog.d("Found values => %s", infos);
@@ -74,7 +74,7 @@ public class RenterAutocompleteAdapter extends ArrayAdapter<RenterInfo> implemen
 			protected void publishResults(final CharSequence contraint, final FilterResults results) {
 				clear();
 				if (results.values != null) {
-					addAll((Collection<? extends RenterInfo>) results.values);
+					addAll((Collection<? extends ClientInfo>) results.values);
 				}
 
 				if (results.count > 0) {
@@ -86,7 +86,7 @@ public class RenterAutocompleteAdapter extends ArrayAdapter<RenterInfo> implemen
 
 			@Override
 			public CharSequence convertResultToString(final Object resultValue) {
-				RenterInfo info = ((RenterInfo) resultValue);
+				ClientInfo info = ((ClientInfo) resultValue);
 				return resultValue == null ? "" : info.firstname + " " + info.lastname;
 			}
 		};

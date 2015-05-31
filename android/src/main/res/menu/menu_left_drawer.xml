@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+                android:id="@+id/navigation_dashboard"
+                android:icon="@drawable/ic_action_about"
+                android:title="@string/navigation_dashboard"/>
+        <item
+                android:id="@+id/navigation_weproov_subheader"
+                android:title="@string/navigation_weproov_subheader">
+            <menu>
+                <item
+                        android:id="@+id/navigation_weproov_new"
+                        android:icon="@drawable/ic_action_send_now"
+                        android:title="@string/navigation_weproov_new"/>
+                <item
+                        android:id="@+id/navigation_weproov_list"
+                        android:icon="@drawable/ic_action_view_as_list"
+                        android:title="@string/navigation_weproov_list"/>
+            </menu>
+        </item>
+        <item
+                android:id="@+id/navigation_account_subheader"
+                android:title="@string/navigation_account_subheader">
+            <menu>
+                <item
+                        android:id="@+id/navigation_account_profile"
+                        android:icon="@drawable/ic_action_about"
+                        android:title="@string/navigation_account_profile"/>
+
+                <item
+                        android:id="@+id/navigation_account_logout"
+                        android:icon="@drawable/ic_action_accounts"
+                        android:title="@string/navigation_account_logout"/>
+                <item
+                        android:id="@+id/navigation_account_about"
+                        android:icon="@drawable/ic_action_about"
+                        android:title="@string/navigation_account_about"/>
+            </menu>
+        </item>
+    </group>
+</menu>

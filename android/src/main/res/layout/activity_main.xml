@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                         xmlns:app="http://schemas.android.com/apk/res-auto"
-                                        xmlns:tools="http://schemas.android.com/tools"
                                         android:id="@+id/content_root_view"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent">
@@ -13,15 +12,34 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-                android:id="@+id/action_bar"
-                android:layout_alignParentTop="true"
+        <android.support.design.widget.CoordinatorLayout
+                android:id="@+id/action_bar_coordinator"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                android:minHeight="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+                android:layout_height="wrap_content">
+
+            <android.support.design.widget.AppBarLayout
+                    android:id="@+id/action_bar_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <android.support.v7.widget.Toolbar
+                        android:id="@+id/action_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/colorPrimary"
+                        android:minHeight="?attr/actionBarSize"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                        app:layout_scrollFlags="scroll|enterAlways"/>
+
+                <android.support.design.widget.TabLayout
+                        android:id="@+id/action_bar_tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/colorPrimary"
+                        app:layout_scrollFlags="scroll|enterAlways"/>
+            </android.support.design.widget.AppBarLayout>
+        </android.support.design.widget.CoordinatorLayout>
 
         <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
                 android:layout_width="match_parent"
@@ -29,10 +47,19 @@
                 android:visibility="gone"
                 android:layout_height="4dp"
                 android:indeterminate="true"
-                android:layout_below="@+id/action_bar"
+                android:layout_below="@+id/action_bar_coordinator"
                 android:layout_alignParentStart="true"
                 android:padding="0dp"
                 android:layout_margin="0dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+                android:src="@drawable/ic_play_light"
+                android:id="@+id/floating_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"/>
 
         <FrameLayout
                 android:id="@+id/content_fragment"
@@ -40,28 +67,9 @@
                 android:layout_height="match_parent"
                 android:layout_above="@+id/bottom_frame_layout"
                 android:layout_alignWithParentIfMissing="true"
-                android:layout_below="@+id/action_bar"/>
+                android:layout_below="@+id/action_bar_coordinator">
 
-        <FrameLayout
-                android:id="@+id/floating_action_button_container"
-                android:background="@drawable/fab_blue"
-                android:layout_above="@+id/bottom_frame_layout"
-                android:layout_alignWithParentIfMissing="true"
-                android:translationZ="@dimen/floating_action_button_translation_z"
-                android:layout_width="@dimen/floating_action_button_width"
-                android:layout_height="@dimen/floating_action_button_height"
-                android:layout_marginBottom="@dimen/floating_action_button_margin_bottom"
-                android:layout_marginEnd="@dimen/floating_action_button_margin_right"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true">
 
-            <ImageButton
-                    android:id="@+id/floating_action_button"
-                    android:background="@drawable/floating_action_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/fab_ic_dial"
-                    android:contentDescription="@android:string/untitled"/>
         </FrameLayout>
 
         <include
@@ -73,17 +81,11 @@
                 android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
-    <FrameLayout
+    <android.support.design.widget.NavigationView
             android:layout_gravity="start"
-            android:layout_width="280dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/left_frame">
-
-        <fragment
-                android:id="@+id/navigation_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:name="com.weproov.app.ui.fragments.DrawerFragment"
-                tools:layout="@layout/fragment_navigation"/>
-    </FrameLayout>
+            app:menu="@menu/menu_left_drawer"
+            app:headerLayout="@layout/drawer_navigation_header"
+            android:id="@+id/left_frame"/>
 </android.support.v4.widget.DrawerLayout>

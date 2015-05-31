@@ -1,12 +1,14 @@
 package com.weproov.app.ui.fragments;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.ui.ifaces.CommandIface;
@@ -66,8 +68,14 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 
 	@Override
 	public void onPositiveButtonClicked(Button b) {
-		save();
-		getTunnel().next();
+		File f = save();
+		if(f != null) {
+			Bundle bundle = new Bundle();
+			bundle.putParcelable(TunnelFragment.KEY_SIGNATURE_ITEM, Uri.fromFile(f));
+			getTunnel().next(bundle);
+		} else {
+			Toast.makeText(getActivity(), R.string.error_saving_signature, Toast.LENGTH_LONG).show();
+		}
 	}
 
 	@Override
@@ -75,14 +83,13 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 
 	}
 
-	private void save() {
+	private File save() {
 		File f = CameraUtils.getOutputMediaFile(CameraUtils.MEDIA_TYPE_IMAGE);
 
 		Bitmap bitmap = mFingerPaint.getBitmap();
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		bitmap.compress(Bitmap.CompressFormat.PNG, 0 /* ignored */, bos);
 
-		byte[] bitmapdata = bos.toByteArray();
 		FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(f);
@@ -90,6 +97,7 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 			fos.flush();
 		} catch (IOException e) {
 			Dog.d(e, "IO");
+			return null;
 		} finally {
 			if (fos != null) {
 				try {
@@ -101,5 +109,6 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 		}
 
 		CameraUtils.sendMediaScannerBroadcast(getActivity(), f);
+		return f;
 	}
 }

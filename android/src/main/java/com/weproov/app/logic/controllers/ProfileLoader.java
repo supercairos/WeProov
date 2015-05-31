@@ -142,6 +142,10 @@ public abstract class ProfileLoader implements LoaderManager.LoaderCallbacks<Cur
 	}
 
 	private static String formatNumber(String number) {
+		if(TextUtils.isEmpty(number)) {
+			return "";
+		}
+
 		PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 		try {
 			Phonenumber.PhoneNumber proto = phoneUtil.parse(number, Locale.getDefault().getCountry());

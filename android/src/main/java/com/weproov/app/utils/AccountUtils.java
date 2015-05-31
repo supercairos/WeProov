@@ -59,17 +59,17 @@ public final class AccountUtils {
 		}
 	}
 
-	public static void setSyncable(boolean enabled) {
+	public static void setSyncable(String provider, boolean enabled) {
 		Dog.d( "Start setSyncable");
 		Account account = getAccount();
 		if (account != null) {
-			ContentResolver.setIsSyncable(account, AuthenticatorConstants.ACCOUNT_PROVIDER, enabled ? 1 : 0);
+			ContentResolver.setIsSyncable(account, provider, enabled ? 1 : -1);
 		} else {
 			Dog.e( "Account was null while starting sync...");
 		}
 	}
 
-	public static void startSync() {
+	public static void startSync(String provider) {
 		Dog.d( "Start sync");
 		/*
 		 * Signal the framework to run your sync adapter. Assume that
@@ -83,7 +83,7 @@ public final class AccountUtils {
 			bundle.putBoolean(ContentResolver.SYNC_EXTRAS_IGNORE_SETTINGS, true);
 			bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
 
-			ContentResolver.requestSync(account, AuthenticatorConstants.ACCOUNT_PROVIDER, bundle);
+			ContentResolver.requestSync(account, provider, bundle);
 		} else {
 			Dog.e( "Account was null while starting sync...");
 		}

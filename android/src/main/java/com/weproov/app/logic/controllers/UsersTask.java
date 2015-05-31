@@ -12,10 +12,9 @@ import com.weproov.app.models.events.LoginSuccessEvent;
 import com.weproov.app.models.events.NetworkErrorEvent;
 import com.weproov.app.models.events.RegisterSuccessEvent;
 import com.weproov.app.models.exceptions.NetworkException;
-import com.weproov.app.models.wrappers.ParseFile;
-import com.weproov.app.models.wrappers.ParseFileResponse;
-import com.weproov.app.models.wrappers.ParseRegisterResponse;
-import com.weproov.app.utils.AccountUtils;
+import com.weproov.app.models.wrappers.parse.ParseFile;
+import com.weproov.app.models.wrappers.parse.ParseFileResponse;
+import com.weproov.app.models.wrappers.parse.ParseRegisterResponse;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.connections.TypedUri;
 import com.weproov.app.utils.constants.AccountConstants;
@@ -53,8 +52,6 @@ public final class UsersTask {
 
 		accountManager.addAccountExplicitly(myAccount, user.password, data);
 		accountManager.setAuthToken(myAccount, AuthenticatorConstants.AUTH_TOKEN_TYPE_FULL, user.token);
-
-		AccountUtils.setSyncable(true);
 	}
 
 	private static class RegisterTask extends Thread {
@@ -77,6 +74,8 @@ public final class UsersTask {
 					TypedUri file = new TypedUri(contentResolver, mUser.picture);
 					ParseFileResponse server = SERVICE.upload(file.fileName(), file);
 					mUser.parsePictureFile = new ParseFile(server.name, server.url);
+				} else {
+					mUser.parsePictureFile = null;
 				}
 
 				ParseRegisterResponse server = SERVICE.register(mUser);

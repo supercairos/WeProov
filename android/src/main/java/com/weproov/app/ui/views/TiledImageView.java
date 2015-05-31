@@ -27,6 +27,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 	private static final boolean USE_CHOREOGRAPHER = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
 
 	private final GestureRecognizer mGestureRecognizer;
+	private final TileRenderer mTileRenderer;
 
 	private BlockingGLTextureView mTextureView;
 	private GLSurfaceView mGLSurfaceView;
@@ -114,14 +115,15 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 		mRenderer = new ImageRendererWrapper();
 		mRenderer.image = new TiledImageRenderer(this);
 		View view;
+		mTileRenderer = new TileRenderer();
 		if (USE_TEXTURE_VIEW) {
 			mTextureView = new BlockingGLTextureView(context);
-			mTextureView.setRenderer(new TileRenderer());
+			mTextureView.setRenderer(mTileRenderer);
 			view = mTextureView;
 		} else {
 			mGLSurfaceView = new GLSurfaceView(context);
 			mGLSurfaceView.setEGLContextClientVersion(2);
-			mGLSurfaceView.setRenderer(new TileRenderer());
+			mGLSurfaceView.setRenderer(mTileRenderer);
 			mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 			view = mGLSurfaceView;
 		}
@@ -129,7 +131,6 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 		addView(view, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 		//setTileSource(new ColoredTiles());
-
 		mGestureRecognizer = new GestureRecognizer(getContext(), this);
 	}
 
@@ -138,17 +139,19 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 		if (USE_TEXTURE_VIEW) {
 			mTextureView.destroy();
 		} else {
-			mGLSurfaceView.queueEvent(mFreeTextures);
+			if (mTileRenderer != null) {
+				mGLSurfaceView.queueEvent(new Runnable() {
+					@Override
+					public void run() {
+						Dog.d("Freeing texture from the TiledImageView Render Thread");
+						mRenderer.image.freeTextures();
+					}
+				});
+			} else {
+				Dog.d("mTileRenderer was null");
+			}
 		}
 	}
-
-	private Runnable mFreeTextures = new Runnable() {
-		@Override
-		public void run() {
-			Dog.d("Freeing texture from the TiledImageView Runnable");
-			mRenderer.image.freeTextures();
-		}
-	};
 
 	public void onPause() {
 		Dog.d("onPause()");
@@ -214,7 +217,6 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 
 	@Override
 	public void invalidate() {
-		Dog.d("invalidate()");
 		if (USE_TEXTURE_VIEW) {
 			super.invalidate();
 			mTextureView.invalidate();
@@ -317,8 +319,7 @@ public class TiledImageView extends FrameLayout implements GestureRecognizer.Lis
 			synchronized (mLock) {
 				readyCallback = mRenderer.isReadyCallback;
 				mRenderer.image.setModel(mRenderer.source, mRenderer.rotation);
-				mRenderer.image.setPosition(mRenderer.centerX, mRenderer.centerY,
-						mRenderer.scale);
+				mRenderer.image.setPosition(mRenderer.centerX, mRenderer.centerY, mRenderer.scale);
 			}
 
 			boolean complete = mRenderer.image.draw(mCanvas);

@@ -60,58 +60,75 @@
                 android:text="@string/error_car_plate_number"
                 android:id="@+id/edit_car_plate_number_error"/>
 
-        <com.weproov.app.ui.views.FloatLabelLayout
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                android:orientation="horizontal">
 
-            <EditText
-                    android:id="@+id/edit_car_brand"
-                    android:layout_width="match_parent"
+            <com.weproov.app.ui.views.FloatLabelLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="@string/renter_brand"
-                    android:singleLine="true"
-                    android:inputType="textPersonName"
-                    android:imeOptions="actionNext"
-                    android:nextFocusDown="@+id/edit_model"/>
-        </com.weproov.app.ui.views.FloatLabelLayout>
+                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:paddingBottom="4dp"
-                android:visibility="invisible"
-                android:textColor="@color/material_red_700"
-                android:text="@string/error_brand"
-                android:id="@+id/edit_car_brand_error"/>
+                <EditText
+                        android:id="@+id/edit_car_brand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/renter_brand"
+                        android:singleLine="true"
+                        android:inputType="textPersonName"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/edit_model"/>
+            </com.weproov.app.ui.views.FloatLabelLayout>
 
-        <com.weproov.app.ui.views.FloatLabelLayout
+            <com.weproov.app.ui.views.FloatLabelLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+
+                <EditText
+                        android:id="@+id/edit_car_model"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/renter_model"
+                        android:singleLine="true"
+                        android:inputType="textPersonName"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/edit_email"/>
+
+            </com.weproov.app.ui.views.FloatLabelLayout>
+        </LinearLayout>
+
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                android:orientation="horizontal">
 
-            <EditText
-                    android:id="@+id/edit_car_model"
-                    android:layout_width="match_parent"
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="@string/renter_model"
-                    android:singleLine="true"
-                    android:inputType="textPersonName"
-                    android:imeOptions="actionNext"
-                    android:nextFocusDown="@+id/edit_email"/>
+                    android:textSize="12sp"
+                    android:paddingBottom="4dp"
+                    android:visibility="invisible"
+                    android:textColor="@color/material_red_700"
+                    android:text="@string/error_brand"
+                    android:id="@+id/edit_car_brand_error"/>
 
-        </com.weproov.app.ui.views.FloatLabelLayout>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:paddingBottom="4dp"
-                android:visibility="invisible"
-                android:textColor="@color/material_red_700"
-                android:text="@string/error_model"
-                android:id="@+id/edit_car_model_error"/>
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:paddingBottom="4dp"
+                    android:visibility="invisible"
+                    android:textColor="@color/material_red_700"
+                    android:text="@string/error_model"
+                    android:id="@+id/edit_car_model_error"/>
+        </LinearLayout>
 
         <LinearLayout
                 android:layout_width="match_parent"

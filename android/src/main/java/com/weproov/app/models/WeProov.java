@@ -1,5 +1,6 @@
 package com.weproov.app.models;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.BaseColumns;
@@ -16,20 +17,31 @@ public class WeProov extends BaseModel implements Parcelable {
 	@Column(name = "serverId", index = true)
 	private String serverId = null;
 
-	@Column(name = "renter")
-	public RenterInfo renter;
+	@Column(name = "client", onDelete = Column.ForeignKeyAction.CASCADE)
+	public ClientInfo client;
 
-	@Column(name = "car")
+	@Column(name = "car", onDelete = Column.ForeignKeyAction.CASCADE)
 	public CarInfo car;
 
-	private List<PictureItem> pictures = new ArrayList<>();
+	private List<PictureItem> pictures;
+
+	public Uri renterSignature;
+	public Uri clientSignature;
 
 	public void addPicture(PictureItem pictureItem) {
+		if(pictures == null) {
+			pictures = new ArrayList<>();
+		}
+
 		pictures.add(pictureItem);
 	}
 
 	public List<PictureItem> getPictures() {
-		return getMany(PictureItem.class, "parent");
+		if(pictures == null && getId() > 0) {
+			pictures = getMany(PictureItem.class, "parent");
+		}
+
+		return pictures;
 	}
 
 	public WeProov() {
@@ -38,7 +50,7 @@ public class WeProov extends BaseModel implements Parcelable {
 
 	protected WeProov(Parcel in) {
 		super();
-		renter = in.readParcelable(RenterInfo.class.getClassLoader());
+		client = in.readParcelable(ClientInfo.class.getClassLoader());
 		car = in.readParcelable(CarInfo.class.getClassLoader());
 		in.readList(pictures, List.class.getClassLoader());
 		serverId = in.readString();
@@ -47,7 +59,7 @@ public class WeProov extends BaseModel implements Parcelable {
 	public void doSave() {
 		ActiveAndroid.beginTransaction();
 		try {
-			renter.save();
+			client.save();
 			car.save();
 			save();
 			savePictures();
@@ -71,7 +83,7 @@ public class WeProov extends BaseModel implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeParcelable(renter, flags);
+		dest.writeParcelable(client, flags);
 		dest.writeParcelable(car, flags);
 		dest.writeList(pictures);
 		dest.writeString(serverId);

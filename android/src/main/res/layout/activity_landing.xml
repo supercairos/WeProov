@@ -46,11 +46,9 @@
             android:id="@+id/login_group"
             android:paddingStart="10dp">
 
-        <com.weproov.app.ui.views.FloatLabelLayout
+        <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                android:layout_height="wrap_content">
 
             <EditText
                     android:id="@+id/edit_email"
@@ -61,23 +59,11 @@
                     android:inputType="textEmailAddress"
                     android:imeOptions="actionNext"
                     android:nextFocusDown="@+id/edit_password"/>
-        </com.weproov.app.ui.views.FloatLabelLayout>
+        </android.support.design.widget.TextInputLayout>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:paddingBottom="4dp"
-                android:visibility="invisible"
-                android:textColor="@color/material_red_700"
-                android:text="@string/wrong_email"
-                android:id="@+id/edit_email_error"/>
-
-        <com.weproov.app.ui.views.FloatLabelLayout
+        <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                android:layout_height="wrap_content">
 
             <EditText
                     android:id="@+id/edit_password"
@@ -87,19 +73,7 @@
                     android:singleLine="true"
                     android:inputType="textPassword"
                     android:imeOptions="actionDone"/>
-
-        </com.weproov.app.ui.views.FloatLabelLayout>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:paddingBottom="4dp"
-                android:visibility="invisible"
-                android:textColor="@color/material_red_700"
-                android:text="@string/wrong_login"
-                android:id="@+id/edit_password_error"/>
-
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <include

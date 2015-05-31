@@ -4,10 +4,11 @@ import android.accounts.Account;
 import android.app.AlertDialog;
 import android.content.*;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -18,21 +19,19 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.Toast;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.activeandroid.content.ContentProvider;
 import com.weproov.app.MyApplication;
 import com.weproov.app.R;
 import com.weproov.app.logic.services.GcmRegisterService;
-import com.weproov.app.models.*;
+import com.weproov.app.models.CarInfo;
+import com.weproov.app.models.ClientInfo;
+import com.weproov.app.models.PictureItem;
+import com.weproov.app.models.WeProov;
 import com.weproov.app.ui.fragments.DashboardFragment;
-import com.weproov.app.ui.fragments.DrawerFragment;
 import com.weproov.app.ui.fragments.dialogs.AboutDialogFragment;
-import com.weproov.app.ui.fragments.dialogs.CommentDialogFragment;
+import com.weproov.app.ui.fragments.dialogs.BugReportDialogFragment;
 import com.weproov.app.utils.*;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
@@ -41,7 +40,7 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 
 
-public class MainActivity extends BaseActivity implements DrawerFragment.OnNavigationInteractionListener {
+public class MainActivity extends BaseActivity {
 
 	@InjectView(R.id.action_bar)
 	Toolbar mActionBar;
@@ -50,10 +49,10 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 	DrawerLayout mDrawerLayout;
 
 	@InjectView(R.id.left_frame)
-	FrameLayout mDrawerNavigation;
+	NavigationView mDrawerNavigation;
 
 	@InjectView(R.id.floating_action_button)
-	ImageButton mFloatingActionButton;
+	FloatingActionButton mFloatingActionButton;
 
 	@InjectView(R.id.sync_progress)
 	SmoothProgressBar mSyncProgress;
@@ -65,15 +64,12 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.activity_main);
+		setSupportActionBar(mActionBar);
 		if (!CameraUtils.checkCameraHardware(this)) {
 			Toast.makeText(this, R.string.camera_is_required, Toast.LENGTH_SHORT).show();
 			finish();
 		}
-
-		setContentView(R.layout.activity_main);
-		ButterKnife.inject(this);
-		setSupportActionBar(mActionBar);
 
 		// set a custom shadow that overlays the main content when the drawer opens
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -96,6 +92,13 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+		mDrawerNavigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+			@Override
+			public boolean onNavigationItemSelected(MenuItem menuItem) {
+				return onNavItemSelected(menuItem);
+			}
+		});
+
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -116,19 +119,7 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 		mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// get the center for the clipping circle
-				int cx = (mFloatingActionButton.getLeft() + mFloatingActionButton.getRight()) / 2;
-				int cy = (mFloatingActionButton.getTop() + mFloatingActionButton.getBottom()) / 2;
-
-				// get the final radius for the clipping circle
-				int finalRadius = Math.max(mFloatingActionButton.getWidth(), mFloatingActionButton.getHeight());
-
-				// create the animator for this view (the start radius is zero)
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-					ViewAnimationUtils.createCircularReveal(mFloatingActionButton, cx, cy, 0, finalRadius).start();
-				}
-
-				// startActivity(new Intent(MainActivity.this, WeproovActivity.class));
+				startActivity(new Intent(MainActivity.this, WeproovActivity.class));
 			}
 		});
 	}
@@ -178,9 +169,10 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_report_bug) {
-			FragmentsUtils.showDialog(this, new CommentDialogFragment());
+			FragmentsUtils.showDialog(this, new BugReportDialogFragment());
 			return true;
-		} else if(id == R.id.action_settings) {
+		} else if (id == R.id.action_settings) {
+			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		}
 
@@ -194,12 +186,10 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-
-	@Override
-	public void onNavItemSelected(NavItem item) {
+	public boolean onNavItemSelected(MenuItem item) {
 		Fragment fragment;
-		switch (item.id) {
-			case NavItem.NAV_LOGOUT:
+		switch (item.getItemId()) {
+			case R.id.navigation_account_logout:
 				// Handle Logout;
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setMessage("Are you sure you want to logout ?")
@@ -230,25 +220,25 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 						})
 						.show();
 
-				return; // Keep the return here
-			case NavItem.NAV_WEPROOV:
+				return true; // Keep the return here
+			case R.id.navigation_weproov_new:
 				mDrawerLayout.closeDrawer(mDrawerNavigation);
 				startActivity(new Intent(this, WeproovActivity.class));
-				return; // Keep the return here
-			case NavItem.NAV_DASHBOARD:
+				return true; // Keep the return here
+			case R.id.navigation_dashboard:
 				fragment = new DashboardFragment();
 				break;
-			case NavItem.NAV_MY_DOCUMENTS:
+			case R.id.navigation_weproov_list:
 				mDrawerLayout.closeDrawer(mDrawerNavigation);
 				startActivity(new Intent(this, FullscreenImageDisplayActivity.class));
-				return; // Keep the return here
-				// fragment = new DocumentListFragment();
-				// break;
-			case NavItem.NAV_ABOUT:
+				return true; // Keep the return here
+			// fragment = new DocumentListFragment();
+			// break;
+			case R.id.navigation_account_about:
 				fragment = new AboutDialogFragment();
 				break;
 			default:
-				throw new IllegalArgumentException();
+				return false;
 		}
 
 
@@ -256,9 +246,11 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 			FragmentsUtils.showDialog(this, (DialogFragment) fragment);
 		} else {
 			FragmentsUtils.replace(this, fragment, R.id.content_fragment);
-			setTitle(item.getLabel());
+			setTitle(item.getTitle());
 		}
 		mDrawerLayout.closeDrawer(mDrawerNavigation);
+
+		return true;
 	}
 
 	@Override
@@ -322,10 +314,12 @@ public class MainActivity extends BaseActivity implements DrawerFragment.OnNavig
 		@Override
 		public void run() {
 			Dog.d("Cleaning up the shit this user made MOFO!");
+			// Keep order because of foreign keys
+			mContentResolver.delete(ContentProvider.createUri(PictureItem.class, null), null, null);
 			mContentResolver.delete(ContentProvider.createUri(WeProov.class, null), null, null);
 			mContentResolver.delete(ContentProvider.createUri(CarInfo.class, null), null, null);
-			mContentResolver.delete(ContentProvider.createUri(PictureItem.class, null), null, null);
-			mContentResolver.delete(ContentProvider.createUri(RenterInfo.class, null), null, null);
+			mContentResolver.delete(ContentProvider.createUri(ClientInfo.class, null), null, null);
+
 			trimCache(MyApplication.getAppContext());
 		}
 

@@ -8,10 +8,9 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import com.weproov.app.R;
+import com.weproov.app.logic.controllers.SlackTask;
+import com.weproov.app.models.Feedback;
 
-/**
- * Created by Romain on 17/05/2015.
- */
 public class BugReportDialogFragment extends BaseDialogFragment {
 
 	@NonNull
@@ -19,16 +18,16 @@ public class BugReportDialogFragment extends BaseDialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		View view = inflater.inflate(R.layout.fragment_about, null);
+		View view = inflater.inflate(R.layout.fragment_bug_report, null);
 
 		return new AlertDialog.Builder(getActivity())
 				.setIcon(R.drawable.ic_action_about)
-				.setTitle(R.string.title_about_us)
+				.setTitle(R.string.feedback)
 				.setView(view)
 				.setNeutralButton(android.R.string.ok,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
-
+								SlackTask.save(new Feedback());
 							}
 						}
 				)

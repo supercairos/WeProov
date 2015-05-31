@@ -1,4 +1,4 @@
-package com.weproov.app.models.wrappers;
+package com.weproov.app.models.wrappers.parse;
 
 import com.google.gson.annotations.Expose;
 import com.weproov.app.utils.constants.GcmConstants;

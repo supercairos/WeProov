@@ -4,11 +4,11 @@ import android.net.Uri;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.weproov.app.models.exceptions.NetworkException;
-import com.weproov.app.models.wrappers.ParseFile;
-import com.weproov.app.models.wrappers.ParseFileResponse;
-import com.weproov.app.models.wrappers.ParseGcmResponse;
-import com.weproov.app.models.wrappers.ParseRegisterResponse;
-import com.weproov.app.utils.connections.Connection;
+import com.weproov.app.models.wrappers.parse.ParseFile;
+import com.weproov.app.models.wrappers.parse.ParseFileResponse;
+import com.weproov.app.models.wrappers.parse.ParseGcmResponse;
+import com.weproov.app.models.wrappers.parse.ParseRegisterResponse;
+import com.weproov.app.utils.connections.ParseConnection;
 import com.weproov.app.utils.connections.TypedUri;
 import retrofit.client.Response;
 import retrofit.http.*;
@@ -25,7 +25,7 @@ public class User {
 	private static final String PUT_GCM = "/installations";
 	// private static final String PUT_GCM = "/gcm/{gcm_token}";
 
-	private static final IUserService SERVICE = Connection.ADAPTER.create(IUserService.class);
+	private static final IUserService SERVICE = ParseConnection.ADAPTER.create(IUserService.class);
 
 	@Expose
 	@SerializedName("prenom")
@@ -91,23 +91,28 @@ public class User {
 		return "User{" +
 				"firstname='" + firstname + '\'' +
 				", lastname='" + lastname + '\'' +
+				", phone='" + phone + '\'' +
 				", email='" + email + '\'' +
+				", username='" + username + '\'' +
 				", token='" + token + '\'' +
+				", password='" + password + '\'' +
+				", picture=" + picture +
+				", parsePictureFile=" + parsePictureFile +
 				'}';
 	}
 
 	public interface IUserService {
 
 		@GET(GET_LOGIN)
-			//User login(@Header("Authorization") String basicAuth) throws LoginException;
+		//User login(@Header("Authorization") String basicAuth) throws LoginException;
 		User login(@Query("username") String email, @Query("password") String password) throws NetworkException;
 
 		@POST(POST_FILE)
-			// User register(@Body User user) throws LoginException;
+		// User register(@Body User user) throws LoginException;
 		ParseFileResponse upload(@Path("filename") String filename, @Body TypedUri uri) throws NetworkException;
 
 		@POST(POST_REGISTER)
-			// User register(@Body User user) throws LoginException;
+		// User register(@Body User user) throws LoginException;
 		ParseRegisterResponse register(@Body User user) throws NetworkException;
 
 

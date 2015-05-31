@@ -5,7 +5,7 @@ import android.content.Intent;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.weproov.app.models.User;
 import com.weproov.app.models.exceptions.NetworkException;
-import com.weproov.app.models.wrappers.ParseGcmResponse;
+import com.weproov.app.models.wrappers.parse.ParseGcmResponse;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PlayServicesUtils;
 import com.weproov.app.utils.constants.GcmConstants;

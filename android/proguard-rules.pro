@@ -15,10 +15,12 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
 -keepattributes Signature
 -keepattributes *Annotation*
 -keepattributes Exceptions
 
+# Butterknife
 -keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }
@@ -54,10 +56,13 @@
 ##---------------Begin: proguard configuration for Gson  ----------
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
-#-keep class com.google.gson.stream.** { *; }
+-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
--keep class com.google.gson.examples.android.model.** { *; }
+# In our case all field with annotation @Expose
+-keepclassmembers class ** {
+    @com.google.gson.annotations.Expose public *;
+}
 ##---------------End: proguard configuration for Gson  ----------
 
 # activeandroid
@@ -69,6 +74,9 @@
 -keepattributes Column
 -keepattributes Table
 -keepclasseswithmembers class * { @com.activeandroid.annotation.Column <fields>; }
+
+# Android SVG
+-dontwarn com.caverock.androidsvg.**
 
 # Parcelable
 -keep class * implements android.os.Parcelable {

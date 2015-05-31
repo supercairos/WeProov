@@ -25,7 +25,8 @@
     <string name="nav_my_documents">My documents</string>
     <string name="nav_logout">Logout</string>
     <string name="nav_about">About us</string>
-    <string name="wrong_login">Either your password or login is wrong. Please correct it</string>
+    <string name="wrong_login_snack">Wrong email or password</string>
+    <string name="wrong_login">Either your email or login is wrong. Please correct it</string>
     <string name="client_info">Client Info</string>
     <string name="car_info">Car Info</string>
 
@@ -87,5 +88,27 @@
     <string name="error_phone">This number doesn\'t seams to be a phone number</string>
     <string name="phone">Phone</string>
     <string name="send_comments">Send comments</string>
+    <string name="sync_settings">Sync settings</string>
+    <string name="sync_settings_summary">Those settings are intended to modify the behavior of the sync</string>
+    <string name="title_activity_weproov_preference">WeproovPreferenceActivity</string>
+    <string name="pref_sync_wifi_only_summary">Turn on to enable sync only on WiFi</string>
+    <string name="pref_sync_wifi_only">Sync on WiFi</string>
+    <string name="feedback">Feedback</string>
+    <string name="pref_sync_settings">Synchronization Settings</string>
+    <string name="weproov_pictures">WeProov pictures</string>
+    <string name="signatures">Signatures</string>
+    <string name="confirm_weproov_message">By pressing OK, you agree that all information are correct.</string>
+    <string name="confirm_weproov_title">Confirm</string>
+    <string name="error_saving_signature">Oops, an error appeared while saving this signature!</string>
+    <string name="navigation_weproov_subheader">WeProov</string>
+    <string name="navigation_dashboard">Dashboard</string>
+    <string name="navigation_account_subheader">Account</string>
+    <string name="navigation_weproov_new">New report</string>
+    <string name="navigation_weproov_list">My reports</string>
+    <string name="navigation_account_about">About</string>
+    <string name="navigation_account_logout">Logout</string>
+    <string name="navigation_account_profile">My profile</string>
+    <string name="record_uploader_service">Record uploader service</string>
+    <string name="feedback_uploader_service">Feedback uploader service</string>
 
 </resources>
