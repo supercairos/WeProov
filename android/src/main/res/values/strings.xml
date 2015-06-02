@@ -110,5 +110,13 @@
     <string name="navigation_account_profile">My profile</string>
     <string name="record_uploader_service">Record uploader service</string>
     <string name="feedback_uploader_service">Feedback uploader service</string>
+    <string name="feedback_posted_successfully">Feedback posted sucessfully</string>
+    <string name="bug_report_content">Content</string>
+    <string name="bug_report_title">Title</string>
+    <string name="title_activity_my_reports">My Reports</string>
+    <string name="logout_title">Logout</string>
+    <string name="logout_message">Are you sure you want to logout ?</string>
+    <string name="exit_weproov_title">Exit</string>
+    <string name="exit_weproov_message">Are you sure you want to exit ?</string>
 
 </resources>

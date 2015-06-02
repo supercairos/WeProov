@@ -15,13 +15,7 @@ class Connection {
 		OkHttpClient okHttpClient = new OkHttpClient();
 		okHttpClient.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
 
-		ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-				.tlsVersions(TlsVersion.TLS_1_2)
-				.cipherSuites(CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA)
-				.build();
-
-		okHttpClient.setConnectionSpecs(Collections.singletonList(spec));
-
+		okHttpClient.setConnectionSpecs(Collections.singletonList(ConnectionSpec.MODERN_TLS));
 		Context ctx = MyApplication.getAppContext();
 		if (ctx != null) {
 			Cache cache = new Cache(ctx.getCacheDir(), 10 * 1024 * 1024); // 10 MiB

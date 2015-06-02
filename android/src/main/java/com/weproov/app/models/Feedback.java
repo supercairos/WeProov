@@ -1,12 +1,16 @@
 package com.weproov.app.models;
 
+import android.provider.BaseColumns;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.models.wrappers.slack.SlackMessage;
 import com.weproov.app.utils.connections.SlackConnection;
 import retrofit.client.Response;
 import retrofit.http.Body;
-import retrofit.http.PUT;
+import retrofit.http.POST;
 
+@Table(name = "feedbacks", id = BaseColumns._ID)
 public class Feedback extends BaseModel {
 
 	private static final IFeedbackService SERVICE = SlackConnection.ADAPTER.create(IFeedbackService.class);
@@ -14,7 +18,10 @@ public class Feedback extends BaseModel {
 		return SERVICE;
 	}
 
+	@Column(name = "title")
 	public String title;
+
+	@Column(name = "message")
 	public String message;
 
 	public Feedback() {
@@ -29,7 +36,7 @@ public class Feedback extends BaseModel {
 
 	public interface IFeedbackService {
 
-		@PUT("/")
+		@POST("/T03J4AJBA/B054EBHRB/P2REFxL613LQkarzy4Sy4LQe")
 		Response send(@Body SlackMessage message) throws NetworkException;
 	}
 

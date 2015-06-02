@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="FloatLabelLayout">
-        <attr name="floatLabelTextAppearance" format="reference"/>
-        <attr name="floatLabelPaddingLeft" format="reference|dimension"/>
-        <attr name="floatLabelPaddingRight" format="reference|dimension"/>
-        <attr name="floatLabelPaddingTop" format="reference|dimension"/>
-        <attr name="floatLabelPaddingBottom" format="reference|dimension"/>
-        <!-- The hint to display in the floating label -->
-        <attr name="floatLabelHint" format="reference|string"/>
-    </declare-styleable>
-
     <declare-styleable name="WeproovLogoView">
         <attr name="strokeWidth" format="float"/>
         <attr name="strokeColor" format="color|reference"/>
         <attr name="fillColor" format="color|reference"/>
-        <attr name="resource" format="reference" />
+        <attr name="resource" format="reference"/>
     </declare-styleable>
 </resources>

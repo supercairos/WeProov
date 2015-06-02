@@ -24,7 +24,7 @@ android {
     buildToolsVersion '22.0.1'
 
     defaultConfig {
-        multiDexEnabled = true
+        multiDexEnabled true
         applicationId "com.weproov.app"
         minSdkVersion 17
         targetSdkVersion 22
@@ -78,8 +78,8 @@ dependencies {
     compile 'com.android.support:palette-v7:+'
 
     // Additional Stuffs
-    compile 'com.android.support:multidex:1.+'
-    compile 'com.google.android.gms:play-services:7.+'
+    compile 'com.android.support:multidex:+'
+    compile 'com.google.android.gms:play-services:+'
 
     // ORM & View Injection
     compile 'com.jakewharton:butterknife:6.1.0'

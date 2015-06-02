@@ -7,6 +7,7 @@ import com.weproov.app.models.Feedback;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.models.wrappers.slack.SlackMessage;
 import com.weproov.app.utils.AccountUtils;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.constants.AccountConstants;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 import retrofit.RetrofitError;
@@ -30,13 +31,24 @@ public class SlackTask {
 	}
 
 	public static void save(final Feedback item) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				item.save();
-				AccountUtils.startSync(AuthenticatorConstants.ACCOUNT_PROVIDER_DEBUG);
-			}
-		});
+		new SaveTask(item).start();
+	}
+
+	private static class SaveTask extends Thread {
+
+		private Feedback mItem;
+
+		public SaveTask(Feedback item) {
+			super("LoginTask");
+			this.mItem = item;
+		}
+
+		@Override
+		public void run() {
+			long l = mItem.save();
+			Dog.d("Saved, id=" + l + " Debug Provider = " + AuthenticatorConstants.ACCOUNT_PROVIDER_DEBUG);
+			AccountUtils.startSync(AuthenticatorConstants.ACCOUNT_PROVIDER_DEBUG);
+		}
 	}
 
 }

@@ -23,6 +23,9 @@ public class SlackMessage {
 	public String icon;
 
 	@Expose
+	public String channel = "#user-feedbacks";
+
+	@Expose
 	public List<SlackAttachment> attachments = new ArrayList<>();
 
 	private static class SlackAttachment {

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-        android:id="@+id/content_fragment_root_view"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/content_fragment_root_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
@@ -33,10 +32,10 @@
                 android:layout_marginBottom="10dp"
                 />
 
-        <com.weproov.app.ui.views.FloatLabelLayout
+        <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                android:id="@+id/edit_car_plate_number_layout"
+                android:layout_height="wrap_content">
 
             <AutoCompleteTextView
                     android:id="@+id/edit_car_plate_number"
@@ -49,27 +48,18 @@
                     android:inputType="text"
                     android:imeOptions="actionDone"/>
 
-        </com.weproov.app.ui.views.FloatLabelLayout>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:visibility="invisible"
-                android:textColor="@color/material_red_700"
-                android:text="@string/error_car_plate_number"
-                android:id="@+id/edit_car_plate_number_error"/>
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <com.weproov.app.ui.views.FloatLabelLayout
+            <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
+                    android:id="@+id/edit_car_brand_layout"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                    android:layout_height="wrap_content">
 
                 <EditText
                         android:id="@+id/edit_car_brand"
@@ -80,13 +70,13 @@
                         android:inputType="textPersonName"
                         android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/edit_model"/>
-            </com.weproov.app.ui.views.FloatLabelLayout>
+            </android.support.design.widget.TextInputLayout>
 
-            <com.weproov.app.ui.views.FloatLabelLayout
+            <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                    android:id="@+id/edit_car_model_layout"
+                    android:layout_height="wrap_content">
 
                 <EditText
                         android:id="@+id/edit_car_model"
@@ -98,47 +88,18 @@
                         android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/edit_email"/>
 
-            </com.weproov.app.ui.views.FloatLabelLayout>
-        </LinearLayout>
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-            <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_brand"
-                    android:id="@+id/edit_car_brand_error"/>
-
-
-            <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingBottom="4dp"
-                    android:visibility="invisible"
-                    android:textColor="@color/material_red_700"
-                    android:text="@string/error_model"
-                    android:id="@+id/edit_car_model_error"/>
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <com.weproov.app.ui.views.FloatLabelLayout
+            <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                    android:id="@+id/edit_car_millage_layout">
 
                 <EditText
                         android:id="@+id/edit_car_millage"
@@ -150,7 +111,7 @@
                         android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/edit_car_color"/>
 
-            </com.weproov.app.ui.views.FloatLabelLayout>
+            </android.support.design.widget.TextInputLayout>
 
             <Spinner
                     android:layout_width="wrap_content"
@@ -162,20 +123,10 @@
                     android:spinnerMode="dropdown"/>
         </LinearLayout>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:paddingBottom="4dp"
-                android:visibility="invisible"
-                android:textColor="@color/material_red_700"
-                android:text="@string/error_car_millage"
-                android:id="@+id/edit_car_millage_error"/>
-
-        <com.weproov.app.ui.views.FloatLabelLayout
+        <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                android:id="@+id/edit_car_color_layout">
 
             <EditText
                     android:id="@+id/edit_car_color"
@@ -186,16 +137,7 @@
                     android:inputType="textNoSuggestions"
                     android:imeOptions="actionDone"/>
 
-        </com.weproov.app.ui.views.FloatLabelLayout>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:visibility="invisible"
-                android:textColor="@color/material_red_700"
-                android:text="@string/error_car_color"
-                android:id="@+id/edit_car_color_error"/>
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
                 android:layout_width="match_parent"

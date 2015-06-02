@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,27 +52,27 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 
 	@InjectView(R.id.edit_first_name)
 	AutoCompleteTextView mFirstName;
-	@InjectView(R.id.edit_first_name_error)
-	TextView mFirstNameError;
+	@InjectView(R.id.edit_first_name_layout)
+	TextInputLayout mFirstNameLayout;
 	@SuppressWarnings("FieldCanBeLocal")
 	private RenterAutocompleteAdapter mFirstnameAutocompleteAdapter;
 
 	@InjectView(R.id.edit_last_name)
 	AutoCompleteTextView mLastName;
-	@InjectView(R.id.edit_last_name_error)
-	TextView mLastNameError;
+	@InjectView(R.id.edit_last_name_layout)
+	TextInputLayout mLastNameLayout;
 	@SuppressWarnings("FieldCanBeLocal")
 	private RenterAutocompleteAdapter mLastnameAutocompleteAdapter;
 
 	@InjectView(R.id.edit_email)
 	EditText mEmail;
-	@InjectView(R.id.edit_email_error)
-	TextView mEmailError;
+	@InjectView(R.id.edit_email_layout)
+	TextInputLayout mEmailLayout;
 
 	@InjectView(R.id.edit_company)
 	EditText mCompany;
-	@InjectView(R.id.edit_company_error)
-	TextView mCompanyError;
+	@InjectView(R.id.edit_company_layout)
+	TextInputLayout mCompanyLayout;
 
 	@InjectView(R.id.identity_card_picture)
 	ImageView mIdCardPicture;
@@ -199,34 +200,34 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 
 		boolean valid;
 		if (TextUtils.isEmpty(info.firstname)) {
-			mFirstNameError.setVisibility(View.VISIBLE);
+			mFirstNameLayout.setError(getString(R.string.error_first_name));
 			valid = false;
 		} else {
-			mFirstNameError.setVisibility(View.INVISIBLE);
+			mFirstNameLayout.setError(null);
 			valid = true;
 		}
 
 		if (TextUtils.isEmpty(info.lastname)) {
-			mLastNameError.setVisibility(View.VISIBLE);
+			mLastNameLayout.setError(getString(R.string.error_last_name));
 			valid = false;
 		} else {
-			mLastNameError.setVisibility(View.INVISIBLE);
+			mLastNameLayout.setError(null);
 			valid &= true;
 		}
 
 		if (TextUtils.isEmpty(info.email) || !mEmailValidator.validate(info.email)) {
-			mEmailError.setVisibility(View.VISIBLE);
+			mEmailLayout.setError(getString(R.string.error_email));
 			valid = false;
 		} else {
-			mEmailError.setVisibility(View.INVISIBLE);
+			mEmailLayout.setError(null);
 			valid &= true;
 		}
 
 		if (TextUtils.isEmpty(info.company)) {
-			mCompanyError.setVisibility(View.VISIBLE);
+			mCompanyLayout.setError(getString(R.string.error_company));
 			valid = false;
 		} else {
-			mCompanyError.setVisibility(View.INVISIBLE);
+			mCompanyLayout.setError(null);
 			valid &= true;
 		}
 

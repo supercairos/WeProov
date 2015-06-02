@@ -43,7 +43,7 @@
                 android:value="1"/>
         <meta-data
                 android:name="AA_MODELS"
-                android:value="com.weproov.app.models.WeProov, com.weproov.app.models.PictureItem, com.weproov.app.models.CarInfo, com.weproov.app.models.ClientInfo"/>
+                android:value="com.weproov.app.models.WeProov, com.weproov.app.models.PictureItem, com.weproov.app.models.CarInfo, com.weproov.app.models.ClientInfo, com.weproov.app.models.Feedback"/>
         <meta-data
                 android:name="AA_SERIALIZERS"
                 android:value="com.weproov.app.utils.serializers.UriSerializer"/>
@@ -88,6 +88,15 @@
         <activity
                 android:name=".ui.FullscreenImageDisplayActivity"
                 android:label="@string/title_activity_fullscreen_image_display"
+                android:parentActivityName=".ui.MainActivity"
+                android:screenOrientation="portrait">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.weproov.app.ui.MainActivity"/>
+        </activity>
+        <activity
+                android:name=".ui.ReportListActivity"
+                android:label="@string/title_activity_my_reports"
                 android:parentActivityName=".ui.MainActivity"
                 android:screenOrientation="portrait">
             <meta-data
@@ -177,6 +186,7 @@
                 <category android:name="com.google.android.gcm.demo.app"/>
             </intent-filter>
         </receiver>
+
         <service
                 android:name=".logic.services.GcmReceiverService"
                 android:exported="false"/>

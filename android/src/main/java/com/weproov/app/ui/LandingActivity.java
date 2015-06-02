@@ -167,6 +167,7 @@ public class LandingActivity extends BaseActivity implements CommandIface.OnClic
 		});
 
 		setCommandListener(this);
+		getNegativeButton().setVisibility(View.VISIBLE);
 
 		mLoader = new ProfileLoader(this) {
 			@Override

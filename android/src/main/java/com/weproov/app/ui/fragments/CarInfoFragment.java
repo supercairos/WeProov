@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -51,31 +52,31 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	private PlateAutocompleteAdapter mAutocompleteAdapter;
 	@InjectView(R.id.edit_car_plate_number)
 	AutoCompleteTextView mPlateNumber;
-	@InjectView(R.id.edit_car_plate_number_error)
-	TextView mPlateNumberError;
+	@InjectView(R.id.edit_car_plate_number_layout)
+	TextInputLayout mPlateNumberLayout;
 
 	@InjectView(R.id.edit_car_brand)
 	EditText mBrand;
-	@InjectView(R.id.edit_car_brand_error)
-	TextView mBrandError;
+	@InjectView(R.id.edit_car_brand_layout)
+	TextInputLayout mBrandLayout;
 
 	@InjectView(R.id.edit_car_model)
 	EditText mModel;
-	@InjectView(R.id.edit_car_model_error)
-	TextView mModelError;
+	@InjectView(R.id.edit_car_model_layout)
+	TextInputLayout mModelLayout;
 
 	@InjectView(R.id.edit_car_millage)
 	EditText mMillage;
-	@InjectView(R.id.edit_car_millage_error)
-	TextView mMillageError;
+	@InjectView(R.id.edit_car_millage_layout)
+	TextInputLayout mMillageLayout;
 
 	@InjectView(R.id.spinner_car_millage_type)
 	Spinner mMillageType;
 
 	@InjectView(R.id.edit_car_color)
 	EditText mColor;
-	@InjectView(R.id.edit_car_color_error)
-	TextView mColorError;
+	@InjectView(R.id.edit_car_color_layout)
+	TextInputLayout mColorLayout;
 
 	@InjectView(R.id.seekbar_car_gas_level)
 	SeekBar mGasLevel;
@@ -229,42 +230,42 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 		CarInfo info = getCarInfo();
 		boolean valid;
 		if (TextUtils.isEmpty(info.plate) || info.plate.length() != 9) {
-			mPlateNumberError.setVisibility(View.VISIBLE);
+			mPlateNumberLayout.setError(getString(R.string.error_car_plate_number));
 			valid = false;
 		} else {
-			mPlateNumberError.setVisibility(View.INVISIBLE);
+			mPlateNumberLayout.setError(null);
 			valid = true;
 		}
 
 		if (TextUtils.isEmpty(info.brand)) {
-			mBrandError.setVisibility(View.VISIBLE);
+			mBrandLayout.setError(getString(R.string.error_brand));
 			valid = false;
 		} else {
-			mBrandError.setVisibility(View.INVISIBLE);
+			mBrandLayout.setError(null);
 			valid &= true;
 		}
 
 		if (TextUtils.isEmpty(info.model)) {
-			mModelError.setVisibility(View.VISIBLE);
+			mModelLayout.setError(getString(R.string.error_model));
 			valid = false;
 		} else {
-			mModelError.setVisibility(View.INVISIBLE);
+			mModelLayout.setError(null);
 			valid &= true;
 		}
 
 		if (TextUtils.isEmpty(info.color)) {
-			mColorError.setVisibility(View.VISIBLE);
+			mColorLayout.setError(getString(R.string.error_car_color));
 			valid = false;
 		} else {
-			mColorError.setVisibility(View.INVISIBLE);
+			mColorLayout.setError(null);
 			valid &= true;
 		}
 
 		if (info.millage < 0) {
-			mMillageError.setVisibility(View.VISIBLE);
+			mMillageLayout.setError(getString(R.string.error_car_millage));
 			valid = false;
 		} else {
-			mMillageError.setVisibility(View.INVISIBLE);
+			mMillageLayout.setError(null);
 			valid &= true;
 		}
 

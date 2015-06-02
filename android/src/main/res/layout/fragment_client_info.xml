@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
@@ -45,10 +44,10 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-                <com.weproov.app.ui.views.FloatLabelLayout
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/edit_first_name_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                        android:layout_height="wrap_content">
 
                     <AutoCompleteTextView
                             android:id="@+id/edit_first_name"
@@ -60,17 +59,8 @@
                             android:inputType="textPersonName"
                             android:imeOptions="actionNext"
                             android:nextFocusDown="@+id/edit_last_name"/>
-                </com.weproov.app.ui.views.FloatLabelLayout>
+                </android.support.design.widget.TextInputLayout>
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="12sp"
-                        android:paddingBottom="4dp"
-                        android:visibility="invisible"
-                        android:textColor="@color/material_red_700"
-                        android:text="@string/error_first_name"
-                        android:id="@+id/edit_first_name_error"/>
             </LinearLayout>
 
             <LinearLayout
@@ -79,10 +69,10 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-                <com.weproov.app.ui.views.FloatLabelLayout
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/edit_last_name_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                        android:layout_height="wrap_content">
 
                     <AutoCompleteTextView
                             android:id="@+id/edit_last_name"
@@ -95,24 +85,14 @@
                             android:imeOptions="actionNext"
                             android:nextFocusDown="@+id/edit_email"/>
 
-                </com.weproov.app.ui.views.FloatLabelLayout>
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="12sp"
-                        android:paddingBottom="4dp"
-                        android:visibility="invisible"
-                        android:textColor="@color/material_red_700"
-                        android:text="@string/error_last_name"
-                        android:id="@+id/edit_last_name_error"/>
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <com.weproov.app.ui.views.FloatLabelLayout
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/edit_email_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                android:layout_height="wrap_content">
 
             <EditText
                     android:id="@+id/edit_email"
@@ -124,22 +104,12 @@
                     android:imeOptions="actionNext"
                     android:nextFocusDown="@+id/edit_company"/>
 
-        </com.weproov.app.ui.views.FloatLabelLayout>
+        </android.support.design.widget.TextInputLayout>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:paddingBottom="4dp"
-                android:visibility="invisible"
-                android:textColor="@color/material_red_700"
-                android:text="@string/error_email"
-                android:id="@+id/edit_email_error"/>
-
-        <com.weproov.app.ui.views.FloatLabelLayout
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/edit_company_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:floatLabelTextAppearance="@style/TextAppearance.WeProov.FloatLabel">
+                android:layout_height="wrap_content">
 
             <EditText
                     android:id="@+id/edit_company"
@@ -150,16 +120,7 @@
                     android:inputType="textNoSuggestions"
                     android:imeOptions="actionDone"/>
 
-        </com.weproov.app.ui.views.FloatLabelLayout>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:visibility="invisible"
-                android:textColor="@color/material_red_700"
-                android:text="@string/error_company"
-                android:id="@+id/edit_company_error"/>
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
                 android:layout_width="match_parent"

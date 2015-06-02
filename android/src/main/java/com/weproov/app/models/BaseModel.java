@@ -7,6 +7,10 @@ import com.weproov.app.MyApplication;
 
 public abstract class BaseModel extends Model {
 
+    public BaseModel() {
+        super();
+    }
+
     public static void deleteAll(Class<? extends Model> clazz) {
         MyApplication.getAppContext().getContentResolver().delete(ContentProvider.createUri(clazz, null), null, null);
     }

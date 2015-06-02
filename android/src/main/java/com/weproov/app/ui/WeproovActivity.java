@@ -1,7 +1,9 @@
 package com.weproov.app.ui;
 
 import android.accounts.Account;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.SyncStatusObserver;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -119,6 +121,22 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 		//noinspection SimplifiableIfStatement
 		if (id == R.id.action_report_bug) {
 			FragmentsUtils.showDialog(this, new BugReportDialogFragment());
+			return true;
+		} else if (id == android.R.id.home) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.exit_weproov_message)
+					.setTitle(R.string.exit_weproov_title)
+					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							finish();
+						}
+					})
+					.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							// User cancelled the dialog
+						}
+					}).show();
+
 			return true;
 		}
 

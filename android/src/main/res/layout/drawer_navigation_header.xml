@@ -1,8 +1,8 @@
-<FrameLayout
+<com.weproov.app.ui.views.SixteenNineView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     <ImageView
             android:layout_width="match_parent"
@@ -42,8 +42,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:layout_gravity="center_vertical"
-                    android:textSize="16sp"
-                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:id="@+id/drawer_title"/>
 
             <TextView
@@ -51,8 +50,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:layout_gravity="center_vertical"
-                    android:textSize="14sp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:id="@+id/drawer_subtitle"/>
         </LinearLayout>
     </LinearLayout>
-</FrameLayout>
+</com.weproov.app.ui.views.SixteenNineView>

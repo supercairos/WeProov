@@ -22,7 +22,7 @@ import static com.weproov.app.utils.GsonUtils.GSON;
 public class SlackConnection extends Connection {
 
 	public static final OkHttpClient HTTP_CLIENT = setupOkHttp();
-	private static final String URL = "https://hooks.slack.com/services/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";
+	private static final String URL = "https://hooks.slack.com/services/";
 
 	public static final RestAdapter ADAPTER = new RestAdapter.Builder()
 			.setEndpoint(URL)

@@ -1,7 +1,6 @@
 package com.weproov.app.ui;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +47,8 @@ public abstract class BaseActivity extends AppCompatActivity implements CommandI
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-		super.onCreate(savedInstanceState, persistentState);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 	}
 
 	@Override
@@ -98,13 +97,17 @@ public abstract class BaseActivity extends AppCompatActivity implements CommandI
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		mRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-			@Override
-			public void onGlobalLayout() {
-				int heightDiff = mRootView.getRootView().getHeight() - mRootView.getHeight();
-				onKeyboardVisibilityChanged(heightDiff > 300);// if more than 300 pixels, its probably a keyboard...
-			}
-		});
+		if (mRootView != null) {
+			mRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+				@Override
+				public void onGlobalLayout() {
+					int heightDiff = mRootView.getRootView().getHeight() - mRootView.getHeight();
+					onKeyboardVisibilityChanged(heightDiff > 300);// if more than 300 pixels, its probably a keyboard...
+				}
+			});
+		} else {
+			Dog.e("Why the fuck RootView is null :o");
+		}
 		ViewServer.get(this).addWindow(this);
 	}
 

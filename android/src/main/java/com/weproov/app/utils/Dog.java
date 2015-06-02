@@ -111,101 +111,101 @@ public final class Dog {
 
 	private static final List<Bone> GROUND = new CopyOnWriteArrayList<Bone>();
 
-	/** A {@link Bone} that delegates to all planted trees in the {@linkplain #GROUND forest}. */
+	/** A {@link Bone} that delegates to all planted trees in the {@linkplain #GROUND stash}. */
 	private static final Bone BONES_STASH = new Bone() {
 		@Override public void v(String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).v(message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).v(message, args);
 			}
 		}
 
 		@Override public void v(Throwable t, String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).v(t, message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).v(t, message, args);
 			}
 		}
 
 		@Override public void d(String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).d(message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).d(message, args);
 			}
 		}
 
 		@Override public void d(Throwable t, String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).d(t, message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).d(t, message, args);
 			}
 		}
 
 		@Override public void i(String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).i(message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).i(message, args);
 			}
 		}
 
 		@Override public void i(Throwable t, String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).i(t, message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).i(t, message, args);
 			}
 		}
 
 		@Override public void w(String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).w(message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).w(message, args);
 			}
 		}
 
 		@Override public void w(Throwable t, String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).w(t, message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).w(t, message, args);
 			}
 		}
 
 		@Override public void e(String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).e(message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).e(message, args);
 			}
 		}
 
 		@Override public void e(Throwable t, String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).e(t, message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).e(t, message, args);
 			}
 		}
 
 		@Override public void wtf(String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).wtf(message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).wtf(message, args);
 			}
 		}
 
 		@Override public void wtf(Throwable t, String message, Object... args) {
-			List<Bone> forest = GROUND;
+			List<Bone> stash = GROUND;
 			//noinspection ForLoopReplaceableByForEach
-			for (int i = 0, count = forest.size(); i < count; i++) {
-				forest.get(i).wtf(t, message, args);
+			for (int i = 0, count = stash.size(); i < count; i++) {
+				stash.get(i).wtf(t, message, args);
 			}
 		}
 
@@ -218,7 +218,7 @@ public final class Dog {
 		throw new AssertionError("No instances.");
 	}
 
-	/** A facade for handling logging calls. Install instances via {@link #bury Timber.bury()}. */
+	/** A facade for handling logging calls. Install instances via {@link #bury Dog.bury()}. */
 	public static abstract class Bone {
 		private final ThreadLocal<String> explicitTag = new ThreadLocal<String>();
 

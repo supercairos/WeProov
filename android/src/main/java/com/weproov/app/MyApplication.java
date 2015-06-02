@@ -12,6 +12,7 @@ import com.weproov.app.utils.Dog;
 
 public class MyApplication extends Application {
 
+	public static String PACKAGE_NAME;
 
 	private static RefWatcher sRefWatcher;
 	private static Context sContext;
@@ -19,17 +20,21 @@ public class MyApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		sContext = this;
+		PACKAGE_NAME = getPackageName();
 
 		ActiveAndroid.initialize(this);
 		ActiveAndroid.setLoggingEnabled(true);
 
 		Dog.bury(new Dog.DebugBone());
 
-		MultiDex.install(this);
-
 		enabledStrictMode();
 		sRefWatcher = LeakCanary.install(this);
+	}
+
+	protected void attachBaseContext(Context base) {
+		super.attachBaseContext(base);
+		MultiDex.install(this);
+		sContext = this;
 	}
 
 	private void enabledStrictMode() {
