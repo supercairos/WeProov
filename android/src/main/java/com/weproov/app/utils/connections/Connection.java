@@ -1,14 +1,17 @@
 package com.weproov.app.utils.connections;
 
 import android.content.Context;
-import com.squareup.okhttp.*;
+import com.squareup.okhttp.Cache;
+import com.squareup.okhttp.ConnectionSpec;
+import com.squareup.okhttp.OkHttpClient;
 import com.weproov.app.MyApplication;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-class Connection {
+public class Connection {
 
+	public static final OkHttpClient HTTP_CLIENT = setupOkHttp();
 	private static final long TIMEOUT = 60;
 
 	protected static OkHttpClient setupOkHttp() {

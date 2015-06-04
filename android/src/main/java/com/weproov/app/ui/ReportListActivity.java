@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import butterknife.InjectView;
 import com.weproov.app.R;
-import com.weproov.app.ui.fragments.dialogs.AboutDialogFragment;
 import com.weproov.app.ui.fragments.dialogs.BugReportDialogFragment;
 import com.weproov.app.ui.fragments.dialogs.LogoutDialogFragment;
 import com.weproov.app.utils.FragmentsUtils;
@@ -90,8 +89,9 @@ public class ReportListActivity extends DrawerActivity {
 				mDrawerLayout.closeDrawer(mDrawerNavigation);
 				return true; // Keep the return here
 			case R.id.navigation_account_about:
-				fragment = new AboutDialogFragment();
-				break;
+				mDrawerLayout.closeDrawer(mDrawerNavigation);
+				startActivity(new Intent(this, AboutActivity.class));
+				return true; // Keep the return here
 			default:
 				return false;
 		}

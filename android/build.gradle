@@ -116,4 +116,6 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:+'
 
     compile 'com.googlecode.libphonenumber:libphonenumber:+'
+
+    compile 'org.adw.library:discrete-seekbar:1.0.0'
 }

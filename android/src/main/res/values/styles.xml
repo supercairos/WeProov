@@ -25,20 +25,10 @@
     </style>
 
     <!-- extend one of the Theme.AppCompat themes -->
-    <style name="AppTheme.Light.NoActionBar" >
+    <style name="AppTheme.Light.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="TextAppearance.WeProov.FloatLabel" parent="android:TextAppearance.Small">
-        <item name="android:textColor">@color/accent</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="TextAppearance.WeProov.FloatLabel.Landing" parent="android:TextAppearance.Small">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="GNowProgressBar" parent="SmoothProgressBar">
@@ -52,6 +42,14 @@
         <item name="spb_reversed">true</item>
         <item name="spb_colors">@array/gplus_colors</item>
         <item name="spb_progressiveStart_activated">true</item>
+    </style>
+
+    <style name="Widget.CardContent" parent="android:Widget">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
 </resources>

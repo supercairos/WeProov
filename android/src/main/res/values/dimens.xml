@@ -37,5 +37,8 @@
     <dimen name="floating_action_button_margin_bottom">16dp</dimen>
     <!-- Offset of bottom margin of the floating action button used when dialpad is up -->
     <dimen name="floating_action_button_dialpad_margin_bottom_offset">4dp</dimen>
+    <dimen name="detail_backdrop_height">256dp</dimen>
+    <dimen name="card_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

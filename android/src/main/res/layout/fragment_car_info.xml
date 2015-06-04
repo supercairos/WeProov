@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/content_fragment_root_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -170,14 +171,26 @@
                     android:layout_alignBottom="@+id/seekbar_car_gas_level"
                     android:layout_alignParentTop="true"/>
 
-            <SeekBar
+            <!--<SeekBar-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/seekbar_car_gas_level"-->
+            <!--android:progress="4"-->
+            <!--android:max="8"-->
+            <!--android:layout_toEndOf="@+id/textView2"-->
+            <!--android:indeterminate="false"/>-->
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                    android:id="@+id/seekbar_car_gas_level"
+                    android:layout_toEndOf="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/seekbar_car_gas_level"
-                    android:progress="4"
-                    android:max="8"
-                    android:layout_toEndOf="@+id/textView2"
-                    android:indeterminate="false"/>
+                    app:dsb_progressColor="@color/accent"
+                    app:dsb_indicatorColor="@color/accent"
+                    app:dsb_indicatorFormatter="%d%%"
+                    app:dsb_min="0"
+                    app:dsb_max="8"
+                    app:dsb_value="4"/>
 
             <Spinner
                     android:layout_width="match_parent"

@@ -29,7 +29,7 @@ public class WeProov extends BaseModel implements Parcelable {
 	public Uri clientSignature;
 
 	public void addPicture(PictureItem pictureItem) {
-		if(pictures == null) {
+		if (pictures == null) {
 			pictures = new ArrayList<>();
 		}
 
@@ -37,7 +37,7 @@ public class WeProov extends BaseModel implements Parcelable {
 	}
 
 	public List<PictureItem> getPictures() {
-		if(pictures == null && getId() > 0) {
+		if (pictures == null && getId() > 0) {
 			pictures = getMany(PictureItem.class, "parent");
 		}
 
@@ -52,7 +52,7 @@ public class WeProov extends BaseModel implements Parcelable {
 		super();
 		client = in.readParcelable(ClientInfo.class.getClassLoader());
 		car = in.readParcelable(CarInfo.class.getClassLoader());
-		in.readList(pictures, List.class.getClassLoader());
+		in.readList(pictures, PictureItem.class.getClassLoader());
 		serverId = in.readString();
 	}
 

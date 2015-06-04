@@ -118,5 +118,6 @@
     <string name="logout_message">Are you sure you want to logout ?</string>
     <string name="exit_weproov_title">Exit</string>
     <string name="exit_weproov_message">Are you sure you want to exit ?</string>
+    <string name="title_activity_about">AboutActivity</string>
 
 </resources>

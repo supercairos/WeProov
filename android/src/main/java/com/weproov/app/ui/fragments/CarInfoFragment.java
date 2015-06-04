@@ -30,6 +30,7 @@ import com.weproov.app.ui.adapter.PlateAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PicassoUtils;
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	TextInputLayout mColorLayout;
 
 	@InjectView(R.id.seekbar_car_gas_level)
-	SeekBar mGasLevel;
+	DiscreteSeekBar mGasLevel;
 
 	@InjectView(R.id.spinner_car_type)
 	Spinner mCarType;
@@ -105,6 +106,18 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_car_info, container, false);
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		mGasLevel.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+			@Override
+			public int transform(int i) {
+				return (int) (i * 12.5);
+			}
+		});
 	}
 
 	@Override
@@ -168,7 +181,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 		mPlateNumber.setText(info.plate);
 		mBrand.setText(info.brand);
 		mModel.setText(info.model);
-		if(!omit) {
+		if (!omit) {
 			mMillage.setText(String.valueOf(info.millage));
 		}
 		mMillageType.setSelection(getServerIndex(mMillageTypeServer, info.millage_type));

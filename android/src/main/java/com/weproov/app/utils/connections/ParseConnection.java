@@ -3,7 +3,6 @@ package com.weproov.app.utils.connections;
 import android.os.Build;
 import android.text.TextUtils;
 import com.google.gson.JsonSyntaxException;
-import com.squareup.okhttp.OkHttpClient;
 import com.weproov.app.BuildConfig;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.utils.AccountUtils;
@@ -33,7 +32,6 @@ public class ParseConnection extends Connection{
 	private static final String PARSE_REST_KEY = "97dm5I11O1JChm3V82RHx2yqS144FLyif6LEml11";
 
 	public static final String URL = createUrl();
-	public static final OkHttpClient HTTP_CLIENT = setupOkHttp();
 
 	public static final RestAdapter ADAPTER = new RestAdapter.Builder()
 			.setEndpoint(URL)
