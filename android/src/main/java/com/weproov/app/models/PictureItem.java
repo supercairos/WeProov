@@ -88,8 +88,11 @@ public class PictureItem extends BaseModel implements Parcelable {
 	@Override
 	public String toString() {
 		return "PictureItem{" +
-				"path=" + path +
+				"parent=" + parent +
+				", path=" + path +
 				", comment='" + comment + '\'' +
+				", type='" + type + '\'' +
+				", uploaded=" + uploaded +
 				'}';
 	}
 

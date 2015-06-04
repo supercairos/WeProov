@@ -1,55 +1,43 @@
 package com.weproov.app.ui.adapter;
 
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.TextView;
 import com.weproov.app.R;
+import com.weproov.app.models.WeProov;
+import com.weproov.app.utils.Dog;
 
-public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHolder> {
-	private String[] mDataset;
+public class DocumentAdapter extends CursorAdapter {
 
-	// Provide a reference to the views for each data item
-	// Complex data items may need more than one view per item, and
-	// you provide access to all the views for a data item in a view holder
-	public static class ViewHolder extends RecyclerView.ViewHolder {
-		// each data item is just a string in this case
-		public TextView mTextView;
-
-		public ViewHolder(View v) {
-			super(v);
-			mTextView = (TextView) v.findViewById(R.id.info_text);
-		}
+	static class ViewHolder {
+		public TextView text;
 	}
 
-	// Provide a suitable constructor (depends on the kind of dataset)
-	public DocumentAdapter(String[] myDataset) {
-		mDataset = myDataset;
+	public DocumentAdapter(Context context, Cursor c) {
+		super(context, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	}
 
-	// Create new views (invoked by the layout manager)
 	@Override
-	public DocumentAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		// create a new view
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_document, parent, false);
-		// set the view's size, margins, paddings and layout parameters
+	public View newView(Context context, Cursor cursor, ViewGroup parent) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View view = inflater.inflate(R.layout.item_document, parent, false);
+		ViewHolder holder = new ViewHolder();
+		holder.text = (TextView) view.findViewById(R.id.info_text);
+		view.setTag(R.id.holder, holder);
 
-		return new ViewHolder(v);
+		return view;
 	}
 
-	// Replace the contents of a view (invoked by the layout manager)
 	@Override
-	public void onBindViewHolder(ViewHolder holder, int position) {
-		// - get element from your dataset at this position
-		// - replace the contents of the view with that element
-		holder.mTextView.setText(mDataset[position]);
-
-	}
-
-	// Return the size of your dataset (invoked by the layout manager)
-	@Override
-	public int getItemCount() {
-		return mDataset.length;
+	public void bindView(View view, Context context, Cursor cursor) {
+		ViewHolder holder = (ViewHolder) view.getTag(R.id.holder);
+		WeProov proov = new WeProov();
+		proov.loadFromCursor(cursor);
+		Dog.d("Proov = %s", proov);
+		holder.text.setText("Test");
 	}
 }

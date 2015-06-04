@@ -313,11 +313,11 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if ((requestCode == SELECT_ID_CARD_REQUEST_CODE || requestCode == SELECT_DRIVING_LICENCE_REQUEST_CODE) && resultCode == Activity.RESULT_OK) {
 			Uri selectedImageUri;
-			if (data == null || (data.getAction() != null && data.getAction().equals(MediaStore.ACTION_IMAGE_CAPTURE))) {
+			if (data == null || (data.getAction() != null && MediaStore.ACTION_IMAGE_CAPTURE.equals(data.getAction()))) {
 				selectedImageUri = mOutputFileUri;
 			} else {
 				Uri uri = data.getData();
-				if(!mOutputFileUri.equals(uri)) {
+				if (!uri.equals(mOutputFileUri)) {
 					//noinspection ResultOfMethodCallIgnored
 					new File(mOutputFileUri.getPath()).delete();
 				}

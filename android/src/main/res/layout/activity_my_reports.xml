@@ -5,13 +5,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <fragment
-            android:name="com.weproov.app.ui.fragments.DocumentListFragment"
-            android:id="@+id/fragment_documents"
+    <android.support.v4.view.ViewPager
+            android:id="@+id/document_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/bottom_frame_layout"
-            android:layout_alignWithParentIfMissing="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <android.support.design.widget.AppBarLayout

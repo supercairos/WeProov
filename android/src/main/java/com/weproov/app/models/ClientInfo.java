@@ -51,7 +51,6 @@ public class ClientInfo extends BaseModel implements Parcelable {
 
 		driving_licence = in.readParcelable(Uri.class.getClassLoader());
 		id_card = in.readParcelable(Uri.class.getClassLoader());
-		;
 	}
 
 	@Override
@@ -85,13 +84,14 @@ public class ClientInfo extends BaseModel implements Parcelable {
 
 	@Override
 	public String toString() {
-		return "RenterInfo{" +
+		return "ClientInfo{" +
 				"lastname='" + lastname + '\'' +
 				", firstname='" + firstname + '\'' +
 				", email='" + email + '\'' +
 				", company='" + company + '\'' +
 				", driving_licence=" + driving_licence +
 				", id_card=" + id_card +
+				", uploaded=" + uploaded +
 				'}';
 	}
 }

@@ -106,6 +106,8 @@ public class CarInfo extends BaseModel implements Parcelable {
 				", millage_type='" + millage_type + '\'' +
 				", color='" + color + '\'' +
 				", gas_level=" + gas_level +
+				", vehicle_documentation=" + vehicle_documentation +
+				", uploaded=" + uploaded +
 				'}';
 	}
 }

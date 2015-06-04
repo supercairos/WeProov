@@ -102,5 +102,15 @@ public class WeProov extends BaseModel implements Parcelable {
 		}
 	};
 
-
+	@Override
+	public String toString() {
+		return "WeProov{" +
+				"serverId='" + serverId + '\'' +
+				", client=" + client +
+				", car=" + car +
+				", pictures=" + pictures +
+				", renterSignature=" + renterSignature +
+				", clientSignature=" + clientSignature +
+				'}';
+	}
 }

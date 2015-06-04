@@ -119,5 +119,7 @@
     <string name="exit_weproov_title">Exit</string>
     <string name="exit_weproov_message">Are you sure you want to exit ?</string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="title_document_checkout">Checkout</string>
+    <string name="title_document_all">My documents</string>
 
 </resources>

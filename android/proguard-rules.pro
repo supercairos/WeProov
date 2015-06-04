@@ -83,3 +83,8 @@
     public static android.os.Parcelable$Creator *;
 }
 
+# Design Support Lib
+-dontwarn android.support.**
+-keep class android.support.design.** { *; }
+-keep interface android.support.design.** { *; }
+

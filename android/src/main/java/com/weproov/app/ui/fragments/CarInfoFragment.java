@@ -360,16 +360,16 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == SELECT_VEHICLE_DOC_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-			if (data == null || (data.getAction() != null && data.getAction().equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE))) {
+			if (data == null || (data.getAction() != null && MediaStore.ACTION_IMAGE_CAPTURE.equals(data.getAction()))) {
 				mVehicleDocumentationUri = mOutputFileUri;
 			} else {
 				Uri uri = data.getData();
-				if (!mOutputFileUri.equals(uri)) {
+				if (!uri.equals(mOutputFileUri)) {
 					//noinspection ResultOfMethodCallIgnored
 					new File(mOutputFileUri.getPath()).delete();
 				}
 
-				mVehicleDocumentationUri = data.getData();
+				mVehicleDocumentationUri = uri;
 			}
 
 			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerCrop().fit().into(mVehicleDocumentationPicture);
