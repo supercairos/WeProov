@@ -1,11 +1,14 @@
 package com.weproov.app.ui;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +20,7 @@ import com.weproov.app.ui.fragments.dialogs.BugReportDialogFragment;
 import com.weproov.app.ui.fragments.dialogs.LogoutDialogFragment;
 import com.weproov.app.utils.FragmentsUtils;
 
-public class ReportListActivity extends DrawerActivity {
+public class ReportListActivity extends DrawerActivity implements SearchView.OnQueryTextListener {
 
 	@InjectView(R.id.action_bar)
 	Toolbar mActionBar;
@@ -28,7 +31,7 @@ public class ReportListActivity extends DrawerActivity {
 	@InjectView(R.id.tab_layout)
 	TabLayout mTabLayout;
 
-	private PagerAdapter mPagerAdapter;
+	private DocumentPageAdapter mPagerAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,14 @@ public class ReportListActivity extends DrawerActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+		getMenuInflater().inflate(R.menu.menu_report_list_activity, menu);
+
+		// Associate searchable configuration with the SearchView
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		searchView.setOnQueryTextListener(this);
+
 		return true;
 	}
 
@@ -106,6 +116,17 @@ public class ReportListActivity extends DrawerActivity {
 
 		FragmentsUtils.showDialog(this, fragment);
 		mDrawerLayout.closeDrawer(mDrawerNavigation);
+		return true;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		return true;
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		mPagerAdapter.setQuery(newText);
 		return true;
 	}
 

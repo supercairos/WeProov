@@ -8,10 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.weproov.app.R;
@@ -32,6 +29,12 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 	private static final String KEY_WEPROOV = "key_weproov";
 
 	private LayoutInflater mLayoutInflater;
+
+	@InjectView(R.id.content)
+	ScrollView mContentView;
+
+	@InjectView(R.id.loader)
+	LinearLayout mLoaderView;
 
 	@InjectView(R.id.summary_client_display_name)
 	TextView mClientDisplayName;
@@ -78,12 +81,17 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
+		if (savedInstanceState != null && savedInstanceState.getParcelable(KEY_WEPROOV) != null) {
+			mWeProov = savedInstanceState.getParcelable(KEY_WEPROOV);
+		} else if (getArguments() != null) {
 			mWeProov = getArguments().getParcelable(KEY_WEPROOV);
 		}
 
 		mLayoutInflater = LayoutInflater.from(getActivity());
-		setCommmandListener(this);
+
+		if (getTunnel() != null) {
+			setCommmandListener(this);
+		}
 	}
 
 	@Override
@@ -94,14 +102,31 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		ClientInfo client = mWeProov.client;
+		setWeProov(mWeProov);
+	}
+
+	public void setWeProov(WeProov proov) {
+		mWeProov = proov;
+		if (mWeProov != null) {
+			bindData(mWeProov);
+		} else {
+			mLoaderView.setVisibility(View.VISIBLE);
+			mContentView.setVisibility(View.GONE);
+		}
+	}
+
+	private void bindData(WeProov proov) {
+		mLoaderView.setVisibility(View.GONE);
+		mContentView.setVisibility(View.VISIBLE);
+
+		ClientInfo client = proov.client;
 		mClientDisplayName.setText(client.firstname + " " + client.lastname);
 		mClientEmail.setText(client.email);
 		mClientCompany.setText(client.company);
 		PicassoUtils.PICASSO.load(client.id_card).fit().centerCrop().into(mClientIdCard);
 		PicassoUtils.PICASSO.load(client.driving_licence).fit().centerCrop().into(mClientDrivingLicence);
 
-		CarInfo car = mWeProov.car;
+		CarInfo car = proov.car;
 		mCarPlate.setText(car.plate);
 		mCarBrandModel.setText(car.brand + " " + car.model);
 		mCarColor.setText(car.car_type + ", " + car.color);
@@ -109,7 +134,7 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 		mCarGasTank.setText(String.valueOf(car.gas_level) + "%");
 		PicassoUtils.PICASSO.load(car.vehicle_documentation).fit().centerCrop().into(mCarDocument);
 
-		List<PictureItem> items = mWeProov.getPictures();
+		List<PictureItem> items = proov.getPictures();
 		for (final PictureItem item : items) {
 			View v = mLayoutInflater.inflate(R.layout.item_summary_pictures, mPicturesLayout, false);
 			ImageView imageView = (ImageView) v.findViewById(R.id.summary_image);
@@ -128,8 +153,14 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 			mPicturesLayout.addView(v, mPicturesLayout.getChildCount() - 1);
 		}
 
-		PicassoUtils.PICASSO.load(mWeProov.renterSignature).fit().centerCrop().into(mRenterSignature);
-		PicassoUtils.PICASSO.load(mWeProov.clientSignature).fit().centerCrop().into(mClientSignature);
+		PicassoUtils.PICASSO.load(proov.renterSignature).fit().centerCrop().into(mRenterSignature);
+		PicassoUtils.PICASSO.load(proov.clientSignature).fit().centerCrop().into(mClientSignature);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelable(KEY_WEPROOV, mWeProov);
 	}
 
 	@OnClick(R.id.edit_client_info)

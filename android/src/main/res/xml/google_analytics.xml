@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <!-- Enable dry run mode. Default is false -->
+    <bool name="ga_dryRun">false</bool>
+
+    <bool name="ga_reportUncaughtExceptions">true</bool>
+</resources>

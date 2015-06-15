@@ -8,7 +8,9 @@ import android.widget.Button;
 import butterknife.ButterKnife;
 import com.squareup.leakcanary.RefWatcher;
 import com.weproov.app.MyApplication;
+import com.weproov.app.logic.providers.BusProvider;
 import com.weproov.app.ui.ifaces.CommandIface;
+import com.weproov.app.utils.Dog;
 
 
 abstract class BaseFragment extends Fragment {
@@ -29,6 +31,20 @@ abstract class BaseFragment extends Fragment {
 	public void onViewCreated(final View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		ButterKnife.inject(this, view);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dog.d("Registering : " + this);
+		BusProvider.getInstance().register(this);
+	}
+
+	@Override
+	public void onStop() {
+		Dog.d("Registering : " + this);
+		BusProvider.getInstance().unregister(this);
+		super.onStop();
 	}
 
 	@Override

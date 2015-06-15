@@ -1,6 +1,5 @@
 package com.weproov.app.ui.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -38,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class CarInfoFragment extends TunnelFragment implements CommandIface.OnClickListener {
@@ -343,10 +343,9 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 		}
 	}
 
-	@SuppressLint("SimpleDateFormat")
 	private File createImageFile() throws IOException {
 		// Create an image file name
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
 		String imageFileName = "renter_" + timeStamp;
 		File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
@@ -364,7 +363,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 				mVehicleDocumentationUri = mOutputFileUri;
 			} else {
 				Uri uri = data.getData();
-				if (!uri.equals(mOutputFileUri)) {
+				if (!uri.equals(mOutputFileUri) && mOutputFileUri != null) {
 					//noinspection ResultOfMethodCallIgnored
 					new File(mOutputFileUri.getPath()).delete();
 				}

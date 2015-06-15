@@ -5,8 +5,8 @@ import android.text.TextUtils;
 public class PasswordValidator {
 
     public static final String SPECIAL_CHARACTERS = "!@#$%^&*()~`-=_+[]{}|:\";',./<>?";
-    public static final int MIN_PASSWORD_LENGTH = 8;
-    public static final int MAX_PASSWORD_LENGTH = 20;
+    public static final int MIN_PASSWORD_LENGTH = 4;
+    public static final int MAX_PASSWORD_LENGTH = 64;
 
     public static boolean isAcceptablePassword(String password) {
         if (TextUtils.isEmpty(password)) {
@@ -35,6 +35,6 @@ public class PasswordValidator {
             }
         }
 
-        return hasDigit && hasLower && hasUpper && hasSpecial;
+        return true; //hasDigit && hasLower && hasUpper && hasSpecial;
     }
 }

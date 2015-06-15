@@ -32,7 +32,7 @@ public class TunnelFragment extends BaseFragment {
 		try {
 			mListener = (Tunnel) activity;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString() + " must implement Tunnelface");
+			//throw new ClassCastException(activity.toString() + " must implement Tunnelface");
 		}
 	}
 

@@ -83,8 +83,17 @@
     public static android.os.Parcelable$Creator *;
 }
 
-# Design Support Lib
+# Support Libs
+-dontnote android.support.**
 -dontwarn android.support.**
+-keep interface android.support.** { *; }
+-keep class android.support.** { *; }
 -keep class android.support.design.** { *; }
 -keep interface android.support.design.** { *; }
+
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
 

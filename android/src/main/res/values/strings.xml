@@ -121,5 +121,11 @@
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_document_checkout">Checkout</string>
     <string name="title_document_all">My documents</string>
+    <string name="loading_document">Loading the document</string>
+    <string name="search_title">Search my weproov</string>
+    <string name="pdf_show_online_dialog_title">Open using Google Drive</string>
+    <string name="pdf_show_online_dialog_question">We could not find any PDF apps on your phone. Do you want to use Google Drive to display this file ?</string>
+    <string name="pdf_show_local_progress_title">Download</string>
+    <string name="pdf_show_local_progress_content">Downloading file %s</string>
 
 </resources>

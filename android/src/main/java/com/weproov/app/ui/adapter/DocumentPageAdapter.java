@@ -7,12 +7,25 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.weproov.app.R;
 import com.weproov.app.ui.fragments.DocumentListFragment;
 
+import java.util.List;
+
 public class DocumentPageAdapter extends FragmentPagerAdapter {
 
+	private FragmentManager mFragmentManager;
 	private Context mContext;
+
+	public void setQuery(String query) {
+		List<Fragment> fragments = mFragmentManager.getFragments();
+		for (Fragment fragment : fragments) {
+			if (fragment instanceof DocumentListFragment) {
+				((DocumentListFragment) fragment).setQuery(query);
+			}
+		}
+	}
 
 	public DocumentPageAdapter(FragmentManager fm, Context context) {
 		super(fm);
+		mFragmentManager = fm;
 		mContext = context;
 	}
 

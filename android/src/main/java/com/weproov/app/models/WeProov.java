@@ -14,6 +14,9 @@ import java.util.List;
 @Table(name = "weproov", id = BaseColumns._ID)
 public class WeProov extends BaseModel implements Parcelable {
 
+	@Column(name = "date", index = true)
+	private long date = System.currentTimeMillis();
+
 	@Column(name = "serverId", index = true)
 	private String serverId = null;
 
@@ -27,6 +30,9 @@ public class WeProov extends BaseModel implements Parcelable {
 
 	public Uri renterSignature;
 	public Uri clientSignature;
+
+	@Column(name = "checkout", index = true)
+	public boolean isCheckout;
 
 	public void addPicture(PictureItem pictureItem) {
 		if (pictures == null) {
@@ -44,6 +50,10 @@ public class WeProov extends BaseModel implements Parcelable {
 		return pictures;
 	}
 
+	public long getDate() {
+		return date;
+	}
+
 	public WeProov() {
 		super();
 	}
@@ -59,6 +69,7 @@ public class WeProov extends BaseModel implements Parcelable {
 	public void doSave() {
 		ActiveAndroid.beginTransaction();
 		try {
+			date = System.currentTimeMillis();
 			client.save();
 			car.save();
 			save();

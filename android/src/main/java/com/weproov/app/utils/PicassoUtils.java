@@ -14,4 +14,6 @@ public final class PicassoUtils {
 			.indicatorsEnabled(BuildConfig.DEBUG)
 			.downloader(new OkHttpDownloader(Connection.HTTP_CLIENT))
 			.build();
+
+
 }

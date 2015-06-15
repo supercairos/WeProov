@@ -5,12 +5,21 @@ import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
+import android.text.TextUtils;
+import android.util.Log;
 import com.activeandroid.ActiveAndroid;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.StandardExceptionParser;
+import com.google.android.gms.analytics.Tracker;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.weproov.app.utils.Dog;
 
 public class MyApplication extends Application {
+
+	public static GoogleAnalytics sAnalytics;
+	public static Tracker sTracker;
 
 	public static String PACKAGE_NAME;
 
@@ -26,9 +35,21 @@ public class MyApplication extends Application {
 		ActiveAndroid.setLoggingEnabled(true);
 
 		Dog.bury(new Dog.DebugBone());
+		Dog.bury(new GoogleAnalyticsTree());
 
-		enabledStrictMode();
+		if (BuildConfig.DEBUG) {
+			enabledStrictMode();
+		}
 		sRefWatcher = LeakCanary.install(this);
+
+		sAnalytics = GoogleAnalytics.getInstance(this);
+		sAnalytics.setLocalDispatchPeriod(1800);
+
+		sTracker = sAnalytics.newTracker("UA-64080930-1");
+		sTracker.enableExceptionReporting(true);
+		sTracker.enableAdvertisingIdCollection(true);
+		sTracker.enableAutoActivityTracking(true);
+
 	}
 
 	protected void attachBaseContext(Context base) {
@@ -41,7 +62,8 @@ public class MyApplication extends Application {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
 					.detectAll() //
-					.penaltyLog() //
+					.penaltyFlashScreen() //
+					.penaltyLog()
 					.build());
 		}
 	}
@@ -58,5 +80,30 @@ public class MyApplication extends Application {
 
 	public static RefWatcher getRefWatcher() {
 		return sRefWatcher;
+	}
+
+	/**
+	 * A tree which logs important information for crash reporting.
+	 */
+	private static class GoogleAnalyticsTree extends Dog.Bone {
+		@Override
+		protected void log(int priority, String tag, String message, Throwable t) {
+			if (priority == Log.VERBOSE || priority == Log.DEBUG) {
+				return;
+			}
+
+			if (t != null) {
+				// Build and send exception.
+				sTracker.send(new HitBuilders.ExceptionBuilder()
+						.setDescription(new StandardExceptionParser(sContext, null).getDescription(Thread.currentThread().getName(), t))
+						.setFatal(priority >= Log.ERROR)
+						.build());
+			} else if (!TextUtils.isEmpty(message)) {
+				sTracker.send(new HitBuilders.ExceptionBuilder()
+						.setDescription(tag + ":" + message)
+						.setFatal(priority >= Log.ERROR)
+						.build());
+			}
+		}
 	}
 }
