@@ -127,5 +127,12 @@
     <string name="pdf_show_online_dialog_question">We could not find any PDF apps on your phone. Do you want to use Google Drive to display this file ?</string>
     <string name="pdf_show_local_progress_title">Download</string>
     <string name="pdf_show_local_progress_content">Downloading file %s</string>
+    <string name="welcome_to_weproov_title">Welcome to WeProov!</string>
+    <string name="welcome_to_weproov_text">It\'s very easy to realize WeProovs, just follow the steps and you will be done quicker than it takes to realize it!</string>
+    <string name="welcome_to_weproov_subtitle">Let\'s get started!</string>
+    <string name="welcome_to_weproov_checkbox">Don\'t show me this help in the future!</string>
+    <string name="agree_licence">I agree the CGV and CGU</string>
+    <string name="register_title">Welcome!</string>
+    <string name="register_description">Fill this short profile to get started.</string>
 
 </resources>

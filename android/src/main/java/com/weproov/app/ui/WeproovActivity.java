@@ -24,6 +24,7 @@ import com.weproov.app.ui.ifaces.ActionBarIface;
 import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.FragmentsUtils;
+import com.weproov.app.utils.PrefUtils;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -64,7 +65,11 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 			mCurrentWeProov = savedInstanceState.getParcelable(KEY_WE_PROOV_OBJECT);
 			Dog.d("Found weproov object : %s", mCurrentWeProov);
 		} else {
-			FragmentsUtils.replace(this, new ClientFragment(), R.id.content_fragment, "tag", false, 0, 0);
+			if (PrefUtils.getBoolean(WeproovWelcomeFragment.PREF_PASS_HELP, false)) {
+				FragmentsUtils.replace(this, new ClientFragment(), R.id.content_fragment, "tag", false, 0, 0);
+			} else {
+				FragmentsUtils.replace(this, new WeproovWelcomeFragment(), R.id.content_fragment, "tag", false, 0, 0);
+			}
 		}
 
 
@@ -168,7 +173,9 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 	public void next(Bundle data) {
 		// Restore
 		mCurrentFragment = getSupportFragmentManager().findFragmentByTag("tag");
-		if (ClientFragment.class.equals(mCurrentFragment.getClass())) {
+		if (WeproovWelcomeFragment.class.equals(mCurrentFragment.getClass())) {
+			mCurrentFragment = new ClientFragment();
+		} else if (ClientFragment.class.equals(mCurrentFragment.getClass())) {
 			// Need to go to CarInfoFragment;
 			if (data != null) {
 				mCurrentWeProov.client = data.getParcelable(TunnelFragment.KEY_RENTER_INFO);

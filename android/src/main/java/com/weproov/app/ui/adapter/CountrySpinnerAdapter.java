@@ -34,7 +34,7 @@ public class CountrySpinnerAdapter extends ArrayAdapter<Country> {
 		Country country = getItem(position);
 		tv.setText(country.name);
 		tv.setCompoundDrawablePadding((int) PixelUtils.convertDpToPixel(8));
-		tv.setCompoundDrawablesRelativeWithIntrinsicBounds(country.res, 0, 0, 0);
+		tv.setCompoundDrawablesWithIntrinsicBounds(country.res, 0, 0, 0);
 		return tv;
 	}
 

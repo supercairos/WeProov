@@ -31,10 +31,7 @@ import com.weproov.app.models.CarInfo;
 import com.weproov.app.models.ClientInfo;
 import com.weproov.app.models.WeProov;
 import com.weproov.app.ui.adapter.DocumentAdapter;
-import com.weproov.app.utils.BaseAsyncTaskLoader;
-import com.weproov.app.utils.Dog;
-import com.weproov.app.utils.PdfTool;
-import com.weproov.app.utils.ThrottledContentObserver;
+import com.weproov.app.utils.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -92,6 +89,8 @@ public class DocumentListFragment extends BaseFragment implements LoaderManager.
 //									mProgressDialog.setIndeterminate(false);
 //								}
 
+								mProgressDialog.setMax(100);
+								mProgressDialog.setIndeterminate(false);
 								mProgressDialog.setProgress((int) (downloaded * 100.0 / size));
 							}
 						}
@@ -245,21 +244,28 @@ public class DocumentListFragment extends BaseFragment implements LoaderManager.
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //		Intent i = new Intent(getActivity(), DocumentDisplayActivity.class);
-//		i.putExtra(DocumentDisplayActivity.EXTRA_WEPROOV_ID, mAdapter.getItem(position).getId());
+//		i.putExtra(DocumentDisplayActivity.EXTRA_WEPROOV_ID, .getId());
 //		startActivity(i);
-
-		String file = "https://www.nbb.be/doc/ba/pdf7mb/2011/201103400016_04.pdf";
+		String objectId = "4cFmwNEUZt";
+		String file = getUrl(objectId);
+		Dog.d("Url is >> " + file);
 		if (PdfTool.isSupported(getActivity())) {
-			download(file);
+			download(objectId, file);
 		} else {
 			PdfTool.askToOpenPDFThroughGoogleDrive(getActivity(), file);
 		}
 	}
 
-	private void download(String string) {
+	private String getUrl(String id) {
+		String hash2 = CryptoUtils.sha1(CryptoUtils.sha1(id) + "@wePr00v!@");
+		String hash1 = CryptoUtils.sha1(CryptoUtils.sha1(id) + "weProov2k15@");
+		return "http://weproov.com/visu/temp/download_pdf.php?id=" + id + "&hash=" + hash1 + "&hash2=" + hash2;
+	}
+
+	private void download(String id, String string) {
 
 		// Get filename
-		final String filename = string.substring(string.lastIndexOf("/") + 1);
+		final String filename = id + ".pdf"; //string.substring(string.lastIndexOf("/") + 1);
 
 		// The place where the downloaded PDF file will be put
 		mPdfFile = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), filename);

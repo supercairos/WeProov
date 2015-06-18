@@ -35,21 +35,20 @@ public class MyApplication extends Application {
 		ActiveAndroid.setLoggingEnabled(true);
 
 		Dog.bury(new Dog.DebugBone());
-		Dog.bury(new GoogleAnalyticsTree());
+
 
 		if (BuildConfig.DEBUG) {
-			enabledStrictMode();
+			//enabledStrictMode();
 		}
 		sRefWatcher = LeakCanary.install(this);
 
-		sAnalytics = GoogleAnalytics.getInstance(this);
-		sAnalytics.setLocalDispatchPeriod(1800);
-
-		sTracker = sAnalytics.newTracker("UA-64080930-1");
-		sTracker.enableExceptionReporting(true);
-		sTracker.enableAdvertisingIdCollection(true);
-		sTracker.enableAutoActivityTracking(true);
-
+//		sAnalytics = GoogleAnalytics.getInstance(this);
+//		sAnalytics.setLocalDispatchPeriod(1800);
+//		Dog.bury(new GoogleAnalyticsTree());
+//		sTracker = sAnalytics.newTracker("UA-64080930-1");
+//		sTracker.enableExceptionReporting(true);
+//		sTracker.enableAdvertisingIdCollection(true);
+//		sTracker.enableAutoActivityTracking(true);
 	}
 
 	protected void attachBaseContext(Context base) {

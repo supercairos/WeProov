@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.weproov.app.ui.fragments.WeproovWelcomeFragment">
+
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="26dp"
+            android:textSize="26sp"
+            android:text="@string/welcome_to_weproov_title"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/primary_dark"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="26dp"
+            android:textSize="22sp"
+            android:text="@string/welcome_to_weproov_subtitle"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/primary"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
+            android:padding="25dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_to_weproov_text"
+            android:id="@+id/textView"/>
+
+    <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_to_weproov_checkbox"
+            android:id="@+id/welcome_to_weproov_checkbox"
+            android:layout_marginBottom="25dp"/>
+
+</LinearLayout>

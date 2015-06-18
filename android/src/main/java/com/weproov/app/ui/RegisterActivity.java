@@ -79,6 +79,9 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 	@InjectView(R.id.edit_password_layout)
 	TextInputLayout mPasswordLayout;
 
+	@InjectView(R.id.licence_checkbox)
+	CheckBox mCheckBox;
+
 	@InjectView(R.id.action_bar)
 	Toolbar mActionBar;
 
@@ -124,7 +127,7 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 
 		mSpinnerAdapter = new CountrySpinnerAdapter(this);
 		mCountrySpinner.setAdapter(mSpinnerAdapter);
-		mCountrySpinner.setSelection(72);
+		mCountrySpinner.setSelection(2);
 		mCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -251,6 +254,13 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 			mPhoneLayout.setError(null);
 		}
 
+		if (!mCheckBox.isChecked()) {
+			mCheckBox.setTextColor(getResources().getColor(R.color.error_color));
+			isEverythingOk = false;
+		} else {
+			mCheckBox.setTextColor(getResources().getColor(android.R.color.white));
+		}
+
 		if (isEverythingOk) {
 			// Register
 			mDialog = ProgressDialog.show(this, "Register", "Please wait...", true);
@@ -275,7 +285,7 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 
 	@Subscribe
 	public void onRegisterSuccess(RegisterSuccessEvent event) {
-		if(mDialog != null) {
+		if (mDialog != null) {
 			mDialog.dismiss();
 		}
 		gotoMain();
@@ -283,7 +293,7 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 
 	@Subscribe
 	public void onRegisterError(NetworkErrorEvent event) {
-		if(mDialog != null) {
+		if (mDialog != null) {
 			mDialog.dismiss();
 		}
 
@@ -364,7 +374,7 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
 				mProfilePictureUri = mOutputFileUri;
 			} else {
 				Uri uri = data.getData();
-				if(!mOutputFileUri.equals(uri)) {
+				if (!mOutputFileUri.equals(uri)) {
 					new File(mOutputFileUri.getPath()).delete();
 				}
 
