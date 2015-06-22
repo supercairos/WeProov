@@ -13,7 +13,7 @@ import com.weproov.app.utils.constants.AuthenticatorConstants;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class SlackTask {
+public final class SlackTask {
 
 	private static final Feedback.IFeedbackService SERVICE = Feedback.getService();
 

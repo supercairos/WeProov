@@ -14,6 +14,8 @@ public class TunnelFragment extends BaseFragment {
 	public static final String KEY_PICTURE_ITEM = "key_picture_item";
 	public static final String KEY_SIGNATURE_ITEM = "key_signature_item";
 
+	public static final String KEY_PROOV_CODE = "key_proov_code";
+
 	public interface Tunnel {
 		void next();
 

@@ -187,10 +187,11 @@
                     android:layout_height="wrap_content"
                     app:dsb_progressColor="@color/accent"
                     app:dsb_indicatorColor="@color/accent"
-                    app:dsb_indicatorFormatter="%d%%"
                     app:dsb_min="0"
                     app:dsb_max="8"
                     app:dsb_value="4"/>
+
+            <!-- app:dsb_indicatorFormatter="%d%%" -->
 
             <Spinner
                     android:layout_width="match_parent"

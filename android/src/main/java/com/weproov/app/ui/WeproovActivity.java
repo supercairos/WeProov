@@ -17,7 +17,9 @@ import android.view.View;
 import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.models.PictureItem;
+import com.weproov.app.models.ProovCode;
 import com.weproov.app.models.WeProov;
+import com.weproov.app.models.wrappers.parse.ParsePointer;
 import com.weproov.app.ui.fragments.*;
 import com.weproov.app.ui.fragments.dialogs.BugReportDialogFragment;
 import com.weproov.app.ui.ifaces.ActionBarIface;
@@ -66,7 +68,7 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 			Dog.d("Found weproov object : %s", mCurrentWeProov);
 		} else {
 			if (PrefUtils.getBoolean(WeproovWelcomeFragment.PREF_PASS_HELP, false)) {
-				FragmentsUtils.replace(this, new ClientFragment(), R.id.content_fragment, "tag", false, 0, 0);
+				FragmentsUtils.replace(this, new ProovCodeFragment(), R.id.content_fragment, "tag", false, 0, 0);
 			} else {
 				FragmentsUtils.replace(this, new WeproovWelcomeFragment(), R.id.content_fragment, "tag", false, 0, 0);
 			}
@@ -174,7 +176,16 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 		// Restore
 		mCurrentFragment = getSupportFragmentManager().findFragmentByTag("tag");
 		if (WeproovWelcomeFragment.class.equals(mCurrentFragment.getClass())) {
-			mCurrentFragment = new ClientFragment();
+			mCurrentFragment = new ProovCodeFragment();
+		} else if (ProovCodeFragment.class.equals(mCurrentFragment.getClass())) {
+			if (data != null) {
+				ProovCode code = data.getParcelable(TunnelFragment.KEY_PROOV_CODE);
+				mCurrentWeProov.setProovCodeId(code.id);
+
+                Dog.d("Got ProovCode %s", code);
+			}
+
+            mCurrentFragment = new ClientFragment();
 		} else if (ClientFragment.class.equals(mCurrentFragment.getClass())) {
 			// Need to go to CarInfoFragment;
 			if (data != null) {

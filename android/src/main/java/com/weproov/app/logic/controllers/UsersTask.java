@@ -47,6 +47,7 @@ public final class UsersTask {
 
 		Bundle data = new Bundle();
 		data.putString(AccountConstants.KEY_FIRST_NAME, user.firstname);
+		data.putString(AccountConstants.KEY_SERVER_ID, user.id);
 		data.putString(AccountConstants.KEY_LAST_NAME, user.lastname);
 		data.putString(AccountConstants.KEY_PROFILE_PICTURE, user.parsePictureFile != null ? user.parsePictureFile.url : null);
 

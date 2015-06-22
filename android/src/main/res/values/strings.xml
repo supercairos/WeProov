@@ -2,13 +2,12 @@
 <resources>
     <string name="app_name">WeProov</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="camera_is_required">This app require a camera</string>
+
     <string name="button_clear">Clear</string>
     <string name="loading_camera">Loading camera\nPlease wait.</string>
 
@@ -110,7 +109,7 @@
     <string name="navigation_account_profile">My profile</string>
     <string name="record_uploader_service">Record uploader service</string>
     <string name="feedback_uploader_service">Feedback uploader service</string>
-    <string name="feedback_posted_successfully">Feedback posted sucessfully</string>
+    <string name="feedback_posted_successfully">Feedback posted successfully</string>
     <string name="bug_report_content">Content</string>
     <string name="bug_report_title">Title</string>
     <string name="title_activity_my_reports">My Reports</string>
@@ -123,6 +122,7 @@
     <string name="title_document_all">My documents</string>
     <string name="loading_document">Loading the document</string>
     <string name="search_title">Search my weproov</string>
+
     <string name="pdf_show_online_dialog_title">Open using Google Drive</string>
     <string name="pdf_show_online_dialog_question">We could not find any PDF apps on your phone. Do you want to use Google Drive to display this file ?</string>
     <string name="pdf_show_local_progress_title">Download</string>
@@ -134,5 +134,15 @@
     <string name="agree_licence">I agree the CGV and CGU</string>
     <string name="register_title">Welcome!</string>
     <string name="register_description">Fill this short profile to get started.</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_start">Start</string>
+    <string name="proov_code_help">Please provide us your proov code.</string>
+    <string name="proov_code">Proov code</string>
+    <string name="proov_code_error">This Proov code seams wrong...</string>
+    <string name="proov_code_error_snack">Oops, an error occured while validating the Proov Code</string>
+    <string name="proov_code_dialog_message">Please wait a bit.</string>
+    <string name="proov_code_dialog_title">Checking Proov code</string>
 
 </resources>

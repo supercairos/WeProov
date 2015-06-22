@@ -9,13 +9,19 @@ import android.content.*;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+
 import com.activeandroid.query.Select;
 import com.weproov.app.R;
+import com.weproov.app.logic.controllers.CarTask;
 import com.weproov.app.logic.controllers.PicturesTask;
+import com.weproov.app.logic.controllers.WeProovTask;
+import com.weproov.app.models.CarInfo;
 import com.weproov.app.models.PictureItem;
+import com.weproov.app.models.WeProov;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.ui.LandingActivity;
 import com.weproov.app.utils.Dog;
+
 import retrofit.RetrofitError;
 
 import java.util.List;
@@ -27,142 +33,144 @@ import java.util.List;
  */
 public class SyncService extends Service {
 
-	// Storage for an instance of the sync adapter
-	private static SyncAdapter sSyncAdapter = null;
-	// Object to use as a thread-safe lock
-	private static final Object sSyncAdapterLock = new Object();
+    // Storage for an instance of the sync adapter
+    private static SyncAdapter sSyncAdapter = null;
+    // Object to use as a thread-safe lock
+    private static final Object sSyncAdapterLock = new Object();
 
-	/*
-	 * Instantiate the sync adapter object.
-	 */
-	@Override
-	public void onCreate() {
-		/*
+    /*
+     * Instantiate the sync adapter object.
+     */
+    @Override
+    public void onCreate() {
+        /*
 		 * Create the sync adapter as a singleton.
          * Set the sync adapter as syncable
          * Disallow parallel syncs
          */
-		synchronized (sSyncAdapterLock) {
-			if (sSyncAdapter == null) {
-				sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
-			}
-		}
-	}
+        synchronized (sSyncAdapterLock) {
+            if (sSyncAdapter == null) {
+                sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
+            }
+        }
+    }
 
-	/**
-	 * Return an object that allows the system to invoke
-	 * the sync adapter.
-	 */
-	@Override
-	public IBinder onBind(Intent intent) {
+    /**
+     * Return an object that allows the system to invoke
+     * the sync adapter.
+     */
+    @Override
+    public IBinder onBind(Intent intent) {
 		/*
          * Get the object that allows external processes
          * to call onPerformSync(). The object is created
          * in the base class code when the SyncAdapter
          * constructors call super()
          */
-		return sSyncAdapter.getSyncAdapterBinder();
-	}
+        return sSyncAdapter.getSyncAdapterBinder();
+    }
 
-	private static class SyncAdapter extends AbstractThreadedSyncAdapter {
+    private static class SyncAdapter extends AbstractThreadedSyncAdapter {
 
-		private static final int DOWNLOAD_NOTIFICATION_ID = 2;
-		private static final String TAG = "Test";
-		private final NotificationManager mNotifyManager;
-		private NotificationCompat.Builder mBuilder;
+        private static final int DOWNLOAD_NOTIFICATION_ID = 2;
+        private static final String TAG = "Test";
+        private final NotificationManager mNotifyManager;
+        private NotificationCompat.Builder mBuilder;
 
-		/**
-		 * Set up the sync adapter. This form of the
-		 * constructor maintains compatibility with Android 3.0
-		 * and later platform versions
-		 */
-		public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
-			super(context, autoInitialize, allowParallelSyncs);
+        /**
+         * Set up the sync adapter. This form of the
+         * constructor maintains compatibility with Android 3.0
+         * and later platform versions
+         */
+        public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
+            super(context, autoInitialize, allowParallelSyncs);
 			/*
 			 * If your app uses a content resolver, get an instance of it
 			 * from the incoming Context
 			 */
-			mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		}
+            mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        }
 
-		public SyncAdapter(Context context, boolean autoInitialize) {
-			super(context, autoInitialize);
-			mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		}
+        public SyncAdapter(Context context, boolean autoInitialize) {
+            super(context, autoInitialize);
+            mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        }
 
-		@Override
-		public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
+        @Override
+        public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
-			mBuilder = new NotificationCompat.Builder(getContext())
-					.setSmallIcon(R.drawable.ic_notification)
-					.setProgress(0, 0, true)
-					.setContentTitle(getContext().getString(R.string.notification_picture_download_title))
-					.setContentIntent(PendingIntent.getActivity(getContext(), 0, new Intent(getContext(), LandingActivity.class), 0))
-					.setContentText(getContext().getString(R.string.notification_picture_download_start));
+            mBuilder = new NotificationCompat.Builder(getContext())
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setProgress(0, 0, true)
+                    .setContentTitle(getContext().getString(R.string.notification_picture_download_title))
+                    .setContentIntent(PendingIntent.getActivity(getContext(), 0, new Intent(getContext(), LandingActivity.class), 0))
+                    .setContentText(getContext().getString(R.string.notification_picture_download_start));
 
-			Notification notification;
-			try {
-				notification = mBuilder.build();
-				notification.flags |= Notification.FLAG_ONGOING_EVENT;
-				mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
+            Notification notification;
+            try {
+                notification = mBuilder.build();
+                notification.flags |= Notification.FLAG_ONGOING_EVENT;
+                mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
 
-				List<PictureItem> items = (new Select()).all().from(PictureItem.class).where("uploaded = ?", false).execute();
+                List<WeProov> items = (new Select()).all().from(WeProov.class).where("server_id IS NULL").execute();
 
-				Dog.d("Sync started ... ");
+                Dog.d("Sync started ... ");
 
-				int size = items.size();
-				for (int i = 0; i < size; i++) {
-					PictureItem item = items.get(i);
-					Dog.d("Syncing item >> %s", item);
-					mBuilder.setProgress(size, i, false);
-					notification = mBuilder.build();
-					notification.flags |= Notification.FLAG_ONGOING_EVENT;
-					mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
+                int size = items.size();
+                for (int i = 0; i < size; i++) {
+                    WeProov proov = items.get(i);
+                    Dog.d("Syncing item >> %s", proov);
+                    mBuilder.setProgress(size, i, false);
+                    notification = mBuilder.build();
+                    notification.flags |= Notification.FLAG_ONGOING_EVENT;
+                    mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
 
-					// Upload picture
-					PicturesTask.upload(item);
+                    for (PictureItem pictureItem : proov.getPictures()) {
+                        // Upload picture
+                        PicturesTask.upload(pictureItem);
+                    }
 
-					item.uploaded = true;
-					item.save();
-				}
+                    CarTask.upload(proov.car);
+                    WeProovTask.upload(proov);
+                }
 
-				Dog.d("Sync finished ... ");
+                Dog.d("Sync finished ... ");
 
-				// When the loop is finished, updates the notification
-				mBuilder.setContentText(getContext().getString(R.string.notification_picture_download_end))
-						// Removes the progress bar
-						.setProgress(0, 0, false);
+                // When the loop is finished, updates the notification
+                mBuilder.setContentText(getContext().getString(R.string.notification_picture_download_end))
+                        // Removes the progress bar
+                        .setProgress(0, 0, false);
 
-				notification = mBuilder.build();
-				notification.flags |= Notification.FLAG_AUTO_CANCEL;
-				mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
+                notification = mBuilder.build();
+                notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
 
-			} catch (NetworkException e) {
-				Dog.e(e, "LoginException");
-				syncResult.stats.numAuthExceptions++;
-			} catch (final RetrofitError e) {
-				Dog.e(e, "RetrofitError");
-				if (e.getKind() == RetrofitError.Kind.CONVERSION) {
-					Dog.e("RetrofitError kind RetrofitError.Kind.CONVERSION");
-					syncResult.stats.numParseExceptions++;
-				} else if (e.getKind() == RetrofitError.Kind.HTTP) {
-					Dog.e("RetrofitError kind RetrofitError.Kind.HTTP");
-					syncResult.stats.numAuthExceptions++;
-				} else if (e.getKind() == RetrofitError.Kind.NETWORK) {
-					Dog.e("RetrofitError kind RetrofitError.Kind.NETWORK");
-					syncResult.stats.numIoExceptions++;
-				}
-			}
+            } catch (NetworkException e) {
+                Dog.e(e, "LoginException");
+                syncResult.stats.numAuthExceptions++;
+            } catch (final RetrofitError e) {
+                Dog.e(e, "RetrofitError");
+                if (e.getKind() == RetrofitError.Kind.CONVERSION) {
+                    Dog.e("RetrofitError kind RetrofitError.Kind.CONVERSION");
+                    syncResult.stats.numParseExceptions++;
+                } else if (e.getKind() == RetrofitError.Kind.HTTP) {
+                    Dog.e("RetrofitError kind RetrofitError.Kind.HTTP");
+                    syncResult.stats.numAuthExceptions++;
+                } else if (e.getKind() == RetrofitError.Kind.NETWORK) {
+                    Dog.e("RetrofitError kind RetrofitError.Kind.NETWORK");
+                    syncResult.stats.numIoExceptions++;
+                }
+            }
 
-			// When the loop is finished, updates the notification
-			mBuilder.setContentText(getContext().getString(R.string.notification_upload_failed))
-					// Removes the progress bar
-					.setProgress(0, 0, false);
+            // When the loop is finished, updates the notification
+            mBuilder.setContentText(getContext().getString(R.string.notification_upload_failed))
+                    // Removes the progress bar
+                    .setProgress(0, 0, false);
 
-			notification = mBuilder.build();
-			notification.flags |= Notification.FLAG_AUTO_CANCEL;
-			mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
-		}
-	}
+            notification = mBuilder.build();
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
+        }
+    }
 
 }

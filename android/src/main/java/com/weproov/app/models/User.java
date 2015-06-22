@@ -28,6 +28,10 @@ public class User {
 	private static final IUserService SERVICE = ParseConnection.ADAPTER.create(IUserService.class);
 
 	@Expose
+	@SerializedName("objectId")
+	public String id;
+
+	@Expose
 	@SerializedName("prenom")
 	public String firstname;
 
@@ -114,7 +118,6 @@ public class User {
 		@POST(POST_REGISTER)
 		// User register(@Body User user) throws LoginException;
 		ParseRegisterResponse register(@Body User user) throws NetworkException;
-
 
 		@PUT(PUT_GCM)
 		Response registerGcm(@Body ParseGcmResponse gcm) throws NetworkException;
