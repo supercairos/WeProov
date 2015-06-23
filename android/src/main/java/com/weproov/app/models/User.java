@@ -93,7 +93,8 @@ public class User {
 	@Override
 	public String toString() {
 		return "User{" +
-				"firstname='" + firstname + '\'' +
+				"id='" + id + '\'' +
+				", firstname='" + firstname + '\'' +
 				", lastname='" + lastname + '\'' +
 				", phone='" + phone + '\'' +
 				", email='" + email + '\'' +
@@ -119,7 +120,7 @@ public class User {
 		// User register(@Body User user) throws LoginException;
 		ParseRegisterResponse register(@Body User user) throws NetworkException;
 
-		@PUT(PUT_GCM)
+		@POST(PUT_GCM)
 		Response registerGcm(@Body ParseGcmResponse gcm) throws NetworkException;
 		// User registerGcm(@Path("gcm_token") String token) throws LoginException;
 	}

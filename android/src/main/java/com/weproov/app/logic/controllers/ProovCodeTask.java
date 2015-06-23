@@ -2,14 +2,12 @@ package com.weproov.app.logic.controllers;
 
 import com.weproov.app.logic.providers.BusProvider;
 import com.weproov.app.models.ProovCode;
-import com.weproov.app.models.User;
 import com.weproov.app.models.events.ProovCodeEvent;
 import com.weproov.app.models.events.ProovCodeFailureEvent;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.models.wrappers.parse.ParseProovCodeQuery;
 import com.weproov.app.models.wrappers.parse.ParseQueryWrapper;
-
-import java.util.List;
+import retrofit.RetrofitError;
 
 public class ProovCodeTask {
 
@@ -22,14 +20,14 @@ public class ProovCodeTask {
             public void run() {
                 try {
                     BUS.post(new ProovCodeEvent(get(identifier)));
-                } catch (NetworkException e) {
+                } catch (NetworkException | RetrofitError e) {
                     BUS.post(new ProovCodeFailureEvent());
                 }
             }
         }).start();
     }
 
-    public static ProovCode get(String identifier) throws NetworkException {
+    public static ProovCode get(String identifier) throws NetworkException, RetrofitError {
         ParseQueryWrapper<ProovCode> codes = SERVICE.get(new ParseProovCodeQuery(identifier));
         if (codes.results != null && codes.results.size() > 0) {
             return codes.results.get(0);

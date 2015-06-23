@@ -8,4 +8,8 @@ public class ParseRegisterResponse {
 	@Expose
 	@SerializedName("sessionToken")
 	public String token;
+
+	@Expose
+	@SerializedName("objectId")
+	public String id;
 }

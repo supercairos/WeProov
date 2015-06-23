@@ -5,6 +5,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/content_fragment_root_view">
 
@@ -14,8 +16,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="12dp"
             android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:id="@+id/linearLayout2">
+            android:paddingStart="10dp">
 
         <TextView
                 android:layout_width="match_parent"
@@ -38,55 +39,43 @@
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-            <LinearLayout
+
+            <android.support.design.widget.TextInputLayout
+                    android:id="@+id/edit_first_name_layout"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-                <android.support.design.widget.TextInputLayout
-                        android:id="@+id/edit_first_name_layout"
+                <AutoCompleteTextView
+                        android:id="@+id/edit_first_name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:hint="@string/renter_first_name"
+                        android:dropDownAnchor="@+id/renter_name_group"
+                        android:singleLine="true"
+                        android:inputType="textPersonName"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/edit_last_name"/>
+            </android.support.design.widget.TextInputLayout>
 
-                    <AutoCompleteTextView
-                            android:id="@+id/edit_first_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/renter_first_name"
-                            android:dropDownAnchor="@+id/renter_name_group"
-                            android:singleLine="true"
-                            android:inputType="textPersonName"
-                            android:imeOptions="actionNext"
-                            android:nextFocusDown="@+id/edit_last_name"/>
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <android.support.design.widget.TextInputLayout
+                    android:id="@+id/edit_last_name_layout"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-                <android.support.design.widget.TextInputLayout
-                        android:id="@+id/edit_last_name_layout"
+                <AutoCompleteTextView
+                        android:id="@+id/edit_last_name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:dropDownAnchor="@+id/renter_name_group"
+                        android:hint="@string/renter_last_name"
+                        android:singleLine="true"
+                        android:inputType="textPersonName"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/edit_email"/>
 
-                    <AutoCompleteTextView
-                            android:id="@+id/edit_last_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:dropDownAnchor="@+id/renter_name_group"
-                            android:hint="@string/renter_last_name"
-                            android:singleLine="true"
-                            android:inputType="textPersonName"
-                            android:imeOptions="actionNext"
-                            android:nextFocusDown="@+id/edit_email"/>
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -106,21 +95,49 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-                android:id="@+id/edit_company_layout"
+        <LinearLayout
+                android:baselineAligned="false"
+                android:id="@+id/client_additional_info_group"
                 android:layout_width="match_parent"
+                android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-            <EditText
-                    android:id="@+id/edit_company"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/renter_company"
-                    android:singleLine="true"
-                    android:inputType="textNoSuggestions"
-                    android:imeOptions="actionDone"/>
+            <android.support.design.widget.TextInputLayout
+                    android:id="@+id/edit_company_layout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                        android:id="@+id/edit_company"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/renter_company"
+                        android:singleLine="true"
+                        android:inputType="textNoSuggestions"
+                        android:nextFocusDown="@+id/edit_phone"
+                        android:imeOptions="actionNext"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                    android:id="@+id/edit_phone_layout"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                <EditText
+                        android:id="@+id/edit_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/renter_phone"
+                        android:singleLine="true"
+                        android:inputType="phone"
+                        android:imeOptions="actionDone"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
 
         <TextView
                 android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,11 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 	@InjectView(R.id.edit_company_layout)
 	TextInputLayout mCompanyLayout;
 
+	@InjectView(R.id.edit_phone)
+	EditText mPhone;
+	@InjectView(R.id.edit_phone_layout)
+	TextInputLayout mPhoneLayout;
+
 	@InjectView(R.id.identity_card_picture)
 	ImageView mIdCardPicture;
 	@InjectView(R.id.identity_card_text)
@@ -85,6 +91,7 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 	TextView mDrivingLicenceText;
 
 	private EmailValidator mEmailValidator = EmailValidator.getInstance();
+
 
 	@SuppressWarnings("unused")
 	public static ClientFragment newInstance(ClientInfo info) {
@@ -98,7 +105,6 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 
 	public ClientFragment() {
 	}
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -139,6 +145,8 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 				setRenterInfo(((RenterAutocompleteAdapter) parent.getAdapter()).getItem(position));
 			}
 		});
+
+		mPhone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 	}
 
 	private void setRenterInfo(ClientInfo info) {
@@ -146,6 +154,7 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 		mLastName.setText(info.lastname);
 		mEmail.setText(info.email);
 		mCompany.setText(info.company);
+		mPhone.setText(info.phone);
 
 		mIdCardUri = info.id_card;
 		mDrivingLicenceUri = info.driving_licence;
@@ -169,6 +178,10 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 
 		if (mCompany != null) {
 			info.company = mCompany.getEditableText().toString();
+		}
+
+		if (mPhone != null) {
+			info.phone = mPhone.getEditableText().toString();
 		}
 
 		info.id_card = mIdCardUri;
@@ -228,6 +241,14 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 			valid = false;
 		} else {
 			mCompanyLayout.setError(null);
+			valid &= true;
+		}
+
+		if (TextUtils.isEmpty(info.phone)) {
+			mPhoneLayout.setError(getString(R.string.error_phone));
+			valid = false;
+		} else {
+			mPhoneLayout.setError(null);
 			valid &= true;
 		}
 
@@ -340,4 +361,88 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 			Dog.d("Found picture : %s", selectedImageUri);
 		}
 	}
+//
+//	private class AsYouTypeTextWatcher implements TextWatcher {
+//
+//		private PhoneNumberUtil mPhoneNumberUtil;
+//		private AsYouTypeFormatter mAsYouTypeFormatter;
+//
+//		private String currentPartialPhone = "";
+//
+//		private boolean isInAfterTextChanged = false;
+//
+//		public String getTelephonyCountry(Context context) {
+//			String countryCode = null;
+//			TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+//			if (tm != null) {
+//				countryCode = tm.getNetworkCountryIso();
+//				if (TextUtils.isEmpty(countryCode)) {
+//					countryCode = tm.getSimCountryIso();
+//				}
+//			}
+//
+//			if (TextUtils.isEmpty(countryCode)) {
+//				countryCode = Locale.getDefault().getCountry();
+//			}
+//
+//			return countryCode.toUpperCase(Locale.ENGLISH);
+//		}
+//
+//		public AsYouTypeTextWatcher() {
+//			mPhoneNumberUtil = PhoneNumberUtil.getInstance();
+//			mAsYouTypeFormatter = mPhoneNumberUtil.getAsYouTypeFormatter(getTelephonyCountry(getActivity()));
+//		}
+//
+//		@Override
+//		public void onTextChanged(CharSequence s, int start, int before, int count) {
+//			if (mAsYouTypeFormatter == null) {
+//				return;
+//			}
+//			if (s != null) {
+//				if (s.length() > 0) {
+//					if (count > before) {
+//						// Add x characters
+//						for (int i = start; i < s.length(); i++) {
+//							final char c = s.charAt(i);
+//							if ((c >= '0' && c <= '9') || c == '+') {
+//								currentPartialPhone = mAsYouTypeFormatter.inputDigit(c);
+//							}
+//						}
+//					} else {
+//						// Removed x character
+//						mAsYouTypeFormatter.clear();
+//						for (int i = 0; i < count; i++) {
+//							final char c = s.charAt(i);
+//							if ((c >= '0' && c <= '9') || c == '+') {
+//								currentPartialPhone = mAsYouTypeFormatter.inputDigit(c);
+//							}
+//						}
+//					}
+//				} else {
+//					mAsYouTypeFormatter.clear();
+//				}
+//			}
+//		}
+//
+//		@Override
+//		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//		}
+//
+//		@Override
+//		public void afterTextChanged(Editable s) {
+//			if (!isInAfterTextChanged) {
+//				isInAfterTextChanged = true;
+//
+//				if (s != null) {
+//					if (s.toString().matches("[\\d +-]+")) {
+//						s.clear();
+//						s.append(currentPartialPhone.trim());
+//					}
+//				}
+//
+//				isInAfterTextChanged = false;
+//			}
+//		}
+//	}
 }

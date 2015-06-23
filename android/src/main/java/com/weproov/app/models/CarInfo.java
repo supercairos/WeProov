@@ -9,15 +9,10 @@ import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.weproov.app.models.exceptions.NetworkException;
-import com.weproov.app.models.wrappers.parse.ParseFileResponse;
 import com.weproov.app.models.wrappers.parse.ParseObjectResponse;
-import com.weproov.app.models.wrappers.parse.ParsePointer;
 import com.weproov.app.utils.connections.ParseConnection;
-import com.weproov.app.utils.connections.TypedUri;
-
 import retrofit.http.Body;
 import retrofit.http.POST;
-import retrofit.http.Path;
 
 @Table(name = "cars", id = BaseColumns._ID)
 public class CarInfo extends BaseModel implements Parcelable {
@@ -44,27 +39,33 @@ public class CarInfo extends BaseModel implements Parcelable {
 	@Expose
 	@Column(name = "car_type")
 	@SerializedName("gas_type")
-	public String car_type;
+	public String carType;
 
-	@Expose
 	@Column(name = "millage")
-	@SerializedName("kilometers")
 	public float millage;
 
 	@Expose
+	@SerializedName("kilometers")
+	public String parseMillage;
+
+	@Expose
 	@Column(name = "millage_type")
-	public String millage_type;
+	public String millageType;
 
 	@Expose
 	@Column(name = "color")
 	public String color;
 
-	@Expose
 	@Column(name = "gas_level")
-	public int gas_level;
+	public int gasLevel;
+
+	@Expose
+	@SerializedName("gas_level")
+	// FIXME Remove this hack when the database is better!
+	public String parseGasLevel;
 
 	@Column(name = "vehicle_documentation")
-	public Uri vehicle_documentation;
+	public Uri vehicleDocumentation;
 
 	public static ICarService getService() {
 		return SERVICE;
@@ -80,12 +81,12 @@ public class CarInfo extends BaseModel implements Parcelable {
 				"plate='" + plate + '\'' +
 				", brand='" + brand + '\'' +
 				", model='" + model + '\'' +
-				", car_type='" + car_type + '\'' +
+				", car_type='" + carType + '\'' +
 				", millage=" + millage +
-				", millage_type='" + millage_type + '\'' +
+				", millage_type='" + millageType + '\'' +
 				", color='" + color + '\'' +
-				", gas_level=" + gas_level +
-				", vehicle_documentation=" + vehicle_documentation +
+				", gasLevel=" + gasLevel +
+				", vehicle_documentation=" + vehicleDocumentation +
 				'}';
 	}
 
@@ -93,6 +94,11 @@ public class CarInfo extends BaseModel implements Parcelable {
 
 		@POST(POST_CAR)
 		ParseObjectResponse upload(@Body CarInfo uri) throws NetworkException;
+	}
+
+	public void prepare() {
+		parseGasLevel = String.valueOf(gasLevel);
+		parseMillage = String.valueOf(millage);
 	}
 
 	@Override
@@ -106,12 +112,12 @@ public class CarInfo extends BaseModel implements Parcelable {
 		dest.writeString(this.plate);
 		dest.writeString(this.brand);
 		dest.writeString(this.model);
-		dest.writeString(this.car_type);
+		dest.writeString(this.carType);
 		dest.writeFloat(this.millage);
-		dest.writeString(this.millage_type);
+		dest.writeString(this.millageType);
 		dest.writeString(this.color);
-		dest.writeInt(this.gas_level);
-		dest.writeParcelable(this.vehicle_documentation, 0);
+		dest.writeInt(this.gasLevel);
+		dest.writeParcelable(this.vehicleDocumentation, 0);
 	}
 
 	protected CarInfo(Parcel in) {
@@ -119,12 +125,12 @@ public class CarInfo extends BaseModel implements Parcelable {
 		this.plate = in.readString();
 		this.brand = in.readString();
 		this.model = in.readString();
-		this.car_type = in.readString();
+		this.carType = in.readString();
 		this.millage = in.readFloat();
-		this.millage_type = in.readString();
+		this.millageType = in.readString();
 		this.color = in.readString();
-		this.gas_level = in.readInt();
-		this.vehicle_documentation = in.readParcelable(Uri.class.getClassLoader());
+		this.gasLevel = in.readInt();
+		this.vehicleDocumentation = in.readParcelable(Uri.class.getClassLoader());
 	}
 
 	public static final Creator<CarInfo> CREATOR = new Creator<CarInfo>() {

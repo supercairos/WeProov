@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">WeProov</string>
 
     <string name="action_settings">Settings</string>
@@ -39,6 +39,8 @@
     <string name="renter_last_name">Last name</string>
     <string name="renter_email">Email</string>
     <string name="renter_company">Company</string>
+    <string name="renter_phone">Phone</string>
+
     <string name="client_document_info">Client documents</string>
 
     <string name="car_type_hybrid">Hybrid</string>
@@ -55,9 +57,10 @@
     <string name="error_car_millage">This is not a proper millage</string>
     <string name="car_millage">Car millage</string>
     <string name="error_model">This is not a valid car model</string>
-    <string name="renter_model">Car model</string>
+    <string name="car_model">Car model</string>
     <string name="error_brand">This is not a proper brand</string>
-    <string name="renter_brand">Car brand</string>
+    <string name="car_brand">Car brand</string>
+
     <string name="comment_hint">Comments</string>
     <string name="title_about_us">About us</string>
     <string name="title_signature_dialog">Sign below</string>
@@ -135,14 +138,16 @@
     <string name="register_title">Welcome!</string>
     <string name="register_description">Fill this short profile to get started.</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_start">Start</string>
     <string name="proov_code_help">Please provide us your proov code.</string>
     <string name="proov_code">Proov code</string>
-    <string name="proov_code_error">This Proov code seams wrong...</string>
-    <string name="proov_code_error_snack">Oops, an error occured while validating the Proov Code</string>
+    <string name="proov_code_error">This Proov code seams wrong&#8230;</string>
+    <string name="proov_code_error_snack">Oops, an error occurred while validating the Proov Code</string>
     <string name="proov_code_dialog_message">Please wait a bit.</string>
     <string name="proov_code_dialog_title">Checking Proov code</string>
+    <string name="notification_uploading_item_number">Uploading weproov for car <xliff:g example="AA-AAA-AA" id="plate">%1$s</xliff:g></string>
+    <string name="notification_uploading_photo_number">Uploading photo <xliff:g example="7" id="number">%1$d</xliff:g> (<xliff:g example="AA-AAA-AA" id="string">%2$s</xliff:g>)</string>
+    <string name="notification_finishing_upload">Finished uploading for car <xliff:g example="AA-AAA-AA" id="plate">%1$s</xliff:g></string>
+    <string name="document_is_not_availlable_yet">Document is not available yet!</string>
 
 </resources>

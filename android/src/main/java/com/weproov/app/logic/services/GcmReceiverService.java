@@ -16,7 +16,6 @@ import com.weproov.app.utils.Dog;
 public class GcmReceiverService extends IntentService {
 
 	private static final int NOTIFICATION_ID = 1;
-	private static final String TAG = GcmReceiverService.class.getSimpleName();
 
 	private final NotificationManager mNotifyManager;
 
@@ -57,6 +56,9 @@ public class GcmReceiverService extends IntentService {
 					sendNotification("Received: " + extras.toString());
 					Dog.i("Received: %s", extras.toString());
 					break;
+				default:
+					Dog.i("Received: %s", extras.toString());
+					break;
 			}
 		}
 
@@ -70,7 +72,6 @@ public class GcmReceiverService extends IntentService {
 	private void sendNotification(String msg) {
 
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, LandingActivity.class), 0);
-
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
 				.setSmallIcon(R.drawable.ic_notification)
 				.setContentTitle("GCM Notification")

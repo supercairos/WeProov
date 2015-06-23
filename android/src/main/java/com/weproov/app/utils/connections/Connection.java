@@ -6,7 +6,7 @@ import com.squareup.okhttp.ConnectionSpec;
 import com.squareup.okhttp.OkHttpClient;
 import com.weproov.app.MyApplication;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class Connection {
@@ -18,7 +18,8 @@ public class Connection {
 		OkHttpClient okHttpClient = new OkHttpClient();
 		okHttpClient.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
 
-		okHttpClient.setConnectionSpecs(Collections.singletonList(ConnectionSpec.MODERN_TLS));
+		// Remove cleartext in the future
+		okHttpClient.setConnectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT));
 		Context ctx = MyApplication.getAppContext();
 		if (ctx != null) {
 			Cache cache = new Cache(ctx.getCacheDir(), 10 * 1024 * 1024); // 10 MiB

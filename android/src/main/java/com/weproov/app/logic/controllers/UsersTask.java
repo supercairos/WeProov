@@ -81,6 +81,7 @@ public final class UsersTask {
 
 				ParseRegisterResponse server = SERVICE.register(mUser);
 				mUser.token = server.token;
+				mUser.id = server.id;
 				Dog.d("User found : %s", server.toString());
 				save(mUser);
 				BUS.post(new RegisterSuccessEvent());

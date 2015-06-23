@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -246,13 +247,17 @@ public class DocumentListFragment extends BaseFragment implements LoaderManager.
 //		Intent i = new Intent(getActivity(), DocumentDisplayActivity.class);
 //		i.putExtra(DocumentDisplayActivity.EXTRA_WEPROOV_ID, .getId());
 //		startActivity(i);
-		String objectId = "4cFmwNEUZt";
-		String file = getUrl(objectId);
-		Dog.d("Url is >> " + file);
-		if (PdfTool.isSupported(getActivity())) {
-			download(objectId, file);
+		String objectId = mAdapter.getItem(position).proovCode;
+		if(!TextUtils.isEmpty(objectId)) {
+			String file = getUrl(objectId);
+			Dog.d("Url is >> " + file);
+			if (PdfTool.isSupported(getActivity())) {
+				download(objectId, file);
+			} else {
+				PdfTool.askToOpenPDFThroughGoogleDrive(getActivity(), file);
+			}
 		} else {
-			PdfTool.askToOpenPDFThroughGoogleDrive(getActivity(), file);
+			Snackbar.make(mListView, R.string.document_is_not_availlable_yet, Snackbar.LENGTH_LONG).show();
 		}
 	}
 

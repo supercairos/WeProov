@@ -129,10 +129,10 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 		CarInfo car = proov.car;
 		mCarPlate.setText(car.plate);
 		mCarBrandModel.setText(car.brand + " " + car.model);
-		mCarColor.setText(car.car_type + ", " + car.color);
-		mCarMileage.setText(String.valueOf(car.millage) + car.millage_type);
-		mCarGasTank.setText(String.valueOf(car.gas_level) + "%");
-		PicassoUtils.PICASSO.load(car.vehicle_documentation).fit().centerCrop().into(mCarDocument);
+		mCarColor.setText(car.carType + ", " + car.color);
+		mCarMileage.setText(String.valueOf(car.millage) + car.millageType);
+		mCarGasTank.setText(String.valueOf(car.gasLevel) + "%");
+		PicassoUtils.PICASSO.load(car.vehicleDocumentation).fit().centerCrop().into(mCarDocument);
 
 		List<PictureItem> items = proov.getPictures();
 		for (final PictureItem item : items) {

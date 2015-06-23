@@ -11,7 +11,7 @@ public final class CarTask {
     private static final CarInfo.ICarService SERVICE = CarInfo.getService();
 
     public static void upload(CarInfo item) throws NetworkException, RetrofitError {
-        // item.prepare();
+        item.prepare();
         ParseObjectResponse response = SERVICE.upload(item);
         item.setServerId(response.id);
         item.save();

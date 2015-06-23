@@ -1,6 +1,7 @@
 package com.weproov.app.ui;
 
 import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SyncStatusObserver;
@@ -16,11 +17,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import butterknife.InjectView;
+import com.weproov.app.MyApplication;
 import com.weproov.app.R;
 import com.weproov.app.logic.services.GcmRegisterService;
 import com.weproov.app.ui.fragments.dialogs.BugReportDialogFragment;
 import com.weproov.app.ui.fragments.dialogs.LogoutDialogFragment;
 import com.weproov.app.utils.*;
+import com.weproov.app.utils.constants.AccountConstants;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -57,6 +60,9 @@ public class MainActivity extends DrawerActivity {
 				startActivity(new Intent(MainActivity.this, WeproovActivity.class));
 			}
 		});
+
+		String userId = AccountManager.get(MyApplication.getAppContext()).getUserData(AccountUtils.getAccount(), AccountConstants.KEY_SERVER_ID);
+		Dog.d("User id is >> %s", userId);
 	}
 
 	@Override

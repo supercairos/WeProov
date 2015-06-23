@@ -5,6 +5,7 @@ import com.weproov.app.utils.constants.GcmConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 public class ParseGcmResponse {
 
@@ -21,9 +22,13 @@ public class ParseGcmResponse {
 	String GCMSenderId = GcmConstants.SENDER_ID;
 
 	@Expose
-	List<String> channels =new ArrayList<>();
+	String timeZone = TimeZone.getDefault().getID();
+
+	@Expose
+	List<String> channels = new ArrayList<>();
 
 	public ParseGcmResponse(String deviceToken) {
 		this.deviceToken = deviceToken;
+		this.channels.add("");
 	}
 }

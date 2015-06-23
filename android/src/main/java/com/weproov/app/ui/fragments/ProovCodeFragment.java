@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import butterknife.InjectView;
 import com.squareup.otto.Subscribe;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.ProovCodeTask;
@@ -22,8 +21,6 @@ import com.weproov.app.models.ProovCode;
 import com.weproov.app.models.events.ProovCodeEvent;
 import com.weproov.app.models.events.ProovCodeFailureEvent;
 import com.weproov.app.ui.ifaces.CommandIface;
-
-import butterknife.InjectView;
 
 public class ProovCodeFragment extends TunnelFragment implements CommandIface.OnClickListener {
 
@@ -101,7 +98,7 @@ public class ProovCodeFragment extends TunnelFragment implements CommandIface.On
     public void onProovCodeFailed(ProovCodeFailureEvent event) {
         mDialog.dismiss();
         mProovCodeLayout.setError(getString(R.string.proov_code_error));
-        Snackbar.make(mRootLayout, R.string.proov_code_error_snack, Snackbar.LENGTH_LONG);
+        Snackbar.make(mRootLayout, R.string.proov_code_error_snack, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
