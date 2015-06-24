@@ -83,21 +83,32 @@ public class ProovCodeFragment extends TunnelFragment implements CommandIface.On
     }
 
     @Subscribe
-    public void onProovCodeSucceded(ProovCodeEvent event) {
+    public void onProovCodeSucceeded(ProovCodeEvent event) {
         ProovCode code = event.getProovCode();
         if(code != null) {
             Bundle b = new Bundle();
             b.putParcelable(KEY_PROOV_CODE, code);
             getTunnel().next(b);
         } else {
-            onProovCodeFailed(new ProovCodeFailureEvent());
+            onProovCodeFailed(new ProovCodeFailureEvent(ProovCodeFailureEvent.WHY_NOT_FOUND));
         }
     }
 
     @Subscribe
     public void onProovCodeFailed(ProovCodeFailureEvent event) {
         mDialog.dismiss();
-        mProovCodeLayout.setError(getString(R.string.proov_code_error));
+        switch (event.why) {
+            case ProovCodeFailureEvent.WHY_NOT_FOUND:
+                mProovCodeLayout.setError(getString(R.string.proov_code_error_not_found));
+                break;
+            case ProovCodeFailureEvent.WHY_ALREADY_USED:
+                mProovCodeLayout.setError(getString(R.string.proov_code_error_already_used));
+                break;
+            case ProovCodeFailureEvent.WHY_NETWORK_ERROR:
+                mProovCodeLayout.setError(getString(R.string.proov_code_error_network_error));
+                break;
+        }
+
         Snackbar.make(mRootLayout, R.string.proov_code_error_snack, Snackbar.LENGTH_LONG).show();
     }
 

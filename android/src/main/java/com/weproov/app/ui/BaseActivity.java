@@ -114,7 +114,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CommandI
 	@Override
 	protected void onStart() {
 		super.onStart();
-		Dog.d("Registering : " + this);
+		Dog.d("Register bus : " + this);
 		BusProvider.getInstance().register(this);
 	}
 
@@ -131,7 +131,7 @@ public abstract class BaseActivity extends AppCompatActivity implements CommandI
 
 	@Override
 	protected void onStop() {
-		Dog.d("Registering : " + this);
+		Dog.d("Unregister bus : " + this);
 		BusProvider.getInstance().unregister(this);
 		super.onStop();
 	}

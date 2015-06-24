@@ -12,8 +12,6 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.StandardExceptionParser;
 import com.google.android.gms.analytics.Tracker;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 import com.weproov.app.utils.Dog;
 
 public class MyApplication extends Application {
@@ -23,7 +21,7 @@ public class MyApplication extends Application {
 
 	public static String PACKAGE_NAME;
 
-	private static RefWatcher sRefWatcher;
+//	private static RefWatcher sRefWatcher;
 	private static Context sContext;
 
 	@Override
@@ -40,7 +38,7 @@ public class MyApplication extends Application {
 		if (BuildConfig.DEBUG) {
 			//enabledStrictMode();
 		}
-		sRefWatcher = LeakCanary.install(this);
+//		sRefWatcher = LeakCanary.install(this);
 
 //		sAnalytics = GoogleAnalytics.getInstance(this);
 //		sAnalytics.setLocalDispatchPeriod(1800);
@@ -77,9 +75,9 @@ public class MyApplication extends Application {
 		return sContext;
 	}
 
-	public static RefWatcher getRefWatcher() {
-		return sRefWatcher;
-	}
+//	public static RefWatcher getRefWatcher() {
+//		return sRefWatcher;
+//	}
 
 	/**
 	 * A tree which logs important information for crash reporting.

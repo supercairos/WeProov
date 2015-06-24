@@ -17,9 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import butterknife.InjectView;
+import com.weproov.app.BuildConfig;
 import com.weproov.app.MyApplication;
 import com.weproov.app.R;
-import com.weproov.app.logic.services.GcmRegisterService;
+import com.weproov.app.logic.services.gcm.RegistrationIntentService;
 import com.weproov.app.ui.fragments.dialogs.BugReportDialogFragment;
 import com.weproov.app.ui.fragments.dialogs.LogoutDialogFragment;
 import com.weproov.app.utils.*;
@@ -31,6 +32,8 @@ import java.lang.ref.WeakReference;
 
 
 public class MainActivity extends DrawerActivity {
+
+	private static final boolean DEBUG_GCM = BuildConfig.DEBUG;
 
 	@InjectView(R.id.action_bar)
 	Toolbar mActionBar;
@@ -103,9 +106,12 @@ public class MainActivity extends DrawerActivity {
 			finish();
 		}
 
+		if(DEBUG_GCM) {
+			PlayServicesUtils.forgetRegistrationId(this);
+		}
 		if (PlayServicesUtils.checkPlayServices(this)) {
 			if (TextUtils.isEmpty(PlayServicesUtils.getRegistrationId(this))) {
-				startService(new Intent(this, GcmRegisterService.class));
+				startService(new Intent(this, RegistrationIntentService.class));
 			}
 		} else {
 			Dog.i("No valid Google Play Services APK found.");

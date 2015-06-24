@@ -2,23 +2,21 @@ package com.weproov.app.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.weproov.app.models.exceptions.NetworkException;
-import com.weproov.app.models.wrappers.parse.ParseObjectResponse;
+import com.weproov.app.models.wrappers.parse.ParsePointer;
 import com.weproov.app.models.wrappers.parse.ParseProovCodeQuery;
 import com.weproov.app.models.wrappers.parse.ParseQueryWrapper;
 import com.weproov.app.utils.GsonUtils;
 import com.weproov.app.utils.connections.ParseConnection;
-
 import retrofit.http.GET;
-import retrofit.http.POST;
 import retrofit.http.Query;
 
 public class ProovCode implements Parcelable {
 
     private static final String GET_PROOV_CODE = "/classes/weproov";
+    private static final String CHECK_PROOV_CODE = "/classes/b2c";
     private static final String QUERY_STRING = "?where={\"weProovID\":\"MaSocietePro_061815_223114\"}";
 
     private static final IProovCodeService SERVICE = ParseConnection.ADAPTER.create(IProovCodeService.class);
@@ -49,7 +47,10 @@ public class ProovCode implements Parcelable {
     public interface IProovCodeService {
 
         @GET(GET_PROOV_CODE)
-        ParseQueryWrapper<ProovCode> get(@Query("where") ParseProovCodeQuery code) throws NetworkException;
+        ParseQueryWrapper<ProovCode> get(@Query("where") ParseProovCodeQuery<String> humanIdentifier) throws NetworkException;
+
+        @GET(CHECK_PROOV_CODE)
+        ParseQueryWrapper<WeProov> check(@Query("where") ParseProovCodeQuery<ParsePointer> proovCode) throws NetworkException;
     }
 
     @Override

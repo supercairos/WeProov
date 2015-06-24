@@ -64,6 +64,10 @@ public class WeProov extends BaseModel implements Parcelable {
 	@SerializedName("person_1")
 	private ParsePointer parseFirstPersonPointer;
 
+	@Expose
+	@SerializedName("checkout_done")
+	private String parseCheckoutDone = "NO";
+
 	private List<PictureItem> pictures;
 
 	public Uri renterSignature;
@@ -112,6 +116,7 @@ public class WeProov extends BaseModel implements Parcelable {
 			client_email = client.email;
 		}
 
+		if(isCheckout) parseCheckoutDone = "YES";
 		String userId = AccountManager.get(MyApplication.getAppContext()).getUserData(AccountUtils.getAccount(), AccountConstants.KEY_SERVER_ID);
 		if (!TextUtils.isEmpty(userId)) {
 			parseCreateByPointer = new ParsePointer(userId, "_User");

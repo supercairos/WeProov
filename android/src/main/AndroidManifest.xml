@@ -26,7 +26,6 @@
     <permission
             android:name="com.weproov.app.permission.C2D_MESSAGE"
             android:protectionLevel="signature"/>
-
     <uses-permission android:name="com.weproov.app.permission.C2D_MESSAGE"/>
 
     <application
@@ -209,29 +208,39 @@
                     android:resource="@xml/authenticator"/>
         </service>
 
-        <!--
-        WakefulBroadcastReceiver that will receive intents from GCM
-        services and hand them to the custom IntentService.
-        The com.google.android.c2dm.permission.SEND permission is necessary
-        so only GCM services can send data messages for the app.
-        -->
         <receiver
-                android:name=".logic.receivers.GcmBroadcastReceiver"
+                android:name="com.google.android.gms.gcm.GcmReceiver"
+                android:exported="true"
                 android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-
-                <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
 
-                <category android:name="com.google.android.gcm.demo.app"/>
+                <category android:name="com.weproov.app"/>
             </intent-filter>
         </receiver>
 
+        <!-- [START gcm_listener] -->
         <service
-                android:name=".logic.services.GcmReceiverService"
-                android:exported="false"/>
+                android:name=".logic.services.gcm.MyGcmListenerService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener] -->
+        <!-- [START instanceId_listener] -->
         <service
-                android:name=".logic.services.GcmRegisterService"
+                android:name=".logic.services.gcm.MyInstanceIDListenerService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+        <!-- [END instanceId_listener] -->
+        <service
+                android:name=".logic.services.gcm.RegistrationIntentService"
                 android:exported="false"/>
 
         <activity

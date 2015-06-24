@@ -3,7 +3,6 @@ package com.weproov.app.utils.connections;
 import android.os.Build;
 import android.text.TextUtils;
 import com.google.gson.JsonSyntaxException;
-import com.weproov.app.BuildConfig;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.Dog;
@@ -22,7 +21,7 @@ import java.io.InputStreamReader;
 
 import static com.weproov.app.utils.GsonUtils.GSON;
 
-public class ParseConnection extends Connection{
+public class ParseConnection extends Connection {
 
 	public static final String PROTOCOL = "https"; // http
 	public static final String HOST = "api.parse.com"; // weproov.com
@@ -35,7 +34,8 @@ public class ParseConnection extends Connection{
 
 	public static final RestAdapter ADAPTER = new RestAdapter.Builder()
 			.setEndpoint(URL)
-			.setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.BASIC)
+					// .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.BASIC)
+			.setLogLevel(RestAdapter.LogLevel.FULL)
 			.setConverter(new GsonConverter(GSON))
 			.setClient(new OkClient(HTTP_CLIENT))
 			.setRequestInterceptor(new MyRequestInterceptor())

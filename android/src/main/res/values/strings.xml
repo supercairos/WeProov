@@ -141,7 +141,9 @@
     <string name="button_start">Start</string>
     <string name="proov_code_help">Please provide us your proov code.</string>
     <string name="proov_code">Proov code</string>
-    <string name="proov_code_error">This Proov code seams wrong&#8230;</string>
+    <string name="proov_code_error_not_found">This Proov code seams wrong&#8230;</string>
+    <string name="proov_code_error_already_used">This Proov code is already used&#8230;</string>
+    <string name="proov_code_error_network_error">Oh! Internet is not working :( &#8230;</string>
     <string name="proov_code_error_snack">Oops, an error occurred while validating the Proov Code</string>
     <string name="proov_code_dialog_message">Please wait a bit.</string>
     <string name="proov_code_dialog_title">Checking Proov code</string>

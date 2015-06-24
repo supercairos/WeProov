@@ -12,11 +12,12 @@ import java.util.concurrent.TimeUnit;
 public class Connection {
 
 	public static final OkHttpClient HTTP_CLIENT = setupOkHttp();
-	private static final long TIMEOUT = 60;
+	private static final long TIMEOUT = 120;
 
 	protected static OkHttpClient setupOkHttp() {
 		OkHttpClient okHttpClient = new OkHttpClient();
 		okHttpClient.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
+		// okHttpClient.setRetryOnConnectionFailure(true);
 
 		// Remove cleartext in the future
 		okHttpClient.setConnectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT));

@@ -4,13 +4,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.weproov.app.utils.GsonUtils;
 
-public class ParseProovCodeQuery {
+public class ParseProovCodeQuery<T> {
 
     @Expose
     @SerializedName("weProovID")
-    public String query;
+    public T query;
 
-    public ParseProovCodeQuery(String identifier) {
+    public ParseProovCodeQuery(T identifier) {
         query = identifier;
     }
 

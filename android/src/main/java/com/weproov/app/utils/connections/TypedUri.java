@@ -2,6 +2,9 @@ package com.weproov.app.utils.connections;
 
 import android.content.ContentResolver;
 import android.net.Uri;
+import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
+import com.weproov.app.utils.Dog;
 import retrofit.mime.TypedOutput;
 
 import java.io.*;
@@ -43,7 +46,21 @@ public class TypedUri implements TypedOutput {
 	 */
 	@Override
 	public String mimeType() {
-		return mContentResolver.getType(mUri);
+		String mime = mContentResolver.getType(mUri);
+		if (!TextUtils.isEmpty(mime)) {
+			return mime;
+		}
+
+		String extension = MimeTypeMap.getFileExtensionFromUrl(mUri.toString());
+		if (!TextUtils.isEmpty(extension)) {
+			mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+		} else {
+			mime = "text/plain";
+		}
+
+		Dog.d("Found mimetype : %s", mime);
+
+		return mime;
 	}
 
 	/**

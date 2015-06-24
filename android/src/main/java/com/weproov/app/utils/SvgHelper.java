@@ -26,7 +26,7 @@ import com.caverock.androidsvg.SVGParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SvgHelper {
+public final class SvgHelper {
 	private static final String LOG_TAG = "SVG";
 
 	private final List<SvgPath> mPaths = new ArrayList<SvgPath>();

@@ -11,7 +11,7 @@ import com.weproov.app.R;
 
 import java.io.File;
 
-public class PdfTool {
+public final class PdfTool {
 
 	private static final String GOOGLE_DRIVE_PDF_READER_PREFIX = "http://drive.google.com/viewer?url=";
 	private static final String PDF_MIME_TYPE = "application/pdf";

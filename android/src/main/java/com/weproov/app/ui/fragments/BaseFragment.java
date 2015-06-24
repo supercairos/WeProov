@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import butterknife.ButterKnife;
-import com.squareup.leakcanary.RefWatcher;
-import com.weproov.app.MyApplication;
 import com.weproov.app.logic.providers.BusProvider;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.Dog;
@@ -50,8 +48,8 @@ abstract class BaseFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		RefWatcher refWatcher = MyApplication.getRefWatcher();
-		refWatcher.watch(this);
+//		RefWatcher refWatcher = MyApplication.getRefWatcher();
+//		refWatcher.watch(this);
 	}
 
 	@Override

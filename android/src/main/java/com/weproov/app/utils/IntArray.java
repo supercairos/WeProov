@@ -1,6 +1,6 @@
 package com.weproov.app.utils;
 
-public class IntArray {
+public final class IntArray {
 	private static final int INIT_CAPACITY = 8;
 	private int mData[] = new int[INIT_CAPACITY];
 	private int mSize = 0;

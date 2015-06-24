@@ -7,10 +7,13 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.+'
+        classpath 'com.android.tools.build:gradle:+'
+        classpath 'com.google.gms:google-services:+'
     }
 }
+
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 repositories {
     jcenter()
@@ -29,7 +32,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "King Romain Version"
     }
 
     buildTypes {
@@ -109,8 +112,8 @@ dependencies {
     compile 'com.github.castorflex.smoothprogressbar:library:+'
     compile 'com.caverock:androidsvg:+'
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:+'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:+'
+//    debugCompile 'com.squareup.leakcanary:leakcanary-android:+'
+//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:+'
 
     compile 'com.googlecode.libphonenumber:libphonenumber:+'
     compile 'org.adw.library:discrete-seekbar:+'
