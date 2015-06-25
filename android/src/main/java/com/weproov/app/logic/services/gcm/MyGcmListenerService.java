@@ -9,23 +9,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.gcm.GcmListenerService;
-import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 import com.weproov.app.R;
 import com.weproov.app.ui.LandingActivity;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.GsonUtils;
 
+import java.lang.reflect.Type;
+import java.util.Map;
+
 public class MyGcmListenerService extends GcmListenerService {
 
 	private static final int NOTIFICATION_ID = 1;
-
-	private class ParsePush {
-		@Expose
-		public String alert;
-
-		@Expose
-		public String push_hash;
-	}
 
 	/**
 	 * Called when message is received.
@@ -37,9 +32,13 @@ public class MyGcmListenerService extends GcmListenerService {
 	// [START receive_message]
 	@Override
 	public void onMessageReceived(String from, Bundle data) {
-		ParsePush push = GsonUtils.GSON.fromJson(data.getString("data"), ParsePush.class);
 		Dog.d("From: " + from);
 		Dog.d("Data: " + data);
+
+		Type type = new TypeToken<Map<String, String>>() {
+		}.getType();
+		Map<String, String> map = GsonUtils.GSON.fromJson(data.getString("data"), type);
+
 
 		/**
 		 * Production applications would usually process the message here.
@@ -52,7 +51,20 @@ public class MyGcmListenerService extends GcmListenerService {
 		 * In some cases it may be useful to show a notification indicating to the user
 		 * that a message was received.
 		 */
-		sendNotification(push.alert);
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			switch (entry.getKey()) {
+				case "alert":
+					sendNotification(entry.getValue());
+					break;
+				case "test":
+					sendNotification(entry.getValue());
+					break;
+				default:
+					Dog.d("Found unknown key : %s with value %s", entry.getKey(), entry.getValue());
+					break;
+			}
+
+		}
 	}
 	// [END receive_message]
 

@@ -40,7 +40,7 @@ public class AboutActivity extends BaseActivity {
 		try {
 			PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
 			mAppVersionInfo.setText(
-					"Package name:" + getPackageName() + '\n' +
+					"Package name: " + getPackageName() + '\n' +
 					"Version code: " + info.versionCode + '\n' +
 					"Version name: " + info.versionName + '\n' +
 					"Build type: " + (BuildConfig.DEBUG ? "Debug" : "Release"
