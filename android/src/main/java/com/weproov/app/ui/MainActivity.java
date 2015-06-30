@@ -197,7 +197,7 @@ public class MainActivity extends DrawerActivity {
 					mMainThreadHandler.post(new Runnable() {
 						@Override
 						public void run() {
-							view.setVisibility(View.VISIBLE);
+							view.setVisibility(View.GONE);
 						}
 					});
 				}

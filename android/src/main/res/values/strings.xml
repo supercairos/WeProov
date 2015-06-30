@@ -151,5 +151,7 @@
     <string name="notification_uploading_photo_number">Uploading photo <xliff:g example="7" id="number">%1$d</xliff:g> (<xliff:g example="AA-AAA-AA" id="string">%2$s</xliff:g>)</string>
     <string name="notification_finishing_upload">Finished uploading for car <xliff:g example="AA-AAA-AA" id="plate">%1$s</xliff:g></string>
     <string name="document_is_not_availlable_yet">Document is not available yet!</string>
+    <string name="client_signature">Client signature</string>
+    <string name="renter_signature">Renter signature</string>
 
 </resources>

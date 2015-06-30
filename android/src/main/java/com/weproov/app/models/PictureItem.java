@@ -9,30 +9,24 @@ import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.weproov.app.models.exceptions.NetworkException;
-import com.weproov.app.models.wrappers.parse.ParseFile;
-import com.weproov.app.models.wrappers.parse.ParseFileResponse;
-import com.weproov.app.models.wrappers.parse.ParseObjectResponse;
-import com.weproov.app.models.wrappers.parse.ParsePointer;
+import com.weproov.app.models.wrappers.parse.*;
 import com.weproov.app.utils.connections.ParseConnection;
 import com.weproov.app.utils.connections.TypedUri;
-
-import retrofit.client.Response;
-import retrofit.http.Body;
-import retrofit.http.Multipart;
-import retrofit.http.POST;
-import retrofit.http.Part;
-import retrofit.http.Path;
-import retrofit.mime.TypedFile;
+import retrofit.http.*;
 
 @Table(name = "pictures", id = BaseColumns._ID)
 public class PictureItem extends BaseModel implements Parcelable {
+
+	public static final String TYPE_JUSTIF = "justif";
+	public static final String TYPE_FIXE = "fixe";
+	public static final String TYPE_CUSTOM = "custom";
 
 	// api endpoint
 	private static final String MODULE = "/pictures";
 
 	// endpoints
 	private static final String POST_FILE = "/files/{filename}";
-	private static final String POST_PICTURE = "/classes/photo";
+	private static final String PICTURE = "/classes/photo";
 
 	private static final IPictureService SERVICE = ParseConnection.ADAPTER.create(IPictureService.class);
 
@@ -70,13 +64,23 @@ public class PictureItem extends BaseModel implements Parcelable {
 	@Column(name = "description")
 	public String description = "<TODO>";
 
-    @Expose
-    @SerializedName("numero_photo")
-    public int number = -1;
+	@Expose
+	@SerializedName("numero_photo")
+	@Column(name = "number")
+	public int number = -1;
 
 	@SuppressWarnings("unused")
 	public PictureItem() {
 		super();
+	}
+
+	public PictureItem(WeProov parent, Uri path, String type, String name, String description, int number) {
+		this.parent = parent;
+		this.path = path;
+		this.type = type;
+		this.name = name;
+		this.description = description;
+		this.number = number;
 	}
 
 	public static IPictureService getService() {
@@ -84,7 +88,7 @@ public class PictureItem extends BaseModel implements Parcelable {
 	}
 
 	public void prepare(ParseFile file) {
-        parsePictureFile = file;
+		parsePictureFile = file;
 		parsePointer = new ParsePointer(parent.proovCode, "weproov");
 	}
 
@@ -92,22 +96,28 @@ public class PictureItem extends BaseModel implements Parcelable {
 	public String toString() {
 		return "PictureItem{" +
 				"parent=" + parent +
+				", parsePointer=" + parsePointer +
 				", path=" + path +
+				", parsePictureFile=" + parsePictureFile +
 				", comment='" + comment + '\'' +
 				", type='" + type + '\'' +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				", number=" + number +
 				'}';
 	}
-
-
 
 	public interface IPictureService {
 
 		@POST(POST_FILE)
-		// User register(@Body User user) throws LoginException;
+			// User register(@Body User user) throws LoginException;
 		ParseFileResponse upload(@Path("filename") String filename, @Body TypedUri uri) throws NetworkException;
 
-		@POST(POST_PICTURE)
+		@POST(PICTURE)
 		ParseObjectResponse post(@Body PictureItem item) throws NetworkException;
+
+		@GET(PICTURE)
+		ParseQueryWrapper<PictureItem> downloadAll(@Query("where") ParseWeProovIdPointerQuery idQuery) throws NetworkException;
 	}
 
 	@Override

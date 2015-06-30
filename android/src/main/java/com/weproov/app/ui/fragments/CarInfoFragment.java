@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -28,6 +29,7 @@ import com.weproov.app.models.CarInfo;
 import com.weproov.app.ui.adapter.PlateAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.Dog;
+import com.weproov.app.utils.PathUtils;
 import com.weproov.app.utils.PicassoUtils;
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -224,7 +226,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	private int getServerIndex(String[] serverValues, String serverVal) {
 		for (int i = 0; i < serverValues.length; i++) {
 			String val = serverValues[i];
-			if (serverVal.equals(val)) {
+			if (val.equals(serverVal)) {
 				return i;
 			}
 		}
@@ -357,6 +359,16 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			final Intent galleryIntent = new Intent();
 			galleryIntent.setType("image/*");
 			galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				galleryIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+				galleryIntent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+				galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
+			}else{
+				galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+			}
+
+			galleryIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+			galleryIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
 			// Chooser of filesystem options.
 			final Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.picker_select_source));
@@ -395,7 +407,17 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 					new File(mOutputFileUri.getPath()).delete();
 				}
 
-				mVehicleDocumentationUri = uri;
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+					int takeFlags = data.getFlags();
+					takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+					// Check for the freshest data.
+					getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+				}
+
+				String path = PathUtils.getPath(getActivity(), data.getData());
+				if(path != null) {
+					mVehicleDocumentationUri = Uri.fromFile(new File(path));
+				}
 			}
 
 			PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerCrop().fit().into(mVehicleDocumentationPicture);

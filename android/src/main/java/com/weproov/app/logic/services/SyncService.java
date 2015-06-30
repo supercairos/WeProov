@@ -9,6 +9,7 @@ import android.content.*;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import com.activeandroid.query.Select;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -139,7 +140,9 @@ public class SyncService extends Service {
 						notification.flags |= Notification.FLAG_ONGOING_EVENT;
 
 						mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
-						PicturesTask.upload(pictureItem);
+						if(TextUtils.isEmpty(pictureItem.getServerId())) {
+							PicturesTask.upload(pictureItem);
+						}
 					}
 
 					mBuilder.setProgress(size, i, false);
@@ -149,7 +152,7 @@ public class SyncService extends Service {
 
 					mNotifyManager.notify(DOWNLOAD_NOTIFICATION_ID, notification);
 
-					CarTask.upload(proov.car);
+					CarTask.upload(proov, proov.car);
 					WeProovTask.upload(proov);
 					String url = getWeProovUrl(proov);
 					Dog.d("Generating document using URL %s", url);
@@ -161,6 +164,14 @@ public class SyncService extends Service {
 					Response response = client.newCall(request).execute();
 					if (!response.isSuccessful()) {
 						throw new IOException("Unexpected code " + response);
+					}
+				}
+
+				List<WeProov> proovs = WeProovTask.downloadAll();
+				for(WeProov wp: proovs) {
+					if(!new Select().from(WeProov.class).where("server_id = ?", wp.getServerId()).exists()) {
+						Dog.d("WP : " + wp + " doesn't exist in BDD");
+						wp.doSave();
 					}
 				}
 

@@ -19,6 +19,7 @@ import com.weproov.app.models.WeProov;
 import com.weproov.app.ui.LandingActivity;
 import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.Dog;
+import com.weproov.app.utils.PlayServicesUtils;
 
 import java.io.File;
 
@@ -77,6 +78,7 @@ public class LogoutDialogFragment extends BaseDialogFragment {
 			mContentResolver.delete(ContentProvider.createUri(CarInfo.class, null), null, null);
 			mContentResolver.delete(ContentProvider.createUri(ClientInfo.class, null), null, null);
 
+			PlayServicesUtils.forgetRegistrationId(MyApplication.getAppContext());
 			trimCache(MyApplication.getAppContext());
 		}
 

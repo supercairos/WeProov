@@ -7,10 +7,14 @@ import android.os.Parcelable;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.content.ContentProvider;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.weproov.app.MyApplication;
 
 public abstract class BaseModel extends Model implements Parcelable {
 
+    @Expose
+    @SerializedName("objectId")
     @Column(name = "server_id")
     private String mServerId;
 

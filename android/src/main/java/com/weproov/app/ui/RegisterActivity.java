@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -42,6 +43,7 @@ import com.weproov.app.ui.adapter.CountrySpinnerAdapter;
 import com.weproov.app.ui.adapter.CustomPhoneNumberFormattingTextWatcher;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.Dog;
+import com.weproov.app.utils.PathUtils;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.validators.EmailValidator;
 import com.weproov.app.utils.validators.PasswordValidator;
@@ -343,6 +345,15 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
             final Intent galleryIntent = new Intent();
             galleryIntent.setType("image/*");
             galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                galleryIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                galleryIntent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
+            }else{
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+            }
+            galleryIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            galleryIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             // Chooser of filesystem options.
             final Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.picker_select_source));
@@ -370,6 +381,7 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
         );
     }
 
+	// http://stackoverflow.com/questions/19834842/android-gallery-on-kitkat-returns-different-uri-for-intent-action-get-content
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SELECT_PROFILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
@@ -381,7 +393,17 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
                     new File(mOutputFileUri.getPath()).delete();
                 }
 
-                mProfilePictureUri = data.getData();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    int takeFlags = data.getFlags();
+					takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    // Check for the freshest data.
+                    getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                }
+
+				String path = PathUtils.getPath(this, data.getData());
+				if(path != null) {
+					mProfilePictureUri = Uri.fromFile(new File(path));
+				}
             }
 
             PicassoUtils.PICASSO.load(mProfilePictureUri).centerCrop().fit().into(mProfilePicture);

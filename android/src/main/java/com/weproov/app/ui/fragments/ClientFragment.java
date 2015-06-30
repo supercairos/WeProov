@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -27,6 +28,7 @@ import com.weproov.app.models.ClientInfo;
 import com.weproov.app.ui.adapter.RenterAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.Dog;
+import com.weproov.app.utils.PathUtils;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.validators.EmailValidator;
 
@@ -303,7 +305,16 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 			final Intent galleryIntent = new Intent();
 			galleryIntent.setType("image/*");
 			galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				galleryIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+				galleryIntent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+				galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
+			}else{
+				galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+			}
 
+			galleryIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+			galleryIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 			// Chooser of filesystem options.
 			final Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.picker_select_source));
 
@@ -332,7 +343,7 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if ((requestCode == SELECT_ID_CARD_REQUEST_CODE || requestCode == SELECT_DRIVING_LICENCE_REQUEST_CODE) && resultCode == Activity.RESULT_OK) {
-			Uri selectedImageUri;
+			Uri selectedImageUri = null;
 			if (data == null || (data.getAction() != null && MediaStore.ACTION_IMAGE_CAPTURE.equals(data.getAction()))) {
 				selectedImageUri = mOutputFileUri;
 			} else {
@@ -342,7 +353,17 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 					new File(mOutputFileUri.getPath()).delete();
 				}
 
-				selectedImageUri = uri;
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+					int takeFlags = data.getFlags();
+					takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+					// Check for the freshest data.
+					getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+				}
+
+				String path = PathUtils.getPath(getActivity(), data.getData());
+				if(path != null) {
+					selectedImageUri = Uri.fromFile(new File(path));
+				}
 			}
 
 			RequestCreator requestCreator = PicassoUtils.PICASSO.load(selectedImageUri).centerCrop().fit();
@@ -361,88 +382,4 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 			Dog.d("Found picture : %s", selectedImageUri);
 		}
 	}
-//
-//	private class AsYouTypeTextWatcher implements TextWatcher {
-//
-//		private PhoneNumberUtil mPhoneNumberUtil;
-//		private AsYouTypeFormatter mAsYouTypeFormatter;
-//
-//		private String currentPartialPhone = "";
-//
-//		private boolean isInAfterTextChanged = false;
-//
-//		public String getTelephonyCountry(Context context) {
-//			String countryCode = null;
-//			TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-//			if (tm != null) {
-//				countryCode = tm.getNetworkCountryIso();
-//				if (TextUtils.isEmpty(countryCode)) {
-//					countryCode = tm.getSimCountryIso();
-//				}
-//			}
-//
-//			if (TextUtils.isEmpty(countryCode)) {
-//				countryCode = Locale.getDefault().getCountry();
-//			}
-//
-//			return countryCode.toUpperCase(Locale.ENGLISH);
-//		}
-//
-//		public AsYouTypeTextWatcher() {
-//			mPhoneNumberUtil = PhoneNumberUtil.getInstance();
-//			mAsYouTypeFormatter = mPhoneNumberUtil.getAsYouTypeFormatter(getTelephonyCountry(getActivity()));
-//		}
-//
-//		@Override
-//		public void onTextChanged(CharSequence s, int start, int before, int count) {
-//			if (mAsYouTypeFormatter == null) {
-//				return;
-//			}
-//			if (s != null) {
-//				if (s.length() > 0) {
-//					if (count > before) {
-//						// Add x characters
-//						for (int i = start; i < s.length(); i++) {
-//							final char c = s.charAt(i);
-//							if ((c >= '0' && c <= '9') || c == '+') {
-//								currentPartialPhone = mAsYouTypeFormatter.inputDigit(c);
-//							}
-//						}
-//					} else {
-//						// Removed x character
-//						mAsYouTypeFormatter.clear();
-//						for (int i = 0; i < count; i++) {
-//							final char c = s.charAt(i);
-//							if ((c >= '0' && c <= '9') || c == '+') {
-//								currentPartialPhone = mAsYouTypeFormatter.inputDigit(c);
-//							}
-//						}
-//					}
-//				} else {
-//					mAsYouTypeFormatter.clear();
-//				}
-//			}
-//		}
-//
-//		@Override
-//		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//		}
-//
-//		@Override
-//		public void afterTextChanged(Editable s) {
-//			if (!isInAfterTextChanged) {
-//				isInAfterTextChanged = true;
-//
-//				if (s != null) {
-//					if (s.toString().matches("[\\d +-]+")) {
-//						s.clear();
-//						s.append(currentPartialPhone.trim());
-//					}
-//				}
-//
-//				isInAfterTextChanged = false;
-//			}
-//		}
-//	}
 }

@@ -19,7 +19,6 @@ import com.weproov.app.R;
 import com.weproov.app.models.PictureItem;
 import com.weproov.app.models.ProovCode;
 import com.weproov.app.models.WeProov;
-import com.weproov.app.models.wrappers.parse.ParsePointer;
 import com.weproov.app.ui.fragments.*;
 import com.weproov.app.ui.fragments.dialogs.BugReportDialogFragment;
 import com.weproov.app.ui.ifaces.ActionBarIface;
@@ -182,10 +181,10 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 				ProovCode code = data.getParcelable(TunnelFragment.KEY_PROOV_CODE);
 				mCurrentWeProov.setProovCodeId(code.id);
 
-                Dog.d("Got ProovCode %s", code);
+				Dog.d("Got ProovCode %s", code);
 			}
 
-            mCurrentFragment = new ClientFragment();
+			mCurrentFragment = new ClientFragment();
 		} else if (ClientFragment.class.equals(mCurrentFragment.getClass())) {
 			// Need to go to CarInfoFragment;
 			if (data != null) {
@@ -217,6 +216,12 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 			PictureItem item = null;
 			if (data != null) {
 				item = data.getParcelable(TunnelFragment.KEY_PICTURE_ITEM);
+				if (item != null) {
+					item.number = (mWeProovStep + 1);
+					item.type = PictureItem.TYPE_FIXE;
+					item.name = item.path.getLastPathSegment();
+					item.description = mOverlaySubtitleArray[mWeProovStep];
+				}
 			}
 
 			Dog.d("Got picture = %s", item);
@@ -287,7 +292,7 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 					mMainThreadHandler.post(new Runnable() {
 						@Override
 						public void run() {
-							view.setVisibility(View.VISIBLE);
+							view.setVisibility(View.GONE);
 						}
 					});
 				}

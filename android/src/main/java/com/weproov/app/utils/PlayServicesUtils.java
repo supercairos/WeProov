@@ -15,8 +15,6 @@ public final class PlayServicesUtils {
     private static final String PROPERTY_REG_ID = "gcm_registration_id";
     private static final String PROPERTY_APP_VERSION = "gcm_app_version";
 
-    private static final String TAG = PlayServicesUtils.class.getSimpleName();
-
     /**
      * @return Application's version code from the {@code PackageManager}.
      */

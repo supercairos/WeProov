@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
 
     <!-- Notify the play store that we use the camera and any device requires a camera to run the app. -->
     <uses-feature android:name="android.hardware.camera"/>

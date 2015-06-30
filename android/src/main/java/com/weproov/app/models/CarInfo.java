@@ -9,15 +9,19 @@ import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.weproov.app.models.exceptions.NetworkException;
+import com.weproov.app.models.wrappers.parse.ParseObjectIdQuery;
 import com.weproov.app.models.wrappers.parse.ParseObjectResponse;
+import com.weproov.app.models.wrappers.parse.ParseQueryWrapper;
 import com.weproov.app.utils.connections.ParseConnection;
 import retrofit.http.Body;
+import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Query;
 
 @Table(name = "cars", id = BaseColumns._ID)
 public class CarInfo extends BaseModel implements Parcelable {
 
-	private static final String POST_CAR = "/classes/car";
+	private static final String CAR = "/classes/car";
 
 	private static final ICarService SERVICE = ParseConnection.ADAPTER.create(ICarService.class);
 
@@ -92,8 +96,11 @@ public class CarInfo extends BaseModel implements Parcelable {
 
 	public interface ICarService {
 
-		@POST(POST_CAR)
+		@POST(CAR)
 		ParseObjectResponse upload(@Body CarInfo uri) throws NetworkException;
+
+		@GET(CAR)
+		ParseQueryWrapper<CarInfo> download(@Query("where") ParseObjectIdQuery idQuery);
 	}
 
 	public void prepare() {

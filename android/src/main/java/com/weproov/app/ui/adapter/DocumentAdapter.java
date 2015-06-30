@@ -83,7 +83,9 @@ public class DocumentAdapter extends ArrayAdapter<WeProov> {
 
 		// TODO : Here don't load picture from database in UI Thread
 		List<PictureItem> pictures = proov.getPictures();
-		PicassoUtils.PICASSO.load(pictures.get(0).path).fit().centerCrop().into(holder.image);
+		if (pictures != null && pictures.size() > 0) {
+			PicassoUtils.PICASSO.load(pictures.get(0).path).fit().centerCrop().into(holder.image);
+		}
 
 		return convertView;
 	}

@@ -13,13 +13,18 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.weproov.app.MyApplication;
 import com.weproov.app.models.exceptions.NetworkException;
+import com.weproov.app.models.wrappers.parse.ParseCreatedByPointerQuery;
 import com.weproov.app.models.wrappers.parse.ParseObjectResponse;
 import com.weproov.app.models.wrappers.parse.ParsePointer;
+import com.weproov.app.models.wrappers.parse.ParseQueryWrapper;
 import com.weproov.app.utils.AccountUtils;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.connections.ParseConnection;
 import com.weproov.app.utils.constants.AccountConstants;
 import retrofit.http.Body;
+import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +32,8 @@ import java.util.List;
 @Table(name = "weproov", id = BaseColumns._ID)
 public class WeProov extends BaseModel implements Parcelable {
 
-	private static final String POST_WEPROOV = "/classes/b2c";
+	private static final String WEPROOV = "/classes/b2c";
+
 	private static final IWeProovService SERVICE = ParseConnection.ADAPTER.create(IWeProovService.class);
 
 	@Column(name = "date", index = true)
@@ -88,6 +94,13 @@ public class WeProov extends BaseModel implements Parcelable {
 		pictures.add(pictureItem);
 	}
 
+	public void addPictures(List<PictureItem> pictures) {
+		if (this.pictures == null) {
+			this.pictures = new ArrayList<>();
+		}
+		this.pictures.addAll(pictures);
+	}
+
 	public List<PictureItem> getPictures() {
 		if (pictures == null && getId() > 0) {
 			pictures = getMany(PictureItem.class, "parent");
@@ -116,12 +129,13 @@ public class WeProov extends BaseModel implements Parcelable {
 			client_email = client.email;
 		}
 
-		if(isCheckout) parseCheckoutDone = "YES";
+		if (isCheckout) parseCheckoutDone = "YES";
 		String userId = AccountManager.get(MyApplication.getAppContext()).getUserData(AccountUtils.getAccount(), AccountConstants.KEY_SERVER_ID);
 		if (!TextUtils.isEmpty(userId)) {
 			parseCreateByPointer = new ParsePointer(userId, "_User");
 			parseFirstPersonPointer = new ParsePointer(userId, "_User");
 		}
+
 		parseCarPointer = new ParsePointer(car.getServerId(), "car");
 		parseProovCodePointer = new ParsePointer(proovCode, "weproov");
 	}
@@ -130,8 +144,17 @@ public class WeProov extends BaseModel implements Parcelable {
 		ActiveAndroid.beginTransaction();
 		try {
 			date = System.currentTimeMillis();
-			client.save();
-			car.save();
+			if (client != null) {
+				client.save();
+			} else {
+				Dog.w("Client was null.");
+			}
+
+			if (car != null) {
+				car.save();
+			} else {
+				Dog.w("Car was null.");
+			}
 			save();
 			savePictures();
 			ActiveAndroid.setTransactionSuccessful();
@@ -141,9 +164,13 @@ public class WeProov extends BaseModel implements Parcelable {
 	}
 
 	private void savePictures() {
-		for (PictureItem item : pictures) {
-			item.parent = this;
-			item.save();
+		if (pictures != null) {
+			for (PictureItem item : pictures) {
+				item.parent = this;
+				item.save();
+			}
+		} else {
+			Dog.w("Pictures was null.");
 		}
 	}
 
@@ -189,7 +216,10 @@ public class WeProov extends BaseModel implements Parcelable {
 
 	public interface IWeProovService {
 
-		@POST(POST_WEPROOV)
+		@POST(WEPROOV)
 		ParseObjectResponse upload(@Body WeProov uri) throws NetworkException;
+
+		@GET(WEPROOV)
+		ParseQueryWrapper<WeProov> download(@Query("where") ParseCreatedByPointerQuery query) throws NetworkException;
 	}
 }

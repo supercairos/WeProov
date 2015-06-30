@@ -2,8 +2,6 @@ package com.weproov.app.logic.services.gcm;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -30,8 +28,6 @@ public class RegistrationIntentService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
 		try {
 			// In the (unlikely) event that multiple refresh operations occur simultaneously,
 			// ensure that they are processed sequentially.
