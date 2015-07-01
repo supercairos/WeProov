@@ -7,8 +7,6 @@
     android:padding="40dp"
     tools:context="com.weproov.app.ui.fragments.ProovCodeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"

@@ -64,19 +64,22 @@ public class WeProov extends BaseModel implements Parcelable {
 
 	@Expose
 	@SerializedName("CreatedBy")
-	private ParsePointer parseCreateByPointer;
+	public ParsePointer parseCreateByPointer;
 
 	@Expose
 	@SerializedName("person_1")
-	private ParsePointer parseFirstPersonPointer;
+	public ParsePointer parseFirstPersonPointer;
 
 	@Expose
 	@SerializedName("checkout_done")
-	private String parseCheckoutDone = "NO";
+	public String parseCheckoutDone = "NO";
 
 	private List<PictureItem> pictures;
 
+	@Column(name = "renter_signature")
 	public Uri renterSignature;
+
+	@Column(name = "client_signature")
 	public Uri clientSignature;
 
 	@Column(name = "checkout", index = true)
@@ -143,7 +146,6 @@ public class WeProov extends BaseModel implements Parcelable {
 	public void doSave() {
 		ActiveAndroid.beginTransaction();
 		try {
-			date = System.currentTimeMillis();
 			if (client != null) {
 				client.save();
 			} else {

@@ -5,7 +5,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,7 +18,6 @@ import butterknife.OnClick;
 import com.squareup.picasso.RequestCreator;
 import com.weproov.app.R;
 import com.weproov.app.utils.AccountUtils;
-import com.weproov.app.utils.OrientationUtils;
 import com.weproov.app.utils.PicassoUtils;
 import com.weproov.app.utils.constants.AccountConstants;
 import com.weproov.app.utils.constants.AuthenticatorConstants;
@@ -47,12 +45,6 @@ public class DashboardFragment extends BaseFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mAccountManager = (AccountManager) getActivity().getSystemService(Context.ACCOUNT_SERVICE);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 
 	@Override
@@ -89,7 +81,6 @@ public class DashboardFragment extends BaseFragment {
 	@Override
 	public void onStop() {
 		super.onStop();
-		OrientationUtils.unlockOrientation(getActivity());
 	}
 
 	@OnClick(R.id.debug_start_sync)

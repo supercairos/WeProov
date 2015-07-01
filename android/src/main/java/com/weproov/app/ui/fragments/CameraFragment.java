@@ -30,13 +30,12 @@ import java.util.List;
 
 public class CameraFragment extends TunnelFragment {
 
-	private static final String TAG = "CameraFragment";
-
 	/**
 	 * Arguments keys *
 	 */
 	public static final String KEY_OVERLAY_PICTURE_SUBTITLE = "key_overlay_picture_subtitle";
 	public static final String KEY_OVERLAY_PICTURE = "key_overlay_picture";
+	public static final String KEY_OVERLAY_MINI_PICTURE = "key_overlay_mini_picture";
 
 	@InjectView(R.id.loading_camera)
 	TextView mLoadingCamera;
@@ -56,12 +55,16 @@ public class CameraFragment extends TunnelFragment {
 	@InjectView(R.id.camera_overlay)
 	ImageView mOverlay;
 
+	@InjectView(R.id.camera_overlay_mini)
+	ImageView mOverlayMini;
+
 	@InjectView(R.id.camera_overlay_subtitle)
 	TextView mOverlaySubtitle;
 
 	@InjectView(R.id.camera_preview)
 	CameraPreviewView mPreview;
 
+	private int mOverlayMiniResourceId;
 	private int mOverlayResourceId;
 	private String mOverlaySubtitleString;
 
@@ -80,10 +83,11 @@ public class CameraFragment extends TunnelFragment {
 		}
 	}
 
-	public static CameraFragment newInstance(int overlay, String subtitle) {
+	public static CameraFragment newInstance(int overlay, int overlayMini, String subtitle) {
 
 		Bundle bundle = new Bundle();
 		bundle.putInt(KEY_OVERLAY_PICTURE, overlay);
+		bundle.putInt(KEY_OVERLAY_MINI_PICTURE, overlayMini);
 		bundle.putString(KEY_OVERLAY_PICTURE_SUBTITLE, subtitle);
 
 		CameraFragment frag = new CameraFragment();
@@ -100,8 +104,11 @@ public class CameraFragment extends TunnelFragment {
 
 		if (getArguments() != null) {
 			mOverlayResourceId = getArguments().getInt(KEY_OVERLAY_PICTURE, 0);
+			mOverlayMiniResourceId = getArguments().getInt(KEY_OVERLAY_MINI_PICTURE, 0);
 			mOverlaySubtitleString = getArguments().getString(KEY_OVERLAY_PICTURE_SUBTITLE);
 		}
+
+		Dog.d("Got arguments : %d %d %s", mOverlayResourceId, mOverlayMiniResourceId, mOverlaySubtitleString);
 	}
 
 	@Override
@@ -131,6 +138,7 @@ public class CameraFragment extends TunnelFragment {
 	public void onStart() {
 		super.onStart();
 		(new BootCameraTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		OrientationUtils.unlockOrientation(getActivity());
 		mActionBarListener.hideActionBar();
 	}
 
@@ -314,6 +322,7 @@ public class CameraFragment extends TunnelFragment {
 			mBtnCamera.setEnabled(false);
 			mOverlaySubtitle.setVisibility(View.GONE);
 			mOverlay.setVisibility(View.GONE);
+			mOverlayMini.setVisibility(View.GONE);
 		}
 
 		@Override
@@ -339,16 +348,20 @@ public class CameraFragment extends TunnelFragment {
 				mPreview.setCamera(camera);
 				setFlashMode();
 				mBtnSetFlash.setVisibility(View.VISIBLE);
+
 				if (mOverlayResourceId > 0) {
-					PicassoUtils.PICASSO.load(mOverlayResourceId).fit().centerInside().into(mOverlay);
 					mOverlay.setVisibility(View.VISIBLE);
+					PicassoUtils.PICASSO.load(mOverlayResourceId).fit().centerInside().into(mOverlay);
+				}
+
+				if (mOverlayMiniResourceId > 0) {
+					mOverlayMini.setVisibility(View.VISIBLE);
+					PicassoUtils.PICASSO.load(mOverlayMiniResourceId).fit().centerInside().into(mOverlayMini);
 				}
 
 				if (!TextUtils.isEmpty(mOverlaySubtitleString)) {
 					mOverlaySubtitle.setText(mOverlaySubtitleString);
 					mOverlaySubtitle.setVisibility(View.VISIBLE);
-				} else {
-					mOverlaySubtitle.setVisibility(View.GONE);
 				}
 
 				mBtnCamera.setEnabled(true);
@@ -369,6 +382,7 @@ public class CameraFragment extends TunnelFragment {
 			mIcCamera.setVisibility(View.GONE);
 			mBtnSetFlash.setVisibility(View.GONE);
 			mOverlay.setVisibility(View.GONE);
+			mOverlayMini.setVisibility(View.GONE);
 			mBtnCamera.setEnabled(false);
 			mDialog = ProgressDialog.show(getActivity(), "Saving picture", "Please wait...", true);
 		}
@@ -415,6 +429,7 @@ public class CameraFragment extends TunnelFragment {
 				mIcCamera.setVisibility(View.VISIBLE);
 				mBtnSetFlash.setVisibility(View.VISIBLE);
 				mOverlay.setVisibility(View.VISIBLE);
+				mOverlayMini.setVisibility(View.VISIBLE);
 				mSavingPicture.setVisibility(View.GONE);
 				mBtnCamera.setEnabled(true);
 			}

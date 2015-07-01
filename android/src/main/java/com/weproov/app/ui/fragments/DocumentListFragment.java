@@ -84,12 +84,6 @@ public class DocumentListFragment extends BaseFragment implements LoaderManager.
 							long downloaded = c.getInt(downloadedIndex);
 
 							if (size != -1) {
-//								if (mProgressDialog == null || mProgressDialog.isIndeterminate()) {
-//									mProgressDialog = ProgressDialog.show(getActivity(), getString(R.string.pdf_show_local_progress_title), getString(R.string.pdf_show_local_progress_content, filename), false);
-//									mProgressDialog.setMax(100);
-//									mProgressDialog.setIndeterminate(false);
-//								}
-
 								mProgressDialog.setMax(100);
 								mProgressDialog.setIndeterminate(false);
 								mProgressDialog.setProgress((int) (downloaded * 100.0 / size));
@@ -208,6 +202,8 @@ public class DocumentListFragment extends BaseFragment implements LoaderManager.
 				for (WeProov proov : proovs) {
 					proov.getPictures();
 				}
+
+				Dog.d("Proovs size : " + proovs.size());
 
 				return proovs;
 			}

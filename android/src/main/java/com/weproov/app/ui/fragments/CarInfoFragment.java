@@ -49,7 +49,6 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	private Uri mOutputFileUri;
 	private Uri mVehicleDocumentationUri;
 
-	private String[] mMillageTypeServer;
 	private String[] mCarTypeServer;
 
 	private PlateAutocompleteAdapter mAutocompleteAdapter;
@@ -113,7 +112,6 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mGasLevel.setIndicatorFormatter("%s");
 		mGasLevel.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
 
 			@Override
@@ -154,7 +152,6 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 		super.onCreate(savedInstanceState);
 
 		mCarTypeServer = getResources().getStringArray(R.array.car_type_server);
-		mMillageTypeServer = getResources().getStringArray(R.array.millage_type_server);
 	}
 
 	@Override
@@ -213,11 +210,11 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 		if (!omit) {
 			mMillage.setText(String.valueOf(info.millage));
 		}
-		mMillageType.setSelection(getServerIndex(mMillageTypeServer, info.millageType));
+		mMillageType.setSelection(info.isMiles ? 1 : 0);
 		mColor.setText(info.color);
 
 		mGasLevel.setProgress(info.gasLevel);
-		mCarType.setSelection(getServerIndex(mCarTypeServer, info.millageType));
+		mCarType.setSelection(getServerIndex(mCarTypeServer, info.carType));
 
 		mVehicleDocumentationUri = info.vehicleDocumentation;
 		PicassoUtils.PICASSO.load(mVehicleDocumentationUri).centerCrop().fit().placeholder(R.drawable.card1).into(mVehicleDocumentationPicture);
@@ -247,7 +244,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			} catch (NumberFormatException e) {
 				info.millage = -1;
 			}
-			info.millageType = mMillageTypeServer[mMillageType.getSelectedItemPosition()];
+			info.isMiles = mMillageType.getSelectedItemPosition() == 1;
 
 			info.gasLevel = (mGasLevel.getProgress() * 100) / mGasLevel.getMax();
 			info.carType = mCarTypeServer[mCarType.getSelectedItemPosition()];
@@ -359,11 +356,11 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			final Intent galleryIntent = new Intent();
 			galleryIntent.setType("image/*");
 			galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 				galleryIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
 				galleryIntent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
 				galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
-			}else{
+			} else {
 				galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
 			}
 
@@ -407,7 +404,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 					new File(mOutputFileUri.getPath()).delete();
 				}
 
-				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 					int takeFlags = data.getFlags();
 					takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 					// Check for the freshest data.
@@ -415,7 +412,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 				}
 
 				String path = PathUtils.getPath(getActivity(), data.getData());
-				if(path != null) {
+				if (path != null) {
 					mVehicleDocumentationUri = Uri.fromFile(new File(path));
 				}
 			}

@@ -27,7 +27,6 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 	private WeProov mWeProov;
 
 	private static final String KEY_WEPROOV = "key_weproov";
-
 	private LayoutInflater mLayoutInflater;
 
 	@InjectView(R.id.content)
@@ -35,6 +34,9 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 
 	@InjectView(R.id.loader)
 	LinearLayout mLoaderView;
+
+	@InjectView(R.id.summary_client_group)
+	LinearLayout mClientGroup;
 
 	@InjectView(R.id.summary_client_display_name)
 	TextView mClientDisplayName;
@@ -46,6 +48,9 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 	ImageView mClientIdCard;
 	@InjectView(R.id.summary_client_driving_licence)
 	ImageView mClientDrivingLicence;
+
+	@InjectView(R.id.summary_car_group)
+	LinearLayout mCarGroup;
 
 	@InjectView(R.id.summary_car_info_plate)
 	TextView mCarPlate;
@@ -69,6 +74,8 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 	@InjectView(R.id.summary_renter_signature)
 	ImageView mRenterSignature;
 
+	private String[] mMillageType;
+
 	public static SummaryFragment newInstance(WeProov weProov) {
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(KEY_WEPROOV, weProov);
@@ -88,6 +95,7 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 		}
 
 		mLayoutInflater = LayoutInflater.from(getActivity());
+		mMillageType = getResources().getStringArray(R.array.millage_type);
 
 		if (getTunnel() != null) {
 			setCommmandListener(this);
@@ -120,19 +128,27 @@ public class SummaryFragment extends TunnelFragment implements CommandIface.OnCl
 		mContentView.setVisibility(View.VISIBLE);
 
 		ClientInfo client = proov.client;
-		mClientDisplayName.setText(client.firstname + " " + client.lastname);
-		mClientEmail.setText(client.email);
-		mClientCompany.setText(client.company);
-		PicassoUtils.PICASSO.load(client.id_card).fit().centerCrop().into(mClientIdCard);
-		PicassoUtils.PICASSO.load(client.driving_licence).fit().centerCrop().into(mClientDrivingLicence);
+		if (client != null) {
+			mClientDisplayName.setText(client.firstname + " " + client.lastname);
+			mClientEmail.setText(client.email);
+			mClientCompany.setText(client.company);
+			PicassoUtils.PICASSO.load(client.id_card).fit().centerCrop().into(mClientIdCard);
+			PicassoUtils.PICASSO.load(client.driving_licence).fit().centerCrop().into(mClientDrivingLicence);
+		} else {
+			mClientGroup.setVisibility(View.GONE);
+		}
 
 		CarInfo car = proov.car;
-		mCarPlate.setText(car.plate);
-		mCarBrandModel.setText(car.brand + " " + car.model);
-		mCarColor.setText(car.carType + ", " + car.color);
-		mCarMileage.setText(String.valueOf(car.millage) + car.millageType);
-		mCarGasTank.setText(String.valueOf(car.gasLevel) + "%");
-		PicassoUtils.PICASSO.load(car.vehicleDocumentation).fit().centerCrop().into(mCarDocument);
+		if (car != null) {
+			mCarPlate.setText(car.plate);
+			mCarBrandModel.setText(car.brand + " " + car.model);
+			mCarColor.setText(car.carType + ", " + car.color);
+			mCarMileage.setText(String.valueOf(car.millage) + " " + (car.isMiles ? mMillageType[1] : mMillageType[0]));
+			mCarGasTank.setText(String.valueOf(car.gasLevel) + "%");
+			PicassoUtils.PICASSO.load(car.vehicleDocumentation).fit().centerCrop().into(mCarDocument);
+		} else {
+			mCarGroup.setVisibility(View.GONE);
+		}
 
 		List<PictureItem> items = proov.getPictures();
 		for (final PictureItem item : items) {

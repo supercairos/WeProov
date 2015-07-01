@@ -54,7 +54,7 @@ public class CarInfo extends BaseModel implements Parcelable {
 
 	@Expose
 	@Column(name = "millage_type")
-	public String millageType;
+	public boolean isMiles;
 
 	@Expose
 	@Column(name = "color")
@@ -87,7 +87,7 @@ public class CarInfo extends BaseModel implements Parcelable {
 				", model='" + model + '\'' +
 				", car_type='" + carType + '\'' +
 				", millage=" + millage +
-				", millage_type='" + millageType + '\'' +
+				", millage_type='" + isMiles + '\'' +
 				", color='" + color + '\'' +
 				", gasLevel=" + gasLevel +
 				", vehicle_documentation=" + vehicleDocumentation +
@@ -104,9 +104,10 @@ public class CarInfo extends BaseModel implements Parcelable {
 	}
 
 	public void prepare() {
-		parseGasLevel = String.valueOf(gasLevel);
-		parseMillage = String.valueOf(millage);
+		parseGasLevel = String.valueOf(gasLevel) + "%";
+		parseMillage = String.valueOf(millage) + (isMiles ? " miles" : " kilometers");
 	}
+
 
 	@Override
 	public int describeContents() {
@@ -121,9 +122,11 @@ public class CarInfo extends BaseModel implements Parcelable {
 		dest.writeString(this.model);
 		dest.writeString(this.carType);
 		dest.writeFloat(this.millage);
-		dest.writeString(this.millageType);
+		dest.writeString(this.parseMillage);
+		dest.writeByte(isMiles ? (byte) 1 : (byte) 0);
 		dest.writeString(this.color);
 		dest.writeInt(this.gasLevel);
+		dest.writeString(this.parseGasLevel);
 		dest.writeParcelable(this.vehicleDocumentation, 0);
 	}
 
@@ -134,9 +137,11 @@ public class CarInfo extends BaseModel implements Parcelable {
 		this.model = in.readString();
 		this.carType = in.readString();
 		this.millage = in.readFloat();
-		this.millageType = in.readString();
+		this.parseMillage = in.readString();
+		this.isMiles = in.readByte() != 0;
 		this.color = in.readString();
 		this.gasLevel = in.readInt();
+		this.parseGasLevel = in.readString();
 		this.vehicleDocumentation = in.readParcelable(Uri.class.getClassLoader());
 	}
 

@@ -6,6 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true">
 
@@ -165,24 +167,16 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:gravity="center_vertical"
                     android:text="@string/gas_level"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
                     android:id="@+id/textView2"
                     android:layout_alignBottom="@+id/seekbar_car_gas_level"
                     android:layout_alignParentTop="true"/>
 
-            <!--<SeekBar-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/seekbar_car_gas_level"-->
-            <!--android:progress="4"-->
-            <!--android:max="8"-->
-            <!--android:layout_toEndOf="@+id/textView2"-->
-            <!--android:indeterminate="false"/>-->
-
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
                     android:id="@+id/seekbar_car_gas_level"
                     android:layout_toEndOf="@+id/textView2"
+                    android:layout_toRightOf="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:dsb_progressColor="@color/accent"
@@ -201,7 +195,9 @@
                     android:clickable="true"
                     android:spinnerMode="dialog"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_toEndOf="@+id/car_type"
+                    android:layout_toRightOf="@+id/car_type"
                     android:layout_below="@+id/seekbar_car_gas_level"/>
 
             <TextView
@@ -210,10 +206,11 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:gravity="center_vertical"
                     android:text="@string/car_type"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
                     android:id="@+id/car_type"
                     android:layout_toStartOf="@+id/seekbar_car_gas_level"
+                    android:layout_toLeftOf="@+id/seekbar_car_gas_level"
                     android:layout_alignParentBottom="true"
                     android:layout_below="@+id/textView2"/>
         </RelativeLayout>
@@ -261,9 +258,5 @@
                     android:layout_gravity="center"
                     android:id="@+id/vehicle_documentation_text"/>
         </LinearLayout>
-
-        <Space
-                android:layout_width="match_parent"
-                android:layout_height="50dp"/>
     </LinearLayout>
 </ScrollView>

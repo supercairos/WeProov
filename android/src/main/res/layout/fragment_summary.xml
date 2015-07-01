@@ -16,149 +16,162 @@
                 android:layout_height="wrap_content">
 
             <LinearLayout
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
+                    android:id="@+id/summary_client_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
-                <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/client_info"
-                        android:id="@+id/client_info"/>
-
-                <ImageView
-                        android:contentDescription="@android:string/untitled"
-                        android:layout_gravity="center_vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_action_edit"
-                        android:id="@+id/edit_client_info"/>
-            </LinearLayout>
-
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/primary_dark"
-                    android:layout_marginBottom="10dp"/>
-
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Romain Caire"
-                    android:id="@+id/summary_client_display_name"/>
-
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="WeProov"
-                    android:id="@+id/summary_client_company"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="super.cairos@gmail.com"
-                    android:id="@+id/summary_client_email"/>
-
-            <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
                 <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="@string/client_info"
+                            android:id="@+id/client_info"/>
+
+                    <ImageView
+                            android:contentDescription="@android:string/untitled"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_action_edit"
+                            android:id="@+id/edit_client_info"/>
+                </LinearLayout>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/primary_dark"
+                        android:layout_marginBottom="10dp"/>
+
+
+                <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:text="Romain Caire"
+                        android:id="@+id/summary_client_display_name"/>
 
-                    <ImageView
-                            android:contentDescription="@android:string/untitled"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:id="@+id/summary_client_driving_licence"/>
 
-                    <ImageView
-                            android:contentDescription="@android:string/untitled"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:id="@+id/summary_client_id"/>
-                </LinearLayout>
-            </HorizontalScrollView>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="WeProov"
+                        android:id="@+id/summary_client_company"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="super.cairos@gmail.com"
+                        android:id="@+id/summary_client_email"/>
+
+                <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                        <ImageView
+                                android:contentDescription="@android:string/untitled"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/summary_client_driving_licence"/>
+
+                        <ImageView
+                                android:contentDescription="@android:string/untitled"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/summary_client_id"/>
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
 
             <LinearLayout
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
+                    android:id="@+id/summary_car_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="@string/car_info"
+                            android:id="@+id/car_info"/>
+
+                    <ImageView
+                            android:contentDescription="@android:string/untitled"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_action_edit"
+                            android:id="@+id/edit_car_info"/>
+                </LinearLayout>
+
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/primary_dark"
+                        android:layout_marginBottom="10dp"/>
+
                 <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/car_info"
-                        android:id="@+id/car_info"/>
+                        android:text="AA-AAA-AA"
+                        android:id="@+id/summary_car_info_plate"/>
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mercedes C220"
+                        android:id="@+id/summary_car_info_brand_model"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hybrid, Red"
+                        android:id="@+id/summary_car_info_color"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5648 miles"
+                        android:id="@+id/summary_car_info_mileage"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1/4 tank"
+                        android:id="@+id/summary_car_info_gas_tank"/>
 
                 <ImageView
                         android:contentDescription="@android:string/untitled"
-                        android:layout_gravity="center_vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_action_edit"
-                        android:id="@+id/edit_car_info"/>
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/summary_car_info_document"/>
+
             </LinearLayout>
-
-
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/primary_dark"
-                    android:layout_marginBottom="10dp"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="AA-AAA-AA"
-                    android:id="@+id/summary_car_info_plate"/>
-
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mercedes C220"
-                    android:id="@+id/summary_car_info_brand_model"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hybrid, Red"
-                    android:id="@+id/summary_car_info_color"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="5648 miles"
-                    android:id="@+id/summary_car_info_mileage"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1/4 tank"
-                    android:id="@+id/summary_car_info_gas_tank"/>
-
-            <ImageView
-                    android:contentDescription="@android:string/untitled"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/summary_car_info_document"/>
-
-
             <TextView
                     android:layout_width="match_parent"
                     android:paddingTop="10dp"

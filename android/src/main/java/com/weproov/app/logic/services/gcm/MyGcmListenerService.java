@@ -83,6 +83,8 @@ public class MyGcmListenerService extends GcmListenerService {
 				.setSmallIcon(R.drawable.ic_action_send_now)
 				.setContentTitle(getString(R.string.app_name))
 				.setContentText(message)
+				.setPriority(NotificationCompat.PRIORITY_MAX)
+				.setVibrate(new long[]{100})
 				.setAutoCancel(true)
 				.setSound(defaultSoundUri)
 				.setContentIntent(pendingIntent);

@@ -19,17 +19,34 @@
 
     <array name="camera_overlay">
         <item>@drawable/front</item>
-        <item>@drawable/front_right_corner</item>
-        <!--<item>@drawable/right_side</item>-->
-        <!--<item>@drawable/wheels</item>-->
-        <!--<item>@drawable/wheels</item>-->
-        <!--<item>@drawable/back_right_corner</item>-->
-        <!--<item>@drawable/back</item>-->
-        <!--<item>@drawable/back_left_corner</item>-->
-        <!--<item>@drawable/left_side</item>-->
-        <!--<item>@drawable/wheels</item>-->
-        <!--<item>@drawable/wheels</item>-->
-        <!--<item>@drawable/front_left_corner</item>-->
+        <item>@drawable/front_right</item>
+        <item>@drawable/front_right_side</item>
+        <item>@drawable/wheels</item>
+        <item>@drawable/wheels</item>
+        <item>@drawable/rear_right_side</item>
+        <item>@drawable/rear_right</item>
+        <item>@drawable/rear</item>
+        <item>@drawable/rear_left</item>
+        <item>@drawable/rear_left_side</item>
+        <item>@drawable/wheels</item>
+        <item>@drawable/wheels</item>
+        <item>@drawable/front_left</item>
+    </array>
+
+    <array name="camera_overlay_mini">
+        <item>@drawable/front_mini</item>
+        <item>@drawable/front_right_mini</item>
+        <item>@drawable/front_right_side_mini</item>
+        <item>@drawable/front_right_wheel_mini</item>
+        <item>@drawable/rear_right_wheel_mini</item>
+        <item>@drawable/rear_right_side_mini</item>
+        <item>@drawable/rear_right_mini</item>
+        <item>@drawable/rear_mini</item>
+        <item>@drawable/rear_left_mini</item>
+        <item>@drawable/rear_left_side_mini</item>
+        <item>@drawable/rear_left_wheel_mini</item>
+        <item>@drawable/front_left_wheel_mini</item>
+        <item>@drawable/front_left_mini</item>
     </array>
 
     <string-array name="camera_overlay_subtitle">
@@ -43,12 +60,6 @@
     <string-array name="millage_type">
         <item>@string/millage_type_kilometers</item>
         <item>@string/millage_type_miles</item>
-    </string-array>
-
-    <!-- Server value, DO NOT EDIT! -->
-    <string-array name="millage_type_server">
-        <item>kilometer</item>
-        <item>miles</item>
     </string-array>
 
     <integer-array name="gplus_colors">

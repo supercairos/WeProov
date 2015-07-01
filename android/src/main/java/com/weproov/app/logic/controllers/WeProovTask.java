@@ -54,8 +54,8 @@ public class WeProovTask {
 					item,
 					item.clientSignature,
 					PictureItem.TYPE_JUSTIF,
-					item.clientSignature.getLastPathSegment(),
-					MyApplication.getAppContext().getString(R.string.client_signature),
+					"signature_2", // item.clientSignature.getLastPathSegment(),
+					MyApplication.getAppContext().getString(R.string.client_signature), //
 					1000
 			));
 		} else {
@@ -67,8 +67,8 @@ public class WeProovTask {
 					item,
 					item.renterSignature,
 					PictureItem.TYPE_JUSTIF,
-					item.renterSignature.getLastPathSegment(),
-					MyApplication.getAppContext().getString(R.string.renter_signature),
+					"signature_1", // item.renterSignature.getLastPathSegment(),
+					MyApplication.getAppContext().getString(R.string.renter_signature), //
 					1001
 			));
 		} else {
@@ -88,6 +88,7 @@ public class WeProovTask {
 				result.car = CarTask.download(result.parseCarPointer.objectId);
 				result.addPictures(PicturesTask.downloadAll(result.parseProovCodePointer.objectId));
 				result.proovCode = result.parseProovCodePointer.objectId;
+				result.isCheckout = "YES".equals(result.parseCheckoutDone);
 			}
 
 			return query.results;
