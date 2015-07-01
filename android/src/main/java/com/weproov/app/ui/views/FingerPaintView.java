@@ -2,14 +2,16 @@ package com.weproov.app.ui.views;
 
 import android.content.Context;
 import android.graphics.*;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import com.weproov.app.utils.PixelUtils;
 
 public class FingerPaintView extends View {
 
-	private static final float MINP = 0.25f;
-	private static final float MAXP = 0.75f;
+	private static final float STROKE_SIZE = PixelUtils.convertDpToPixel(5);
+
 	private Bitmap mBitmap;
 	private Canvas mCanvas;
 	private Path mPath;
@@ -18,33 +20,33 @@ public class FingerPaintView extends View {
 
 	public FingerPaintView(Context context) {
 		super(context);
-		init(null, 0);
+		init();
 	}
 
 	public FingerPaintView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init(attrs, 0);
+		init();
 	}
 
 	public FingerPaintView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		init(attrs, defStyle);
+		init();
 	}
 
 	public Bitmap getBitmap() {
 		return mBitmap;
 	}
 
-	private void init(AttributeSet attrs, int defStyle) {
+	private void init() {
 		mBitmap = Bitmap.createBitmap(320, 480, Bitmap.Config.ARGB_8888);
 		mCanvas = new Canvas(mBitmap);
 		mPath = new Path();
 
-		mFingerPaint.setColor(0xFFFF0000);
+		mFingerPaint.setColor(Color.WHITE);
 		mFingerPaint.setStyle(Paint.Style.STROKE);
 		mFingerPaint.setStrokeJoin(Paint.Join.ROUND);
 		mFingerPaint.setStrokeCap(Paint.Cap.ROUND);
-		mFingerPaint.setStrokeWidth(12);
+		mFingerPaint.setStrokeWidth(STROKE_SIZE);
 	}
 
 	@Override
@@ -97,7 +99,7 @@ public class FingerPaintView extends View {
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public boolean onTouchEvent(@NonNull MotionEvent event) {
 		float x = event.getX();
 		float y = event.getY();
 		switch (event.getAction()) {

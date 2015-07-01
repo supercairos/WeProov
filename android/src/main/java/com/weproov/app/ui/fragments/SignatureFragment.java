@@ -13,6 +13,7 @@ import butterknife.InjectView;
 import com.weproov.app.R;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.ui.views.FingerPaintView;
+import com.weproov.app.utils.BitmapUtils;
 import com.weproov.app.utils.CameraUtils;
 import com.weproov.app.utils.Dog;
 
@@ -63,13 +64,16 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		setCommmandListener(this);
+		getNegativeButton().setVisibility(View.VISIBLE);
+		getNegativeButton().setText(R.string.clear_signature);
+
 		mTextView.setText(getString(R.string.signature_of, mName));
 	}
 
 	@Override
 	public void onPositiveButtonClicked(Button b) {
 		File f = save();
-		if(f != null) {
+		if (f != null) {
 			Bundle bundle = new Bundle();
 			bundle.putParcelable(TunnelFragment.KEY_SIGNATURE_ITEM, Uri.fromFile(f));
 			getTunnel().next(bundle);
@@ -80,35 +84,40 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 
 	@Override
 	public void onNegativeButtonClicked(Button b) {
-
+		mFingerPaint.clear();
 	}
 
 	private File save() {
 		File f = CameraUtils.getOutputMediaFile(CameraUtils.MEDIA_TYPE_IMAGE);
 
 		Bitmap bitmap = mFingerPaint.getBitmap();
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.PNG, 0 /* ignored */, bos);
+		bitmap = BitmapUtils.removeTransparent(bitmap);
+		if (bitmap != null) {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.PNG, 0 /* ignored */, bos);
 
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream(f);
-			fos.write(bos.toByteArray());
-			fos.flush();
-		} catch (IOException e) {
-			Dog.d(e, "IO");
-			return null;
-		} finally {
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException e) {
-					Dog.d(e, "IO");
+			FileOutputStream fos = null;
+			try {
+				fos = new FileOutputStream(f);
+				fos.write(bos.toByteArray());
+				fos.flush();
+			} catch (IOException e) {
+				Dog.d(e, "IO");
+				return null;
+			} finally {
+				if (fos != null) {
+					try {
+						fos.close();
+					} catch (IOException e) {
+						Dog.d(e, "IO");
+					}
 				}
 			}
+
+			CameraUtils.sendMediaScannerBroadcast(getActivity(), f);
+			return f;
 		}
 
-		CameraUtils.sendMediaScannerBroadcast(getActivity(), f);
-		return f;
+		return null;
 	}
 }

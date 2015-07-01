@@ -77,11 +77,11 @@
     <string name="car_additional_info">Additional info</string>
     <string name="notification_picture_download_title">Uploading WeProov</string>
     <string name="notification_picture_download_start">Establishing connection</string>
-    <string name="notification_picture_download_picture">Uploading picture %s</string>
+    <string name="notification_picture_download_picture">Uploading picture <xliff:g example="Left Flank" id="name">%1$s</xliff:g></string>
     <string name="notification_picture_download_end">Upload complete</string>
-    <string name="welcome">Welcome %s!</string>
+    <string name="welcome">Welcome <xliff:g example="Romain Caire" id="name">%1$s</xliff:g>!</string>
     <string name="explore_weproov">Explore WeProov:</string>
-    <string name="signature_of">Signature of %s</string>
+    <string name="signature_of">Signature of <xliff:g example="Romain Caire" id="name">%1$s</xliff:g></string>
     <string name="signature_renter">Renter</string>
     <string name="wrong_email">This email appears to be invalid</string>
     <string name="title_activity_weproov">New Weproov</string>
@@ -92,7 +92,7 @@
     <string name="send_comments">Send comments</string>
     <string name="sync_settings">Sync settings</string>
     <string name="sync_settings_summary">Those settings are intended to modify the behavior of the sync</string>
-    <string name="title_activity_weproov_preference">WeproovPreferenceActivity</string>
+    <string name="title_activity_weproov_preference">WeProov Settings</string>
     <string name="pref_sync_wifi_only_summary">Turn on to enable sync only on WiFi</string>
     <string name="pref_sync_wifi_only">Sync on WiFi</string>
     <string name="feedback">Feedback</string>
@@ -129,7 +129,7 @@
     <string name="pdf_show_online_dialog_title">Open using Google Drive</string>
     <string name="pdf_show_online_dialog_question">We could not find any PDF apps on your phone. Do you want to use Google Drive to display this file ?</string>
     <string name="pdf_show_local_progress_title">Download</string>
-    <string name="pdf_show_local_progress_content">Downloading file %s</string>
+    <string name="pdf_show_local_progress_content">Downloading file <xliff:g example="aaaaaaaa" id="code">%1$s</xliff:g></string>
     <string name="welcome_to_weproov_title">Welcome to WeProov!</string>
     <string name="welcome_to_weproov_text">It\'s very easy to realize WeProovs, just follow the steps and you will be done quicker than it takes to realize it!</string>
     <string name="welcome_to_weproov_subtitle">Let\'s get started!</string>
@@ -153,5 +153,6 @@
     <string name="document_is_not_availlable_yet">Document is not available yet!</string>
     <string name="client_signature">Client signature</string>
     <string name="renter_signature">Renter signature</string>
+    <string name="clear_signature">Clear</string>
 
 </resources>

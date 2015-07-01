@@ -9,6 +9,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.RenderScript.Priority;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.support.annotation.Nullable;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -278,5 +279,39 @@ public final class BitmapUtils {
 		return initialSize <= 8
 				? MathUtils.prevPowerOf2(initialSize)
 				: initialSize / 8 * 8;
+	}
+
+	@Nullable
+	public static Bitmap removeTransparent(@Nullable Bitmap source) {
+		if(source == null) {
+			return null;
+		}
+
+		int minX = source.getWidth();
+		int minY = source.getHeight();
+		int maxX = -1;
+		int maxY = -1;
+		for (int y = 0; y < source.getHeight(); y++) {
+			for (int x = 0; x < source.getWidth(); x++) {
+				int alpha = (source.getPixel(x, y) >> 24) & 255;
+				if (alpha > 0) {
+					if (x < minX)
+						minX = x;
+					if (x > maxX)
+						maxX = x;
+					if (y < minY)
+						minY = y;
+					if (y > maxY)
+						maxY = y;
+				}
+			}
+		}
+
+		if ((maxX < minX) || (maxY < minY)) {
+			return null; // Bitmap is entirely transparent
+		}
+
+		// crop bitmap to non-transparent area and return:
+		return Bitmap.createBitmap(source, minX, minY, (maxX - minX) + 1, (maxY - minY) + 1);
 	}
 }
