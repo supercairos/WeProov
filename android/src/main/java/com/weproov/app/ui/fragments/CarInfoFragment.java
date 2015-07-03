@@ -5,14 +5,12 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -28,6 +26,7 @@ import com.weproov.app.R;
 import com.weproov.app.models.CarInfo;
 import com.weproov.app.ui.adapter.PlateAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
+import com.weproov.app.ui.views.CustomTextInputLayout;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PathUtils;
 import com.weproov.app.utils.PicassoUtils;
@@ -55,22 +54,22 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	@InjectView(R.id.edit_car_plate_number)
 	AutoCompleteTextView mPlateNumber;
 	@InjectView(R.id.edit_car_plate_number_layout)
-	TextInputLayout mPlateNumberLayout;
+	CustomTextInputLayout mPlateNumberLayout;
 
 	@InjectView(R.id.edit_car_brand)
 	EditText mBrand;
 	@InjectView(R.id.edit_car_brand_layout)
-	TextInputLayout mBrandLayout;
+	CustomTextInputLayout mBrandLayout;
 
 	@InjectView(R.id.edit_car_model)
 	EditText mModel;
 	@InjectView(R.id.edit_car_model_layout)
-	TextInputLayout mModelLayout;
+	CustomTextInputLayout mModelLayout;
 
 	@InjectView(R.id.edit_car_millage)
 	EditText mMillage;
 	@InjectView(R.id.edit_car_millage_layout)
-	TextInputLayout mMillageLayout;
+	CustomTextInputLayout mMillageLayout;
 
 	@InjectView(R.id.spinner_car_millage_type)
 	Spinner mMillageType;
@@ -78,7 +77,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	@InjectView(R.id.edit_car_color)
 	EditText mColor;
 	@InjectView(R.id.edit_car_color_layout)
-	TextInputLayout mColorLayout;
+	CustomTextInputLayout mColorLayout;
 
 	@InjectView(R.id.seekbar_car_gas_level)
 	DiscreteSeekBar mGasLevel;
@@ -112,39 +111,47 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mGasLevel.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+//		mGasLevel.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+//
+//			@Override
+//			public int transform(int i) {
+//				return i;
+//			}
+//
+//			@Override
+//			public String transformToString(int value) {
+//				switch (value) {
+//					case 0:
+//						return "0";
+//					case 1:
+//					case 3:
+//					case 5:
+//					case 7:
+//						return String.valueOf(value) + "/8";
+//					case 2:
+//					case 6:
+//						return String.valueOf(value / 2) + "/4";
+//					case 4:
+//						return String.valueOf(value / 4) + "/2";
+//					case 8:
+//					default:
+//						return "1";
+//				}
+//			}
+//
+//			@Override
+//			public boolean useStringTransform() {
+//				return true;
+//			}
+//		});
 
-			@Override
-			public int transform(int i) {
-				return i;
-			}
-
-			@Override
-			public String transformToString(int value) {
-				switch (value) {
-					case 0:
-						return "0";
-					case 1:
-					case 3:
-					case 5:
-					case 7:
-						return String.valueOf(value) + "/8";
-					case 2:
-					case 6:
-						return String.valueOf(value / 2) + "/4";
-					case 4:
-						return String.valueOf(value / 4) + "/2";
-					case 8:
-					default:
-						return "1";
-				}
-			}
-
-			@Override
-			public boolean useStringTransform() {
-				return true;
-			}
-		});
+		mGasLevel.setIndicatorFormatter("%d/8");
+//		mGasLevel.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+//			@Override
+//			public int transform(int i) {
+//				return (int) (i * 12.5);
+//			}
+//		});
 	}
 
 	@Override
@@ -308,13 +315,13 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 			valid &= true;
 		}
 
-		if (mVehicleDocumentationUri == null) {
-			mVehicleDocumentationText.setTextColor(Color.RED);
-			valid = false;
-		} else {
-			mVehicleDocumentationText.setTextColor(Color.BLACK);
-			valid &= true;
-		}
+//		if (mVehicleDocumentationUri == null) {
+//			mVehicleDocumentationText.setTextColor(Color.RED);
+//			valid = false;
+//		} else {
+//			mVehicleDocumentationText.setTextColor(Color.BLACK);
+//			valid &= true;
+//		}
 
 		if (valid || BuildConfig.DEBUG) {
 			Bundle out = new Bundle();

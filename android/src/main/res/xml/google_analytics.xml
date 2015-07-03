@@ -2,6 +2,4 @@
 <resources>
     <!-- Enable dry run mode. Default is false -->
     <bool name="ga_dryRun">false</bool>
-
-    <bool name="ga_reportUncaughtExceptions">true</bool>
 </resources>

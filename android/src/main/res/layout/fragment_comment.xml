@@ -10,8 +10,13 @@
             android:contentDescription="@android:string/untitled"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/comment_image_view"
-            android:layout_above="@+id/bottom_spacer"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/comment_image_view"/>
 
     <EditText
             android:padding="10dp"
@@ -21,8 +26,10 @@
             android:textColor="@android:color/white"
             android:layout_height="wrap_content"
             android:id="@+id/comment_edit_text"
-            android:layout_above="@+id/bottom_spacer"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

@@ -27,6 +27,15 @@ public class ParseGcmResponse {
 	@Expose
 	List<String> channels = new ArrayList<>();
 
+	@Expose
+	ParsePointer user;
+
+	public ParseGcmResponse(String deviceToken, String userServerId) {
+		this.deviceToken = deviceToken;
+		this.channels.add("");
+		this.user = new ParsePointer(userServerId, "_User");
+	}
+
 	public ParseGcmResponse(String deviceToken) {
 		this.deviceToken = deviceToken;
 		this.channels.add("");

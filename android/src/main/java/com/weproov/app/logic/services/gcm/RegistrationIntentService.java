@@ -1,15 +1,19 @@
 package com.weproov.app.logic.services.gcm;
 
+import android.accounts.AccountManager;
 import android.app.IntentService;
 import android.content.Intent;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+import com.weproov.app.MyApplication;
 import com.weproov.app.models.User;
 import com.weproov.app.models.exceptions.NetworkException;
 import com.weproov.app.models.wrappers.parse.ParseGcmResponse;
+import com.weproov.app.utils.AccountUtils;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PlayServicesUtils;
+import com.weproov.app.utils.constants.AccountConstants;
 import com.weproov.app.utils.constants.GcmConstants;
 import retrofit.RetrofitError;
 
@@ -72,7 +76,8 @@ public class RegistrationIntentService extends IntentService {
 	private void sendRegistrationToServer(String regid) {
 		Dog.d("Got token : %s", regid);
 		try {
-			User.getService().registerGcm(new ParseGcmResponse(regid));
+			String userId = AccountManager.get(MyApplication.getAppContext()).getUserData(AccountUtils.getAccount(), AccountConstants.KEY_SERVER_ID);
+			User.getService().registerGcm(new ParseGcmResponse(regid, userId));
 		} catch (NetworkException | RetrofitError error) {
 			Dog.e(error, "Error !");
 		}

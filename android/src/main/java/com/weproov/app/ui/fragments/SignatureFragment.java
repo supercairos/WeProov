@@ -1,6 +1,6 @@
 package com.weproov.app.ui.fragments;
 
-import android.graphics.Bitmap;
+import android.graphics.*;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -93,8 +93,15 @@ public class SignatureFragment extends TunnelFragment implements CommandIface.On
 		Bitmap bitmap = mFingerPaint.getBitmap();
 		bitmap = BitmapUtils.removeTransparent(bitmap);
 		if (bitmap != null) {
+
+			Bitmap black = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+			Canvas canvas = new Canvas(black);
+			Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+			p.setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN));
+			canvas.drawBitmap(bitmap, 0, 0, p);
+
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			bitmap.compress(Bitmap.CompressFormat.PNG, 0 /* ignored */, bos);
+			black.compress(Bitmap.CompressFormat.PNG, 0 /* ignored */, bos);
 
 			FileOutputStream fos = null;
 			try {

@@ -3,7 +3,6 @@ package com.weproov.app.ui.fragments;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.InjectView;
 import com.squareup.otto.Subscribe;
+import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.ProovCodeTask;
 import com.weproov.app.models.ProovCode;
 import com.weproov.app.models.events.ProovCodeEvent;
 import com.weproov.app.models.events.ProovCodeFailureEvent;
 import com.weproov.app.ui.ifaces.CommandIface;
+import com.weproov.app.ui.views.CustomTextInputLayout;
 
 public class ProovCodeFragment extends TunnelFragment implements CommandIface.OnClickListener {
 
@@ -28,7 +29,7 @@ public class ProovCodeFragment extends TunnelFragment implements CommandIface.On
     LinearLayout mRootLayout;
 
     @InjectView(R.id.proov_code_layout)
-    TextInputLayout mProovCodeLayout;
+	CustomTextInputLayout mProovCodeLayout;
 
     @InjectView(R.id.proov_code)
     EditText mProovCodeEdit;
@@ -114,9 +115,13 @@ public class ProovCodeFragment extends TunnelFragment implements CommandIface.On
 
     @Override
     public void onPositiveButtonClicked(Button b) {
-        String code = mProovCodeEdit.getEditableText().toString();
-        ProovCodeTask.getAsync(code);
-        mDialog = ProgressDialog.show(getActivity(), getString(R.string.proov_code_dialog_title), getString(R.string.proov_code_dialog_message));
+        if(!BuildConfig.DEBUG) {
+            String code = mProovCodeEdit.getEditableText().toString();
+            ProovCodeTask.getAsync(code);
+            mDialog = ProgressDialog.show(getActivity(), getString(R.string.proov_code_dialog_title), getString(R.string.proov_code_dialog_message));
+        } else {
+            onProovCodeSucceeded(new ProovCodeEvent(new ProovCode("zFBNvjP6tG")));
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
+import android.media.MediaActionSound;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import butterknife.OnLongClick;
 import com.weproov.app.R;
 import com.weproov.app.ui.ifaces.ActionBarIface;
 import com.weproov.app.ui.views.CameraPreviewView;
@@ -28,7 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class CameraFragment extends TunnelFragment {
+public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCallback, Camera.PictureCallback {
 
 	/**
 	 * Arguments keys *
@@ -71,7 +71,7 @@ public class CameraFragment extends TunnelFragment {
 
 	private ActionBarIface mActionBarListener;
 	private Camera mCamera;
-	private MyPictureCallback mPictureCallback = new MyPictureCallback();
+	private final MediaActionSound mMedia = new MediaActionSound();
 
 
 	private static class BytesWrapper {
@@ -108,6 +108,8 @@ public class CameraFragment extends TunnelFragment {
 			mOverlaySubtitleString = getArguments().getString(KEY_OVERLAY_PICTURE_SUBTITLE);
 		}
 
+		mMedia.load(MediaActionSound.FOCUS_COMPLETE);
+		mMedia.load(MediaActionSound.SHUTTER_CLICK);
 		Dog.d("Got arguments : %d %d %s", mOverlayResourceId, mOverlayMiniResourceId, mOverlaySubtitleString);
 	}
 
@@ -200,8 +202,13 @@ public class CameraFragment extends TunnelFragment {
 	private static void setCameraFocusMode(Camera camera) {
 		// get Camera parameters
 		Camera.Parameters params = camera.getParameters();
+		params.setMeteringAreas(null);
+		params.setFocusAreas(null);
 		List<String> focusModes = params.getSupportedFocusModes();
 		if (focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+			params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+			camera.setParameters(params);
+		} else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
 			params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
 			camera.setParameters(params);
 		} else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
@@ -224,6 +231,28 @@ public class CameraFragment extends TunnelFragment {
 		Camera.Size size = CameraUtils.getBestPictureSize(params.getSupportedPictureSizes());
 		params.setPictureSize(size.width, size.height);
 		camera.setParameters(params);
+	}
+
+	private static void setCameraFlashMode(Camera camera) {
+		// get Camera parameters
+		Camera.Parameters params = camera.getParameters();
+		List<String> modes = params.getSupportedFlashModes();
+		if (modes != null && modes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+			params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+		}
+	}
+
+	private static void setCameraSceneMode(Camera camera) {
+		// get Camera parameters
+		Camera.Parameters params = camera.getParameters();
+		List<String> modes = params.getSupportedSceneModes();
+		if (modes != null) {
+			if (modes.contains(Camera.Parameters.SCENE_MODE_LANDSCAPE)) {
+				params.setSceneMode(Camera.Parameters.SCENE_MODE_LANDSCAPE);
+			} else if (modes.contains(Camera.Parameters.SCENE_MODE_AUTO)) {
+				params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
+			}
+		}
 	}
 
 	private void setFlashMode() {
@@ -252,37 +281,13 @@ public class CameraFragment extends TunnelFragment {
 	public void onCameraButtonClicked() {
 		try {
 			if (mCamera != null) {
-				mCamera.takePicture(null, null, mPictureCallback);
+				mCamera.takePicture(null, null, this);
 			}
 		} catch (Exception e) {
 			// For some reason, the picture could not be taken.
 			Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
 			Dog.e(e, "Test");
 		}
-	}
-
-	@OnLongClick(R.id.btn_camera)
-	public boolean onCameraButtonLongClicked() {
-		try {
-			if (mCamera != null) {
-				mCamera.autoFocus(new Camera.AutoFocusCallback() {
-					@Override
-					public void onAutoFocus(boolean success, Camera camera) {
-						if (success) {
-							camera.takePicture(null, null, mPictureCallback);
-						}
-					}
-				});
-
-				return true;
-			}
-		} catch (Exception e) {
-			// For some reason, the picture could not be taken.
-			Toast.makeText(getActivity(), R.string.error_taking_picture, Toast.LENGTH_LONG).show();
-			Dog.e(e, "Test");
-		}
-
-		return false;
 	}
 
 	@OnClick(R.id.btn_set_flash)
@@ -303,14 +308,18 @@ public class CameraFragment extends TunnelFragment {
 		mCamera.setParameters(parameters);
 	}
 
-
-	private class MyPictureCallback implements Camera.PictureCallback {
-
-		@Override
-		public void onPictureTaken(byte[] data, Camera camera) {
-			mBtnCamera.setEnabled(false);
-			(new SavePictureTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new BytesWrapper(data));
+	@Override
+	public void onAutoFocus(boolean success, Camera camera) {
+		if (success) {
+			mMedia.play(MediaActionSound.FOCUS_COMPLETE);
+			camera.cancelAutoFocus();
+			setCameraFocusMode(camera);
 		}
+	}
+
+	@Override
+	public void onPictureTaken(byte[] data, Camera camera) {
+		(new SavePictureTask()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new BytesWrapper(data));
 	}
 
 	private class BootCameraTask extends AsyncTask<Void, Void, Camera> {
@@ -332,7 +341,9 @@ public class CameraFragment extends TunnelFragment {
 			setCameraDisplayOrientation(getActivity(), camera, id);
 			setCameraFocusMode(camera);
 			setCameraPictureSize(camera);
+			setCameraSceneMode(camera);
 			setCameraJPEGQuality(camera);
+			setCameraFlashMode(camera);
 
 			return camera;
 		}
@@ -415,6 +426,7 @@ public class CameraFragment extends TunnelFragment {
 		@Override
 		protected void onPostExecute(File s) {
 			super.onPostExecute(s);
+			mMedia.play(MediaActionSound.SHUTTER_CLICK);
 			mDialog.dismiss();
 			// Move to edit
 			if (s != null && s.exists()) {

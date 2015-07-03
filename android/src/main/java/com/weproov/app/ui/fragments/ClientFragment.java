@@ -5,14 +5,12 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.design.widget.TextInputLayout;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -27,6 +25,7 @@ import com.weproov.app.R;
 import com.weproov.app.models.ClientInfo;
 import com.weproov.app.ui.adapter.RenterAutocompleteAdapter;
 import com.weproov.app.ui.ifaces.CommandIface;
+import com.weproov.app.ui.views.CustomTextInputLayout;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PathUtils;
 import com.weproov.app.utils.PicassoUtils;
@@ -56,31 +55,31 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 	@InjectView(R.id.edit_first_name)
 	AutoCompleteTextView mFirstName;
 	@InjectView(R.id.edit_first_name_layout)
-	TextInputLayout mFirstNameLayout;
+	CustomTextInputLayout mFirstNameLayout;
 	@SuppressWarnings("FieldCanBeLocal")
 	private RenterAutocompleteAdapter mFirstnameAutocompleteAdapter;
 
 	@InjectView(R.id.edit_last_name)
 	AutoCompleteTextView mLastName;
 	@InjectView(R.id.edit_last_name_layout)
-	TextInputLayout mLastNameLayout;
+	CustomTextInputLayout mLastNameLayout;
 	@SuppressWarnings("FieldCanBeLocal")
 	private RenterAutocompleteAdapter mLastnameAutocompleteAdapter;
 
 	@InjectView(R.id.edit_email)
 	EditText mEmail;
 	@InjectView(R.id.edit_email_layout)
-	TextInputLayout mEmailLayout;
+	CustomTextInputLayout mEmailLayout;
 
 	@InjectView(R.id.edit_company)
 	EditText mCompany;
 	@InjectView(R.id.edit_company_layout)
-	TextInputLayout mCompanyLayout;
+	CustomTextInputLayout mCompanyLayout;
 
 	@InjectView(R.id.edit_phone)
 	EditText mPhone;
 	@InjectView(R.id.edit_phone_layout)
-	TextInputLayout mPhoneLayout;
+	CustomTextInputLayout mPhoneLayout;
 
 	@InjectView(R.id.identity_card_picture)
 	ImageView mIdCardPicture;
@@ -175,7 +174,7 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 		}
 
 		if (mEmail != null) {
-			info.email = mEmail.getEditableText().toString();
+			info.email = mEmail.getEditableText().toString().trim().toLowerCase();
 		}
 
 		if (mCompany != null) {
@@ -238,13 +237,13 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 			valid &= true;
 		}
 
-		if (TextUtils.isEmpty(info.company)) {
-			mCompanyLayout.setError(getString(R.string.error_company));
-			valid = false;
-		} else {
-			mCompanyLayout.setError(null);
-			valid &= true;
-		}
+//		if (TextUtils.isEmpty(info.company)) {
+//			mCompanyLayout.setError(getString(R.string.error_company));
+//			valid = false;
+//		} else {
+//			mCompanyLayout.setError(null);
+//			valid &= true;
+//		}
 
 		if (TextUtils.isEmpty(info.phone)) {
 			mPhoneLayout.setError(getString(R.string.error_phone));
@@ -254,21 +253,21 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 			valid &= true;
 		}
 
-		if (mIdCardUri == null) {
-			mIdCardText.setTextColor(Color.RED);
-			valid = false;
-		} else {
-			mIdCardText.setTextColor(Color.BLACK);
-			valid &= true;
-		}
-
-		if (mDrivingLicenceUri == null) {
-			mDrivingLicenceText.setTextColor(Color.RED);
-			valid = false;
-		} else {
-			mDrivingLicenceText.setTextColor(Color.BLACK);
-			valid &= true;
-		}
+//		if (mIdCardUri == null) {
+//			mIdCardText.setTextColor(Color.RED);
+//			valid = false;
+//		} else {
+//			mIdCardText.setTextColor(Color.BLACK);
+//			valid &= true;
+//		}
+//
+//		if (mDrivingLicenceUri == null) {
+//			mDrivingLicenceText.setTextColor(Color.RED);
+//			valid = false;
+//		} else {
+//			mDrivingLicenceText.setTextColor(Color.BLACK);
+//			valid &= true;
+//		}
 
 		if (valid || BuildConfig.DEBUG) {
 			Bundle out = new Bundle();
@@ -305,11 +304,11 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 			final Intent galleryIntent = new Intent();
 			galleryIntent.setType("image/*");
 			galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 				galleryIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
 				galleryIntent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
 				galleryIntent.addCategory(Intent.CATEGORY_OPENABLE);
-			}else{
+			} else {
 				galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
 			}
 
@@ -353,7 +352,7 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 					new File(mOutputFileUri.getPath()).delete();
 				}
 
-				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 					int takeFlags = data.getFlags();
 					takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 					// Check for the freshest data.
@@ -361,7 +360,7 @@ public class ClientFragment extends TunnelFragment implements CommandIface.OnCli
 				}
 
 				String path = PathUtils.getPath(getActivity(), data.getData());
-				if(path != null) {
+				if (path != null) {
 					selectedImageUri = Uri.fromFile(new File(path));
 				}
 			}

@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
@@ -25,10 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
-
 import butterknife.InjectView;
 import butterknife.OnClick;
-
 import com.squareup.otto.Subscribe;
 import com.weproov.app.R;
 import com.weproov.app.logic.controllers.ProfileLoader;
@@ -42,6 +39,7 @@ import com.weproov.app.ui.adapter.CountryAutocompleteAdapter;
 import com.weproov.app.ui.adapter.CountrySpinnerAdapter;
 import com.weproov.app.ui.adapter.CustomPhoneNumberFormattingTextWatcher;
 import com.weproov.app.ui.ifaces.CommandIface;
+import com.weproov.app.ui.views.CustomTextInputLayout;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PathUtils;
 import com.weproov.app.utils.PicassoUtils;
@@ -66,22 +64,22 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
     @InjectView(R.id.edit_first_name)
     EditText mFirstName;
     @InjectView(R.id.edit_first_name_layout)
-    TextInputLayout mFirstNameLayout;
+	CustomTextInputLayout mFirstNameLayout;
 
     @InjectView(R.id.edit_last_name)
     EditText mLastName;
     @InjectView(R.id.edit_last_name_layout)
-    TextInputLayout mLastNameLayout;
+    CustomTextInputLayout mLastNameLayout;
 
     @InjectView(R.id.edit_email)
     EditText mEmail;
     @InjectView(R.id.edit_email_layout)
-    TextInputLayout mEmailLayout;
+    CustomTextInputLayout mEmailLayout;
 
     @InjectView(R.id.edit_password)
     EditText mPassword;
     @InjectView(R.id.edit_password_layout)
-    TextInputLayout mPasswordLayout;
+    CustomTextInputLayout mPasswordLayout;
 
     @InjectView(R.id.licence_checkbox)
     CheckBox mCheckBox;
@@ -94,7 +92,7 @@ public class RegisterActivity extends BaseActivity implements CommandIface.OnCli
     @InjectView(R.id.edit_phone)
     AutoCompleteTextView mPhone;
     @InjectView(R.id.edit_phone_layout)
-    TextInputLayout mPhoneLayout;
+    CustomTextInputLayout mPhoneLayout;
 
     ProgressDialog mDialog;
 
