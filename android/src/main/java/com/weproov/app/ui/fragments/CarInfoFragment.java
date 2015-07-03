@@ -145,13 +145,13 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 //			}
 //		});
 
-		mGasLevel.setIndicatorFormatter("%d/8");
-//		mGasLevel.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-//			@Override
-//			public int transform(int i) {
-//				return (int) (i * 12.5);
-//			}
-//		});
+		mGasLevel.setIndicatorFormatter("%d%%");
+		mGasLevel.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+			@Override
+			public int transform(int i) {
+				return (int) (i * 12.5);
+			}
+		});
 	}
 
 	@Override
