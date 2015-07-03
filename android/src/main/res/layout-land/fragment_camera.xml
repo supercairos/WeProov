@@ -96,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:textSize="22sp"
+                android:visibility="gone"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textAllCaps="true"
