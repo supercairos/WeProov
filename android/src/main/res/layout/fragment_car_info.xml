@@ -35,7 +35,7 @@
                 android:layout_marginBottom="10dp"
                 />
 
-        <android.support.design.widget.CustomTextInputLayout
+        <com.weproov.app.ui.views.CustomTextInputLayout
                 android:layout_width="match_parent"
                 android:id="@+id/edit_car_plate_number_layout"
                 android:layout_height="wrap_content">
@@ -51,14 +51,14 @@
                     android:inputType="text"
                     android:imeOptions="actionDone"/>
 
-        </android.support.design.widget.CustomTextInputLayout>
+        </com.weproov.app.ui.views.CustomTextInputLayout>
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <android.support.design.widget.CustomTextInputLayout
+            <com.weproov.app.ui.views.CustomTextInputLayout
                     android:layout_width="0dp"
                     android:id="@+id/edit_car_brand_layout"
                     android:layout_weight="1"
@@ -73,9 +73,9 @@
                         android:inputType="textPersonName"
                         android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/edit_model"/>
-            </android.support.design.widget.CustomTextInputLayout>
+            </com.weproov.app.ui.views.CustomTextInputLayout>
 
-            <android.support.design.widget.CustomTextInputLayout
+            <com.weproov.app.ui.views.CustomTextInputLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:id="@+id/edit_car_model_layout"
@@ -91,14 +91,14 @@
                         android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/edit_email"/>
 
-            </android.support.design.widget.CustomTextInputLayout>
+            </com.weproov.app.ui.views.CustomTextInputLayout>
         </LinearLayout>
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <android.support.design.widget.CustomTextInputLayout
+            <com.weproov.app.ui.views.CustomTextInputLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                         android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/edit_car_color"/>
 
-            </android.support.design.widget.CustomTextInputLayout>
+            </com.weproov.app.ui.views.CustomTextInputLayout>
 
             <Spinner
                     android:layout_width="wrap_content"
@@ -126,7 +126,7 @@
                     android:spinnerMode="dropdown"/>
         </LinearLayout>
 
-        <android.support.design.widget.CustomTextInputLayout
+        <com.weproov.app.ui.views.CustomTextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/edit_car_color_layout">
@@ -140,7 +140,7 @@
                     android:inputType="textNoSuggestions"
                     android:imeOptions="actionDone"/>
 
-        </android.support.design.widget.CustomTextInputLayout>
+        </com.weproov.app.ui.views.CustomTextInputLayout>
 
         <TextView
                 android:layout_width="match_parent"

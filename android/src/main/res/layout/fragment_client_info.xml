@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content">
 
 
-            <android.support.design.widget.CustomTextInputLayout
+            <com.weproov.app.ui.views.CustomTextInputLayout
                     android:id="@+id/edit_first_name_layout"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -56,9 +56,9 @@
                         android:inputType="textPersonName"
                         android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/edit_last_name"/>
-            </android.support.design.widget.CustomTextInputLayout>
+            </com.weproov.app.ui.views.CustomTextInputLayout>
 
-            <android.support.design.widget.CustomTextInputLayout
+            <com.weproov.app.ui.views.CustomTextInputLayout
                     android:id="@+id/edit_last_name_layout"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -75,10 +75,10 @@
                         android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/edit_email"/>
 
-            </android.support.design.widget.CustomTextInputLayout>
+            </com.weproov.app.ui.views.CustomTextInputLayout>
         </LinearLayout>
 
-        <android.support.design.widget.CustomTextInputLayout
+        <com.weproov.app.ui.views.CustomTextInputLayout
                 android:id="@+id/edit_email_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -93,7 +93,7 @@
                     android:imeOptions="actionNext"
                     android:nextFocusDown="@+id/edit_company"/>
 
-        </android.support.design.widget.CustomTextInputLayout>
+        </com.weproov.app.ui.views.CustomTextInputLayout>
 
         <LinearLayout
                 android:baselineAligned="false"
@@ -102,7 +102,7 @@
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-            <android.support.design.widget.CustomTextInputLayout
+            <com.weproov.app.ui.views.CustomTextInputLayout
                     android:id="@+id/edit_company_layout"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -118,9 +118,9 @@
                         android:nextFocusDown="@+id/edit_phone"
                         android:imeOptions="actionNext"/>
 
-            </android.support.design.widget.CustomTextInputLayout>
+            </com.weproov.app.ui.views.CustomTextInputLayout>
 
-            <android.support.design.widget.CustomTextInputLayout
+            <com.weproov.app.ui.views.CustomTextInputLayout
                     android:id="@+id/edit_phone_layout"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -135,7 +135,7 @@
                         android:inputType="phone"
                         android:imeOptions="actionDone"/>
 
-            </android.support.design.widget.CustomTextInputLayout>
+            </com.weproov.app.ui.views.CustomTextInputLayout>
 
         </LinearLayout>
 

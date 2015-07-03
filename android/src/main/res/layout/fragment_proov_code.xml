@@ -16,7 +16,7 @@
         android:layout_marginBottom="30dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <android.support.design.widget.CustomTextInputLayout
+    <com.weproov.app.ui.views.CustomTextInputLayout
         android:id="@+id/proov_code_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -30,5 +30,5 @@
             android:inputType="textNoSuggestions"
             android:singleLine="true" />
 
-    </android.support.design.widget.CustomTextInputLayout>
+    </com.weproov.app.ui.views.CustomTextInputLayout>
 </LinearLayout>
