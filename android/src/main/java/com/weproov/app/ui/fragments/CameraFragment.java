@@ -16,6 +16,7 @@ import android.widget.Toast;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.weproov.app.R;
+import com.weproov.app.logic.controllers.FocusOverlayManager;
 import com.weproov.app.ui.ifaces.ActionBarIface;
 import com.weproov.app.ui.views.CameraPreviewView;
 import com.weproov.app.utils.CameraUtils;
@@ -73,6 +74,14 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 	private Camera mCamera;
 	private final MediaActionSound mMedia = new MediaActionSound();
 
+	private FocusOverlayManager mFocusOverlayManager;
+	private GestureDetector.SimpleOnGestureListener mDetector = new GestureDetector.SimpleOnGestureListener() {
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+			return mFocusOverlayManager.onSingleTapUp((int) e.getX(), (int) e.getY());
+		}
+	};
+
 
 	private static class BytesWrapper {
 
@@ -111,6 +120,20 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 		mMedia.load(MediaActionSound.FOCUS_COMPLETE);
 		mMedia.load(MediaActionSound.SHUTTER_CLICK);
 		Dog.d("Got arguments : %d %d %s", mOverlayResourceId, mOverlayMiniResourceId, mOverlaySubtitleString);
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// Prevent software keyboard or voice search from showing up.
+		if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_MENU) {
+			if (event.isLongPress()) return true;
+		}
+
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			return true;
+		}
+
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
@@ -264,6 +287,9 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 			mBtnSetFlash.setImageResource(R.drawable.ic_flash_on_holo_light);
 		} else if (Camera.Parameters.FLASH_MODE_OFF.equals(mode)) {
 			mBtnSetFlash.setImageResource(R.drawable.ic_flash_off_holo_light);
+		} else {
+			// No flash on device
+			mBtnSetFlash.setVisibility(View.GONE);
 		}
 	}
 

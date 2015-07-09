@@ -9,8 +9,8 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +46,7 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 	private Object mSyncObserverHandle;
 
 	private int mWeProovStep;
+	private TunnelFragment mFragment;
 
 	private int[] mOverlayMiniDrawableArray;
 	private int[] mOverlayDrawableArray;
@@ -66,13 +67,15 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 
 		if (savedInstanceState != null) {
 			mCurrentWeProov = savedInstanceState.getParcelable(KEY_WE_PROOV_OBJECT);
+			mFragment = (TunnelFragment) getSupportFragmentManager().findFragmentByTag("tag");
 			Dog.d("Found weproov object : %s", mCurrentWeProov);
 		} else {
 			if (PrefUtils.getBoolean(WeproovWelcomeFragment.PREF_PASS_HELP, false)) {
-				FragmentsUtils.replace(this, new ProovCodeFragment(), R.id.content_fragment, "tag", false, 0, 0);
+				mFragment = new ProovCodeFragment();
 			} else {
-				FragmentsUtils.replace(this, new WeproovWelcomeFragment(), R.id.content_fragment, "tag", false, 0, 0);
+				mFragment = new WeproovWelcomeFragment();
 			}
+			FragmentsUtils.replace(this, mFragment, R.id.content_fragment, "tag", false, 0, 0);
 		}
 
 
@@ -104,6 +107,11 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 			isRunning = ContentResolver.isSyncActive(account, AuthenticatorConstants.ACCOUNT_PROVIDER) || ContentResolver.isSyncPending(account, AuthenticatorConstants.ACCOUNT_PROVIDER);
 		}
 		mSyncProgress.setVisibility(isRunning ? View.VISIBLE : View.GONE);
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		return mFragment.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
 	}
 
 	@Override
@@ -182,10 +190,10 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 	@Override
 	public void next(Bundle data) {
 		// Restore
-		Fragment fragment = getSupportFragmentManager().findFragmentByTag("tag");
-		if (WeproovWelcomeFragment.class.equals(fragment.getClass())) {
-			fragment = new ProovCodeFragment();
-		} else if (ProovCodeFragment.class.equals(fragment.getClass())) {
+		mFragment = (TunnelFragment) getSupportFragmentManager().findFragmentByTag("tag");
+		if (WeproovWelcomeFragment.class.equals(mFragment.getClass())) {
+			mFragment = new ProovCodeFragment();
+		} else if (ProovCodeFragment.class.equals(mFragment.getClass())) {
 			ProovCode code = null;
 			if (data != null) {
 				code = data.getParcelable(TunnelFragment.KEY_PROOV_CODE);
@@ -196,19 +204,19 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 			}
 
 			if (code != null && code.type == MODE_NO_CLIENT) {
-				fragment = new CarInfoFragment();
+				mFragment = new CarInfoFragment();
 			} else {
-				fragment = new ClientFragment();
+				mFragment = new ClientFragment();
 			}
-		} else if (ClientFragment.class.equals(fragment.getClass())) {
+		} else if (ClientFragment.class.equals(mFragment.getClass())) {
 			// Need to go to CarInfoFragment;
 			if (data != null) {
 				mCurrentWeProov.client = data.getParcelable(TunnelFragment.KEY_RENTER_INFO);
 			}
 			Dog.d("Got Renter info : %s", mCurrentWeProov.client);
 
-			fragment = new CarInfoFragment();
-		} else if (CarInfoFragment.class.equals(fragment.getClass())) {
+			mFragment = new CarInfoFragment();
+		} else if (CarInfoFragment.class.equals(mFragment.getClass())) {
 			// Need to go to CarInfoFragment;
 			if (data != null) {
 				mCurrentWeProov.car = data.getParcelable(TunnelFragment.KEY_CAR_INFO);
@@ -217,8 +225,8 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 
 			Dog.d("Got Car info : %s", mCurrentWeProov.car);
 			mWeProovStep = 0;
-			fragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlayMiniDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
-		} else if (CameraFragment.class.equals(fragment.getClass())) {
+			mFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlayMiniDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
+		} else if (CameraFragment.class.equals(mFragment.getClass())) {
 			// Need to go to comment
 			String path = null;
 			if (data != null) {
@@ -226,8 +234,8 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 			}
 
 			// FragmentsUtils.clearBackStack(getSupportFragmentManager());
-			fragment = CommentFragment.newInstance(path);
-		} else if (CommentFragment.class.equals(fragment.getClass())) {
+			mFragment = CommentFragment.newInstance(path);
+		} else if (CommentFragment.class.equals(mFragment.getClass())) {
 			PictureItem item = null;
 			if (data != null) {
 				item = data.getParcelable(TunnelFragment.KEY_PICTURE_ITEM);
@@ -250,18 +258,18 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 				}
 
 				mWeProovStep = 0;
-				fragment = SignatureFragment.newInstance(name);
+				mFragment = SignatureFragment.newInstance(name);
 			} else {
 				// Progress with camera
-				fragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlayMiniDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
+				mFragment = CameraFragment.newInstance(mOverlayDrawableArray[mWeProovStep], mOverlayMiniDrawableArray[mWeProovStep], mWeProovStep < mOverlaySubtitleArray.length ? mOverlaySubtitleArray[mWeProovStep] : "");
 			}
-		} else if (SignatureFragment.class.equals(fragment.getClass()) && mWeProovStep == 0) {
+		} else if (SignatureFragment.class.equals(mFragment.getClass()) && mWeProovStep == 0) {
 			mCurrentWeProov.clientSignature = data.getParcelable(TunnelFragment.KEY_SIGNATURE_ITEM);
-			fragment = SignatureFragment.newInstance(AccountUtils.getDisplayName());
+			mFragment = SignatureFragment.newInstance(AccountUtils.getDisplayName());
 			mWeProovStep++;
-		} else if (SignatureFragment.class.equals(fragment.getClass()) && mWeProovStep == 1) {
+		} else if (SignatureFragment.class.equals(mFragment.getClass()) && mWeProovStep == 1) {
 			mCurrentWeProov.renterSignature = data.getParcelable(TunnelFragment.KEY_SIGNATURE_ITEM);
-			fragment = SummaryFragment.newInstance(mCurrentWeProov);
+			mFragment = SummaryFragment.newInstance(mCurrentWeProov);
 		} else {
 			mCurrentWeProov.doSave();
 			finish();
@@ -270,7 +278,7 @@ public class WeproovActivity extends BaseActivity implements ActionBarIface, Tun
 		}
 
 		setCommandListener(null);
-		FragmentsUtils.replace(this, fragment, R.id.content_fragment);
+		FragmentsUtils.replace(this, mFragment, R.id.content_fragment);
 		// Clear state
 	}
 

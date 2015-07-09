@@ -222,4 +222,8 @@ public final class CameraUtils {
 			Dog.i("-> uri=%s", uri);
 		}
 	}
+
+	public static boolean isSupported(String value, List<String> supported) {
+		return supported != null && supported.indexOf(value) >= 0;
+	}
 }

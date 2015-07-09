@@ -2,6 +2,7 @@ package com.weproov.app.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 public class TunnelFragment extends BaseFragment {
 
@@ -36,6 +37,10 @@ public class TunnelFragment extends BaseFragment {
 		} catch (ClassCastException e) {
 			//throw new ClassCastException(activity.toString() + " must implement Tunnelface");
 		}
+	}
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		return false;
 	}
 
 	@Override
