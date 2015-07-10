@@ -41,4 +41,9 @@
     <dimen name="card_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+    <dimen name="focus_circle_size">72dp</dimen>
+    <dimen name="focus_inner_offset">24dp</dimen>
+    <dimen name="focus_outer_stroke">3dp</dimen>
+    <dimen name="focus_inner_stroke">2dp</dimen>
+
 </resources>

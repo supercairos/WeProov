@@ -26,7 +26,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import com.weproov.app.ui.views.PieRenderer;
+import com.weproov.app.ui.views.FocusView;
 import com.weproov.app.utils.CameraUtils;
 import com.weproov.app.utils.ConvertUtils;
 import com.weproov.app.utils.MathUtils;
@@ -56,6 +56,7 @@ import java.util.List;
  * (10) The camera has no autofocus and supports metering area. Touch the screen
  *     to change metering area.
  */
+@SuppressWarnings("deprecated")
 public class FocusOverlayManager {
     private static final String TAG = "CAM_FocusManager";
 
@@ -77,7 +78,7 @@ public class FocusOverlayManager {
     private boolean mAeAwbLock;
     private Matrix mMatrix;
 
-    private PieRenderer mPieRenderer;
+    private FocusView mPieRenderer;
 
     private int mPreviewWidth; // The width of the preview frame layout.
     private int mPreviewHeight; // The height of the preview frame layout.
@@ -94,13 +95,13 @@ public class FocusOverlayManager {
     Listener mListener;
 
     public interface Listener {
-        public void autoFocus();
+        void autoFocus();
 
-        public void cancelAutoFocus();
+        void cancelAutoFocus();
 
-        public boolean capture();
+        boolean capture();
 
-        public void setFocusParameters();
+        void setFocusParameters();
     }
 
     private class MainHandler extends Handler {
@@ -128,7 +129,7 @@ public class FocusOverlayManager {
         setMirror(mirror);
     }
 
-    public void setFocusRenderer(PieRenderer renderer) {
+    public void setFocusRenderer(FocusView renderer) {
         mPieRenderer = renderer;
         mInitialized = (mMatrix != null);
     }
@@ -293,7 +294,8 @@ public class FocusOverlayManager {
                 // Lock AE & AWB so users can half-press shutter and recompose.
                 lockAeAwbIfNeeded();
             }
-        } else if (mState == STATE_IDLE) {
+        } else //noinspection StatementWithEmptyBody
+            if (mState == STATE_IDLE) {
             // User has released the focus key before focus completes.
             // Do nothing.
         }
@@ -315,7 +317,7 @@ public class FocusOverlayManager {
 
     private void initializeFocusAreas(int focusWidth, int focusHeight, int x, int y, int previewWidth, int previewHeight) {
         if (mFocusArea == null) {
-            mFocusArea = new ArrayList<Object>();
+            mFocusArea = new ArrayList<>();
             mFocusArea.add(new Area(new Rect(), 1));
         }
 
@@ -325,7 +327,7 @@ public class FocusOverlayManager {
 
     private void initializeMeteringAreas(int focusWidth, int focusHeight, int x, int y, int previewWidth, int previewHeight) {
         if (mMeteringArea == null) {
-            mMeteringArea = new ArrayList<Object>();
+            mMeteringArea = new ArrayList<>();
             mMeteringArea.add(new Area(new Rect(), 1));
         }
 

@@ -8,6 +8,7 @@ import android.hardware.Camera;
 import android.media.MediaActionSound;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.*;
 import android.widget.ImageView;
@@ -29,7 +30,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCallback, Camera.AutoFocusMoveCallback,Camera.PictureCallback {
+@SuppressWarnings("deprecation") // For camera api
+public class CameraFragment extends TunnelFragment implements
+		Camera.AutoFocusCallback,
+		Camera.AutoFocusMoveCallback,
+		Camera.PictureCallback,
+		FocusOverlayManager.Listener {
 
 	/**
 	 * Arguments keys *,
@@ -82,6 +88,26 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 		}
 	};
 
+	@Override
+	public void autoFocus() {
+		mCamera.autoFocus(this);
+	}
+
+	@Override
+	public void cancelAutoFocus() {
+		mCamera.cancelAutoFocus();
+	}
+
+	@Override
+	public boolean capture() {
+		mCamera.takePicture(null, null, this);
+		return true;
+	}
+
+	@Override
+	public void setFocusParameters() {
+	}
+
 	private static class BytesWrapper {
 
 		private byte[] bytes;
@@ -128,11 +154,8 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 			if (event.isLongPress()) return true;
 		}
 
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			return true;
-		}
+		return keyCode == KeyEvent.KEYCODE_MENU || super.onKeyDown(keyCode, event);
 
-		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
@@ -218,7 +241,7 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 		params.setRotation(result);
 		camera.setParameters(params);
 		camera.setDisplayOrientation(result);
-        manager.setDisplayOrientation(result);
+		manager.setDisplayOrientation(result);
 	}
 
 	private static void setCameraFocusMode(Camera camera) {
@@ -297,7 +320,7 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 		if (mCamera != null) {
 			mCamera.stopPreview();
 			mCamera.release();        // release the camera for other applications
-            mFocusOverlayManager.onCameraReleased();
+			mFocusOverlayManager.onCameraReleased();
 			mCamera = null;
 		}
 	}
@@ -370,7 +393,8 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 		protected Camera doInBackground(Void... params) {
 			int id = CameraUtils.getDefaultBackFacingCameraId();
 			Camera camera = CameraUtils.getCameraInstance(id);
-			setCameraDisplayOrientation(getActivity(), camera, id);
+			mFocusOverlayManager = new FocusOverlayManager(camera.getParameters(), CameraFragment.this, false, Looper.getMainLooper());
+			setCameraDisplayOrientation(getActivity(), camera, mFocusOverlayManager, id);
 			setCameraFocusMode(camera);
 			setCameraPictureSize(camera);
 			setCameraSceneMode(camera);
