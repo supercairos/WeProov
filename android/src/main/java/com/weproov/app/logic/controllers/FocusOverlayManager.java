@@ -99,10 +99,6 @@ public class FocusOverlayManager {
 
 		public boolean capture();
 
-		public void startFaceDetection();
-
-		public void stopFaceDetection();
-
 		public void setFocusParameters();
 	}
 
@@ -116,7 +112,6 @@ public class FocusOverlayManager {
 			switch (msg.what) {
 				case RESET_TOUCH_FOCUS: {
 					cancelAutoFocus();
-					mListener.startFaceDetection();
 					break;
 				}
 			}
@@ -365,9 +360,6 @@ public class FocusOverlayManager {
 
 		// Use margin to set the focus indicator to the touched area.
 		mPieRenderer.setFocus(x, y);
-
-		// Stop face detection because we want to specify focus and metering area.
-		mListener.stopFaceDetection();
 
 		// Set the focus area and metering area.
 		mListener.setFocusParameters();

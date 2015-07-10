@@ -7,6 +7,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.weproov.app.logic.controllers.FocusOverlayManager;
 import com.weproov.app.utils.CameraUtils;
 import com.weproov.app.utils.Dog;
 
@@ -21,127 +23,138 @@ import java.util.List;
  */
 public class CameraPreviewView extends ViewGroup implements SurfaceHolder.Callback {
 
-	SurfaceView mSurfaceView;
-	SurfaceHolder mHolder;
-	Camera.Size mPreviewSize;
-	List<Camera.Size> mSupportedPreviewSizes;
-	Camera mCamera;
-	boolean mSurfaceCreated = false;
+    SurfaceView mSurfaceView;
+    SurfaceHolder mHolder;
+    Camera.Size mPreviewSize;
+    List<Camera.Size> mSupportedPreviewSizes;
+    Camera mCamera;
 
-	public CameraPreviewView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init(attrs, 0);
-	}
+    boolean mSurfaceCreated = false;
+    private FocusOverlayManager mFocusManager;
 
-	public CameraPreviewView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		init(attrs, defStyle);
-	}
+    public CameraPreviewView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(attrs, 0);
+    }
 
-	public CameraPreviewView(Context context) {
-		super(context);
-		init(null, 0);
-	}
+    public CameraPreviewView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(attrs, defStyle);
+    }
 
-	private void init(AttributeSet attrs, int defStyle) {
-		mSurfaceView = new SurfaceView(getContext());
-		addView(mSurfaceView);
+    public CameraPreviewView(Context context) {
+        super(context);
+        init(null, 0);
+    }
 
-		// Install a SurfaceHolder.Callback so we get notified when the
-		// underlying surface is created and destroyed.
-		mHolder = mSurfaceView.getHolder();
-		mHolder.addCallback(this);
-		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-	}
+    private void init(AttributeSet attrs, int defStyle) {
+        mSurfaceView = new SurfaceView(getContext());
+        addView(mSurfaceView);
 
-	public void setCamera(Camera camera) {
-		mCamera = camera;
-		if (mCamera != null) {
-			mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
-			if (mSurfaceCreated) requestLayout();
-		}
-	}
+        // Install a SurfaceHolder.Callback so we get notified when the
+        // underlying surface is created and destroyed.
+        mHolder = mSurfaceView.getHolder();
+        mHolder.addCallback(this);
+        mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+    }
 
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		// We purposely disregard child measurements because act as a
-		// wrapper to a SurfaceView that centers the camera preview instead
-		// of stretching it.
-		final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-		final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-		setMeasuredDimension(width, height);
+    private void setFocusManager(FocusOverlayManager manager) {
+        mFocusManager = manager;
+        if (mFocusManager != null) {
+            if (mSurfaceCreated) requestLayout();
+        }
+    }
 
-		if (mCamera != null && mSupportedPreviewSizes != null) {
-			mPreviewSize = CameraUtils.getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
-		}
+    public void setCamera(Camera camera) {
+        mCamera = camera;
+        if (mCamera != null) {
+            mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+            if (mSurfaceCreated) requestLayout();
+        }
+    }
 
-		if (mPreviewSize != null && mCamera != null) {
-			Camera.Parameters parameters = mCamera.getParameters();
-			parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // We purposely disregard child measurements because act as a
+        // wrapper to a SurfaceView that centers the camera preview instead
+        // of stretching it.
+        final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+        setMeasuredDimension(width, height);
 
-			mCamera.setParameters(parameters);
-		}
-	}
+        if (mCamera != null && mSupportedPreviewSizes != null) {
+            mPreviewSize = CameraUtils.getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
+        }
 
-	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		if (getChildCount() > 0) {
-			final View child = getChildAt(0);
+        if (mPreviewSize != null && mCamera != null) {
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 
-			final int width = r - l;
-			final int height = b - t;
+            mCamera.setParameters(parameters);
+        }
+    }
 
-			int previewWidth = width;
-			int previewHeight = height;
-			if (mPreviewSize != null) {
-				previewWidth = width > height ? mPreviewSize.width : mPreviewSize.height;
-				previewHeight = width > height ? mPreviewSize.height : mPreviewSize.width;
-			}
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        if (getChildCount() > 0) {
+            final View child = getChildAt(0);
 
-			// Center the child SurfaceView within the parent.
-			if (width * previewHeight > height * previewWidth) {
-				final int scaledChildWidth = previewWidth * height / previewHeight;
-				child.layout((width - scaledChildWidth) / 2, 0, (width + scaledChildWidth) / 2, height);
-			} else {
-				final int scaledChildHeight = previewHeight * width / previewWidth;
-				child.layout(0, (height - scaledChildHeight) / 2, width, (height + scaledChildHeight) / 2);
-			}
-		}
-	}
+            final int width = r - l;
+            final int height = b - t;
 
-	public void surfaceCreated(SurfaceHolder holder) {
-		// The Surface has been created, acquire the camera and tell it where
-		// to draw.
-		try {
-			if (mCamera != null) {
-				mCamera.setPreviewDisplay(holder);
-			}
-		} catch (IOException exception) {
-			Dog.e(exception, "IOException caused by setPreviewDisplay()");
-		}
-		if (mPreviewSize == null) requestLayout();
-		mSurfaceCreated = true;
-	}
+            int previewWidth = width;
+            int previewHeight = height;
+            if (mPreviewSize != null) {
+                previewWidth = width > height ? mPreviewSize.width : mPreviewSize.height;
+                previewHeight = width > height ? mPreviewSize.height : mPreviewSize.width;
+            }
 
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		// Surface will be destroyed when we return, so stop the preview.
-		if (mCamera != null) {
-			mCamera.stopPreview();
-		}
-	}
+            // Center the child SurfaceView within the parent.
+            if (width * previewHeight > height * previewWidth) {
+                final int scaledChildWidth = previewWidth * height / previewHeight;
+                child.layout((width - scaledChildWidth) / 2, 0, (width + scaledChildWidth) / 2, height);
+            } else {
+                final int scaledChildHeight = previewHeight * width / previewWidth;
+                child.layout(0, (height - scaledChildHeight) / 2, width, (height + scaledChildHeight) / 2);
+            }
+        }
+    }
 
-	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-		if (mCamera != null) {
-			// Now that the size is known, set up the camera parameters and begin
-			// the preview.
-			Camera.Parameters parameters = mCamera.getParameters();
-			parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-			requestLayout();
+    public void surfaceCreated(SurfaceHolder holder) {
+        // The Surface has been created, acquire the camera and tell it where
+        // to draw.
+        try {
+            if (mCamera != null) {
+                mCamera.setPreviewDisplay(holder);
+            }
+        } catch (IOException exception) {
+            Dog.e(exception, "IOException caused by setPreviewDisplay()");
+        }
+        if (mPreviewSize == null) requestLayout();
+        mSurfaceCreated = true;
+    }
 
-			mCamera.setParameters(parameters);
-			mCamera.startPreview();
-			mCamera.autoFocus(null);
-		}
-	}
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        // Surface will be destroyed when we return, so stop the preview.
+        if (mCamera != null) {
+            mCamera.stopPreview();
+            if (mFocusManager != null) mFocusManager.onPreviewStopped();
+        }
+    }
+
+    public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+        if (mCamera != null) {
+            // Now that the size is known, set up the camera parameters and begin
+            // the preview.
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+            requestLayout();
+
+            mCamera.setParameters(parameters);
+            mCamera.startPreview();
+            if (mFocusManager != null) mFocusManager.onPreviewStarted();
+            mCamera.autoFocus(null);
+        }
+    }
 }
 

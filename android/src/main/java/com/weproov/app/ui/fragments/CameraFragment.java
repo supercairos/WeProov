@@ -29,10 +29,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCallback, Camera.PictureCallback {
+public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCallback, Camera.AutoFocusMoveCallback,Camera.PictureCallback {
 
 	/**
-	 * Arguments keys *
+	 * Arguments keys *,
 	 */
 	public static final String KEY_OVERLAY_PICTURE_SUBTITLE = "key_overlay_picture_subtitle";
 	public static final String KEY_OVERLAY_PICTURE = "key_overlay_picture";
@@ -81,7 +81,6 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 			return mFocusOverlayManager.onSingleTapUp((int) e.getX(), (int) e.getY());
 		}
 	};
-
 
 	private static class BytesWrapper {
 
@@ -298,6 +297,7 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 		if (mCamera != null) {
 			mCamera.stopPreview();
 			mCamera.release();        // release the camera for other applications
+            mFocusOverlayManager.onCameraReleased();
 			mCamera = null;
 		}
 	}
@@ -341,6 +341,12 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 			camera.cancelAutoFocus();
 			setCameraFocusMode(camera);
 		}
+		mFocusOverlayManager.onAutoFocus(success, false);
+	}
+
+	@Override
+	public void onAutoFocusMoving(boolean start, Camera camera) {
+		mFocusOverlayManager.onAutoFocusMoving(start);
 	}
 
 	@Override
