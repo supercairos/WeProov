@@ -121,9 +121,7 @@ public class PieRenderer extends View {
     @Override
     public void onDraw(Canvas canvas) {
         float alpha = 1;
-        if (mXFade != null) {
-            alpha = mXFade.getValue();
-        } else if (mFadeIn != null) {
+        if (mFadeIn != null) {
             alpha = mFadeIn.getValue();
         }
 
@@ -152,8 +150,8 @@ public class PieRenderer extends View {
     }
 
     @Override
-    public void layout(int l, int t, int r, int b) {
-        super.layout(l, t, r, b);
+    public void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
         mCenterX = (r - l) / 2;
         mCenterY = (b - t) / 2;
         mFocusX = mCenterX;
@@ -255,7 +253,7 @@ public class PieRenderer extends View {
         mAnimation.setScale(fromScale, toScale);
         mAnimation.setAnimationListener(timeout ? mEndAction : null);
         startAnimation(mAnimation);
-        update();
+        invalidate();
     }
 
     private class EndAction implements Animation.AnimationListener {
@@ -306,7 +304,6 @@ public class PieRenderer extends View {
             mDialAngle = (int) (mFrom + (mTo - mFrom) * interpolatedTime);
         }
     }
-
 
     private class LinearAnimation extends Animation {
         private float mFrom;
