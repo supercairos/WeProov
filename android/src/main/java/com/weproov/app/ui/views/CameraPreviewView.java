@@ -148,6 +148,7 @@ public class CameraPreviewView extends ViewGroup implements SurfaceHolder.Callba
             // the preview.
             Camera.Parameters parameters = mCamera.getParameters();
             parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+            if (mFocusManager != null) mFocusManager.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
             requestLayout();
 
             mCamera.setParameters(parameters);

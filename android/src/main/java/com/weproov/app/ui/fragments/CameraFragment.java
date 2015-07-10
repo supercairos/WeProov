@@ -178,7 +178,7 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 		super.onDestroy();
 	}
 
-	private static void setCameraDisplayOrientation(Context context, Camera camera, int id) {
+	private static void setCameraDisplayOrientation(Context context, Camera camera, FocusOverlayManager manager, int id) {
 		if (camera == null) {
 			Dog.d("setCameraDisplayOrientation - camera null");
 			return;
@@ -218,7 +218,7 @@ public class CameraFragment extends TunnelFragment implements Camera.AutoFocusCa
 		params.setRotation(result);
 		camera.setParameters(params);
 		camera.setDisplayOrientation(result);
-
+        manager.setDisplayOrientation(result);
 	}
 
 	private static void setCameraFocusMode(Camera camera) {
