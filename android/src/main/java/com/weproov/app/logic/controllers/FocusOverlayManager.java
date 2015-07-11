@@ -24,11 +24,11 @@ import android.hardware.Camera.Parameters;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 
 import com.weproov.app.ui.views.FocusView;
 import com.weproov.app.utils.CameraUtils;
 import com.weproov.app.utils.ConvertUtils;
+import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.MathUtils;
 
 import java.util.ArrayList;
@@ -58,7 +58,6 @@ import java.util.List;
  */
 @SuppressWarnings("deprecated")
 public class FocusOverlayManager {
-    private static final String TAG = "CAM_FocusManager";
 
     private static final int RESET_TOUCH_FOCUS = 0;
     private static final int RESET_TOUCH_FOCUS_DELAY = 3000;
@@ -395,7 +394,7 @@ public class FocusOverlayManager {
     }
 
     private void autoFocus() {
-        Log.v(TAG, "Start autofocus.");
+        Dog.v("Start autofocus.");
         mListener.autoFocus();
         mState = STATE_FOCUSING;
         updateFocusUI();
@@ -403,7 +402,7 @@ public class FocusOverlayManager {
     }
 
     private void cancelAutoFocus() {
-        Log.v(TAG, "Cancel autofocus.");
+        Dog.v("Cancel autofocus.");
 
         // Reset the tap area before calling mListener.cancelAutofocus.
         // Otherwise, focus mode stays at auto and the tap area passed to the
@@ -505,28 +504,8 @@ public class FocusOverlayManager {
         ConvertUtils.rectFToRect(rectF, rect);
     }
 
-    /* package */ int getFocusState() {
-        return mState;
-    }
-
-    public boolean isFocusCompleted() {
-        return mState == STATE_SUCCESS || mState == STATE_FAIL;
-    }
-
-    public boolean isFocusingSnapOnFinish() {
-        return mState == STATE_FOCUSING_SNAP_ON_FINISH;
-    }
-
     public void removeMessages() {
         mHandler.removeMessages(RESET_TOUCH_FOCUS);
-    }
-
-    public void setAeAwbLock(boolean lock) {
-        mAeAwbLock = lock;
-    }
-
-    public boolean getAeAwbLock() {
-        return mAeAwbLock;
     }
 
     private boolean needAutoFocusCall() {

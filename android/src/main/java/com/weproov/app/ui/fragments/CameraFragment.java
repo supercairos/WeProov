@@ -250,6 +250,7 @@ public class CameraFragment extends TunnelFragment implements
         super.onStop();
         releaseCamera();
         mActionBarListener.showActionBar();
+        mFocusOverlayManager.removeMessages();
     }
 
     @Override
@@ -447,6 +448,7 @@ public class CameraFragment extends TunnelFragment implements
             Camera camera = CameraUtils.getCameraInstance(id);
             mFocusOverlayManager = new FocusOverlayManager(camera.getParameters(), CameraFragment.this, false, Looper.getMainLooper());
             mFocusOverlayManager.setFocusRenderer(mFocusView);
+
             setCameraDisplayOrientation(getActivity(), camera, mFocusOverlayManager, id);
             setCameraFocusMode(camera, CameraFragment.this);
             setCameraPictureSize(camera);
