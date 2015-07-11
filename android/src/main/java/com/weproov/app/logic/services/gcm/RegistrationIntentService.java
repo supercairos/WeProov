@@ -3,6 +3,7 @@ package com.weproov.app.logic.services.gcm;
 import android.accounts.AccountManager;
 import android.app.IntentService;
 import android.content.Intent;
+import android.text.TextUtils;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -77,7 +78,9 @@ public class RegistrationIntentService extends IntentService {
 		Dog.d("Got token : %s", regid);
 		try {
 			String userId = AccountManager.get(MyApplication.getAppContext()).getUserData(AccountUtils.getAccount(), AccountConstants.KEY_SERVER_ID);
-			User.getService().registerGcm(new ParseGcmResponse(regid, userId));
+			if(!TextUtils.isEmpty(userId)) {
+				User.getService().registerGcm(new ParseGcmResponse(regid, userId));
+			}
 		} catch (NetworkException | RetrofitError error) {
 			Dog.e(error, "Error !");
 		}

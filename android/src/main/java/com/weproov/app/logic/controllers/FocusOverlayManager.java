@@ -89,7 +89,7 @@ public class FocusOverlayManager {
     private List<Object> mMeteringArea; // metering area in driver format
     private String mFocusMode;
     private String[] mDefaultFocusModes;
-    private String mOverrideFocusMode;
+    // private String mOverrideFocusMode;
     private Parameters mParameters;
     private Handler mHandler;
     Listener mListener;
@@ -423,7 +423,6 @@ public class FocusOverlayManager {
     }
 
     public String getFocusMode() {
-        if (mOverrideFocusMode != null) return mOverrideFocusMode;
         List<String> supportedFocusModes = mParameters.getSupportedFocusModes();
 
         if (mFocusAreaSupported && mFocusArea != null) {
@@ -520,10 +519,6 @@ public class FocusOverlayManager {
 
     public void removeMessages() {
         mHandler.removeMessages(RESET_TOUCH_FOCUS);
-    }
-
-    public void overrideFocusMode(String focusMode) {
-        mOverrideFocusMode = focusMode;
     }
 
     public void setAeAwbLock(boolean lock) {

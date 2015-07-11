@@ -47,6 +47,11 @@
                 android:background="@color/overlay_subtitle_background_color"
                 android:textColor="@color/overlay_subtitle_color"
                 android:layout_alignParentBottom="true"/>
+
+        <com.weproov.app.ui.views.FocusView
+                android:id="@+id/focus_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
     </com.weproov.app.ui.views.FourThirdView>
 
 
