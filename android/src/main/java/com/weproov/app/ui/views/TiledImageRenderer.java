@@ -9,9 +9,10 @@ import android.util.DisplayMetrics;
 import android.util.LongSparseArray;
 import android.view.View;
 import android.view.WindowManager;
-import com.android.gallery3d.glrenderer.UploadedTexture;
+
 import com.weproov.app.ui.glrender.BasicTexture;
 import com.weproov.app.ui.glrender.GLCanvas;
+import com.weproov.app.ui.glrender.UploadedTexture;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.MathUtils;
 
@@ -61,7 +62,7 @@ public class TiledImageRenderer {
 	private boolean mRenderComplete;
 	private final RectF mSourceRect = new RectF();
 	private final RectF mTargetRect = new RectF();
-	private final LongSparseArray<Tile> mActiveTiles = new LongSparseArray<Tile>();
+	private final LongSparseArray<Tile> mActiveTiles = new LongSparseArray<>();
 	// The following three queue are guarded by mQueueLock
 	private final Object mQueueLock = new Object();
 	private final TileQueue mRecycledQueue = new TileQueue();
@@ -352,7 +353,8 @@ public class TiledImageRenderer {
 		}
 		mActiveTiles.clear();
 		mTileRange.set(0, 0, 0, 0);
-		while (sTilePool.acquire() != null) {}
+		//noinspection StatementWithEmptyBody
+		while (sTilePool.acquire() != null);
 		mParent = null;
 	}
 

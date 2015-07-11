@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.android.gallery3d.glrenderer;
+package com.weproov.app.ui.glrender;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.opengl.GLUtils;
-import com.weproov.app.ui.glrender.BasicTexture;
-import com.weproov.app.ui.glrender.GLCanvas;
+
 import junit.framework.Assert;
 
-import javax.microedition.khronos.opengles.GL11;
 import java.util.HashMap;
+
+import javax.microedition.khronos.opengles.GL11;
 
 // UploadedTextures use a Bitmap for the content of the texture.
 //
@@ -45,7 +45,7 @@ public abstract class UploadedTexture extends BasicTexture {
     // To prevent keeping allocation the borders, we store those used borders here.
     // Since the length will be power of two, it won't use too much memory.
     private static HashMap<BorderKey, Bitmap> sBorderLines =
-            new HashMap<BorderKey, Bitmap>();
+            new HashMap<>();
     private static BorderKey sBorderKey = new BorderKey();
 
     @SuppressWarnings("unused")

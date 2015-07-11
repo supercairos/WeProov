@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
-import butterknife.ButterKnife;
+
+import com.weproov.app.R;
 import com.weproov.app.logic.providers.BusProvider;
 import com.weproov.app.ui.ifaces.CommandIface;
 import com.weproov.app.utils.Dog;
+
+import butterknife.ButterKnife;
 
 
 abstract class BaseFragment extends Fragment {
@@ -68,5 +71,7 @@ abstract class BaseFragment extends Fragment {
 
 	protected final void setCommmandListener(CommandIface.OnClickListener listener) {
 		mListener.setCommandListener(listener);
+        getPositiveButton().setText(R.string.button_start);
+        getNegativeButton().setVisibility(View.INVISIBLE);
 	}
 }

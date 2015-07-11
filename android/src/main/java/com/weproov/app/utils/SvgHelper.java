@@ -18,6 +18,7 @@ package com.weproov.app.utils;
 
 import android.content.Context;
 import android.graphics.*;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import com.caverock.androidsvg.PreserveAspectRatio;
 import com.caverock.androidsvg.SVG;
@@ -29,7 +30,7 @@ import java.util.List;
 public final class SvgHelper {
 	private static final String LOG_TAG = "SVG";
 
-	private final List<SvgPath> mPaths = new ArrayList<SvgPath>();
+	private final List<SvgPath> mPaths = new ArrayList<>();
 
 	private SVG mSvg;
 
@@ -70,7 +71,7 @@ public final class SvgHelper {
 			}
 
 			@Override
-			public void drawPath(Path path, Paint paint) {
+			public void drawPath(@NonNull Path path, @NonNull Paint paint) {
 				Path dst = new Path();
 
 				//noinspection deprecation

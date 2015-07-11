@@ -31,10 +31,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Camera related utilities.
  */
+@SuppressWarnings("deprecation")
 public final class CameraUtils {
 
 	public static final int MEDIA_TYPE_IMAGE = 1;
@@ -169,7 +171,7 @@ public final class CameraUtils {
 		}
 
 		// Create a media file name
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
 		File mediaFile;
 		if (type == MEDIA_TYPE_IMAGE) {
 			mediaFile = new File(mediaStorageDir.getPath() + File.separator +

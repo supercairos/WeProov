@@ -21,6 +21,7 @@ import java.util.List;
  * because not all devices have cameras that support preview sizes at the same
  * aspect ratio as the device's display.
  */
+@SuppressWarnings("deprecation")
 public class CameraPreviewView extends ViewGroup implements SurfaceHolder.Callback {
 
     SurfaceView mSurfaceView;
@@ -58,7 +59,7 @@ public class CameraPreviewView extends ViewGroup implements SurfaceHolder.Callba
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
-    private void setFocusManager(FocusOverlayManager manager) {
+    public void setFocusManager(FocusOverlayManager manager) {
         mFocusManager = manager;
         if (mFocusManager != null) {
             if (mSurfaceCreated) requestLayout();

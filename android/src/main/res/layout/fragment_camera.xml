@@ -1,116 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/content_fragment_root_view">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_fragment_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical">
 
     <com.weproov.app.ui.views.FourThirdView
-            android:id="@+id/root_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:id="@+id/root_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <com.weproov.app.ui.views.CameraPreviewView
-                android:visibility="gone"
-                android:id="@+id/camera_preview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+            android:id="@+id/camera_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/loading_camera"
-                android:id="@+id/loading_camera"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"/>
+            android:id="@+id/loading_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/loading_camera"
+            android:textSize="20sp" />
 
         <ImageView
-                android:contentDescription="@android:string/untitled"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerInside"
-                android:id="@+id/camera_overlay"
-                android:layout_alignBottom="@+id/textView"
-                android:layout_centerHorizontal="true"/>
+            android:id="@+id/camera_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@android:string/untitled"
+            android:scaleType="centerInside"
+            android:visibility="gone" />
 
         <TextView
-                android:id="@+id/camera_overlay_subtitle"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:background="@color/overlay_subtitle_background_color"
-                android:textColor="@color/overlay_subtitle_color"
-                android:layout_alignParentBottom="true"/>
+            android:id="@+id/camera_overlay_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/overlay_subtitle_background_color"
+            android:gravity="center"
+            android:textColor="@color/overlay_subtitle_color"
+            android:visibility="gone" />
 
         <com.weproov.app.ui.views.FocusView
-                android:id="@+id/focus_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+            android:id="@+id/focus_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
     </com.weproov.app.ui.views.FourThirdView>
 
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/btn_camera"
-            android:background="@drawable/btn_shutter_bottom_bar">
+        android:id="@+id/btn_camera"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_shutter_bottom_bar">
 
         <ImageView
-                android:contentDescription="@android:string/untitled"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:duplicateParentState="true"
-                android:layout_width="wrap_content"
-                android:scaleType="center"
-                android:layout_height="wrap_content"
-                android:id="@+id/ic_camera"
-                android:src="@drawable/ic_camera"
-                android:layout_gravity="center"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"/>
+            android:id="@+id/ic_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:contentDescription="@android:string/untitled"
+            android:duplicateParentState="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:scaleType="center"
+            android:src="@drawable/ic_camera" />
 
         <ImageView
-                android:contentDescription="@android:string/untitled"
-                android:layout_width="140dp"
-                android:layout_height="match_parent"
-                android:scaleType="centerInside"
-                android:src="@drawable/front_mini"
-                android:id="@+id/camera_overlay_mini"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"/>
+            android:id="@+id/camera_overlay_mini"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@android:string/untitled"
+            android:scaleType="centerInside"
+            android:src="@drawable/front_mini" />
 
         <ImageView
-                android:contentDescription="@android:string/untitled"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_set_flash"
-                android:src="@drawable/ic_flash_on_holo_light"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
+            android:id="@+id/btn_set_flash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@android:string/untitled"
+            android:src="@drawable/ic_flash_on_holo_light" />
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
-                android:visibility="gone"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textAllCaps="true"
-                android:text="@string/saving_picture"
-                android:id="@+id/saving_picture_textview"
-                android:layout_gravity="center"
-                android:layout_centerInParent="true"/>
+            android:id="@+id/saving_picture_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/saving_picture"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </LinearLayout>

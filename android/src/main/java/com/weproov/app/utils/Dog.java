@@ -109,7 +109,7 @@ public final class Dog {
 		GROUND.clear();
 	}
 
-	private static final List<Bone> GROUND = new CopyOnWriteArrayList<Bone>();
+	private static final List<Bone> GROUND = new CopyOnWriteArrayList<>();
 
 	/** A {@link Bone} that delegates to all planted trees in the {@linkplain #GROUND stash}. */
 	private static final Bone BONES_STASH = new Bone() {
@@ -220,7 +220,7 @@ public final class Dog {
 
 	/** A facade for handling logging calls. Install instances via {@link #bury Dog.bury()}. */
 	public static abstract class Bone {
-		private final ThreadLocal<String> explicitTag = new ThreadLocal<String>();
+		private final ThreadLocal<String> explicitTag = new ThreadLocal<>();
 
 		String getTag() {
 			String tag = explicitTag.get();

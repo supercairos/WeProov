@@ -48,7 +48,8 @@
         <com.weproov.app.ui.views.FocusView
             android:id="@+id/focus_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
     </com.weproov.app.ui.views.FourThirdView>
 

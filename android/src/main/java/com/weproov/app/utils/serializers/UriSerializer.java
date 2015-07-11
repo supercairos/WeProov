@@ -24,7 +24,7 @@ public class UriSerializer extends TypeSerializer {
 			return null;
 		}
 
-		return ((Uri) data).toString();
+		return data.toString();
 	}
 
 	@Override

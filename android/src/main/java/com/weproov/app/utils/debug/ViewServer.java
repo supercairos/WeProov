@@ -134,9 +134,9 @@ public class ViewServer implements Runnable {
 	private ExecutorService mThreadPool;
 
 	private final List<WindowListener> mListeners =
-			new CopyOnWriteArrayList<WindowListener>();
+			new CopyOnWriteArrayList<>();
 
-	private final HashMap<View, String> mWindows = new HashMap<View, String>();
+	private final HashMap<View, String> mWindows = new HashMap<>();
 	private final ReentrantReadWriteLock mWindowsLock = new ReentrantReadWriteLock();
 
 	private View mFocusedWindow;
@@ -460,6 +460,7 @@ public class ViewServer implements Runnable {
 			// Don't close the stream
 		}
 
+		@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 		public boolean equals(Object o) {
 			return mStream.equals(o);
 		}

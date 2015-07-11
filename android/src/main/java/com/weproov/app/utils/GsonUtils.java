@@ -16,7 +16,6 @@ import java.text.DateFormat;
 public final class GsonUtils {
 
 	public static final Gson GSON = new GsonBuilder()
-			// .serializeNulls() // FIXME : not sure if this is usefull
 			.excludeFieldsWithoutExposeAnnotation()
 			.excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE)
 			.registerTypeAdapter(Uri.class, new UriAdapter())

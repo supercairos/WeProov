@@ -56,7 +56,7 @@ import java.util.List;
  * (10) The camera has no autofocus and supports metering area. Touch the screen
  *     to change metering area.
  */
-@SuppressWarnings("deprecated")
+@SuppressWarnings({"deprecated", "deprecation"})
 public class FocusOverlayManager {
 
     private static final int RESET_TOUCH_FOCUS = 0;

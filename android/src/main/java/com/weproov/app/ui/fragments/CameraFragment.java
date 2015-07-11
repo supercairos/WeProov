@@ -109,6 +109,7 @@ public class CameraFragment extends TunnelFragment implements
 
     @Override
     public void cancelAutoFocus() {
+        mCamera.cancelAutoFocus();
         setCameraFocusMode(mCamera, this);
     }
 
@@ -133,10 +134,12 @@ public class CameraFragment extends TunnelFragment implements
         // get Camera parameters
         Camera.Parameters params = mCamera.getParameters();
         List<String> focusModes = params.getSupportedFocusModes();
-        if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+        if (CameraUtils.isSupported(Camera.Parameters.FOCUS_MODE_AUTO, focusModes)) {
             params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-            mCamera.setParameters(params);
+            mCamera.setAutoFocusMoveCallback(null);
         }
+
+        mCamera.setParameters(params);
     }
 
     private static class BytesWrapper {
@@ -241,6 +244,11 @@ public class CameraFragment extends TunnelFragment implements
             if (event.isLongPress()) return true;
         }
 
+        if (keyCode == KeyEvent.KEYCODE_CAMERA) {
+            mFocusOverlayManager.doSnap();
+            return true;
+        }
+
         return keyCode == KeyEvent.KEYCODE_MENU || super.onKeyDown(keyCode, event);
 
     }
@@ -307,17 +315,15 @@ public class CameraFragment extends TunnelFragment implements
         params.setMeteringAreas(null);
         params.setFocusAreas(null);
         List<String> focusModes = params.getSupportedFocusModes();
-        if (focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+        if (CameraUtils.isSupported(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE, focusModes)) {
             params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
             camera.setParameters(params);
-            camera.cancelAutoFocus();
             camera.setAutoFocusMoveCallback(callback);
-        } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
-            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        } else if (CameraUtils.isSupported(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO, focusModes)) {
+            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
             camera.setParameters(params);
-            camera.cancelAutoFocus();
             camera.setAutoFocusMoveCallback(callback);
-        } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+        } else if (CameraUtils.isSupported(Camera.Parameters.FOCUS_MODE_AUTO, focusModes)) {
             params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
             camera.setParameters(params);
             camera.setAutoFocusMoveCallback(null);
@@ -344,22 +350,24 @@ public class CameraFragment extends TunnelFragment implements
         // get Camera parameters
         Camera.Parameters params = camera.getParameters();
         List<String> modes = params.getSupportedFlashModes();
-        if (modes != null && modes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+        if (CameraUtils.isSupported(Camera.Parameters.FLASH_MODE_AUTO, modes)) {
             params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
         }
+
+        camera.setParameters(params);
     }
 
     private static void setCameraSceneMode(Camera camera) {
         // get Camera parameters
         Camera.Parameters params = camera.getParameters();
         List<String> modes = params.getSupportedSceneModes();
-        if (modes != null) {
-            if (modes.contains(Camera.Parameters.SCENE_MODE_LANDSCAPE)) {
-                params.setSceneMode(Camera.Parameters.SCENE_MODE_LANDSCAPE);
-            } else if (modes.contains(Camera.Parameters.SCENE_MODE_AUTO)) {
-                params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
-            }
+        if (CameraUtils.isSupported(Camera.Parameters.SCENE_MODE_LANDSCAPE, modes)) {
+            params.setSceneMode(Camera.Parameters.SCENE_MODE_LANDSCAPE);
+        } else if (CameraUtils.isSupported(Camera.Parameters.SCENE_MODE_AUTO, modes)) {
+            params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
         }
+
+        camera.setParameters(params);
     }
 
     private void setFlashMode() {
@@ -440,21 +448,24 @@ public class CameraFragment extends TunnelFragment implements
             mOverlaySubtitle.setVisibility(View.GONE);
             mOverlay.setVisibility(View.GONE);
             mOverlayMini.setVisibility(View.GONE);
+            mFocusView.setVisibility(View.GONE);
         }
 
         @Override
         protected Camera doInBackground(Void... params) {
             int id = CameraUtils.getDefaultBackFacingCameraId();
             Camera camera = CameraUtils.getCameraInstance(id);
-            mFocusOverlayManager = new FocusOverlayManager(camera.getParameters(), CameraFragment.this, false, Looper.getMainLooper());
-            mFocusOverlayManager.setFocusRenderer(mFocusView);
+            if (camera != null) {
+                mFocusOverlayManager = new FocusOverlayManager(camera.getParameters(), CameraFragment.this, false, Looper.getMainLooper());
+                mFocusOverlayManager.setFocusRenderer(mFocusView);
 
-            setCameraDisplayOrientation(getActivity(), camera, mFocusOverlayManager, id);
-            setCameraFocusMode(camera, CameraFragment.this);
-            setCameraPictureSize(camera);
-            setCameraSceneMode(camera);
-            setCameraJPEGQuality(camera);
-            setCameraFlashMode(camera);
+                setCameraDisplayOrientation(getActivity(), camera, mFocusOverlayManager, id);
+                setCameraFocusMode(camera, CameraFragment.this);
+                setCameraPictureSize(camera);
+                setCameraSceneMode(camera);
+                setCameraJPEGQuality(camera);
+                setCameraFlashMode(camera);
+            }
 
             return camera;
         }
@@ -465,9 +476,12 @@ public class CameraFragment extends TunnelFragment implements
             if (camera != null) {
                 mLoadingCamera.setVisibility(View.GONE);
                 mPreview.setVisibility(View.VISIBLE);
+                mFocusView.setVisibility(View.VISIBLE);
 
                 mCamera = camera;
                 mPreview.setCamera(camera);
+                mPreview.setFocusManager(mFocusOverlayManager);
+
                 setFlashMode();
                 mBtnSetFlash.setVisibility(View.VISIBLE);
 
@@ -505,6 +519,8 @@ public class CameraFragment extends TunnelFragment implements
             mBtnSetFlash.setVisibility(View.GONE);
             mOverlay.setVisibility(View.GONE);
             mOverlayMini.setVisibility(View.GONE);
+            mFocusView.setVisibility(View.GONE);
+
             mBtnCamera.setEnabled(false);
             mDialog = ProgressDialog.show(getActivity(), "Saving picture", "Please wait...", true);
         }
@@ -553,6 +569,8 @@ public class CameraFragment extends TunnelFragment implements
                 mBtnSetFlash.setVisibility(View.VISIBLE);
                 mOverlay.setVisibility(View.VISIBLE);
                 mOverlayMini.setVisibility(View.VISIBLE);
+                mFocusView.setVisibility(View.VISIBLE);
+
                 mSavingPicture.setVisibility(View.GONE);
                 mBtnCamera.setEnabled(true);
             }

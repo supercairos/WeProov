@@ -18,9 +18,15 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import butterknife.InjectView;
-import butterknife.OnClick;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.weproov.app.BuildConfig;
 import com.weproov.app.R;
 import com.weproov.app.models.CarInfo;
@@ -30,6 +36,7 @@ import com.weproov.app.ui.views.CustomTextInputLayout;
 import com.weproov.app.utils.Dog;
 import com.weproov.app.utils.PathUtils;
 import com.weproov.app.utils.PicassoUtils;
+
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.File;
@@ -39,6 +46,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 
 public class CarInfoFragment extends TunnelFragment implements CommandIface.OnClickListener {
@@ -338,10 +348,10 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 
 	@OnClick(R.id.vehicle_documentation)
 	public void onDrivingLicenceClicked() {
-		startImageIntent(SELECT_VEHICLE_DOC_REQUEST_CODE);
+		startImageIntent();
 	}
 
-	private void startImageIntent(int requestCode) {
+	private void startImageIntent() {
 		try {
 			mOutputFileUri = Uri.fromFile(createImageFile());
 
@@ -379,7 +389,7 @@ public class CarInfoFragment extends TunnelFragment implements CommandIface.OnCl
 
 			// Add the camera options.
 			chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
-			startActivityForResult(chooserIntent, requestCode);
+			startActivityForResult(chooserIntent, CarInfoFragment.SELECT_VEHICLE_DOC_REQUEST_CODE);
 		} catch (IOException e) {
 			Toast.makeText(getActivity(), "Error creating picture", Toast.LENGTH_LONG).show();
 			Dog.e(e, "IOException");

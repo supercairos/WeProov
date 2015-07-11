@@ -58,7 +58,7 @@ public class FocusView extends View {
 	private static final int SCALING_UP_TIME = 600;
 	private static final int SCALING_DOWN_TIME = 100;
 	private static final int DISAPPEAR_TIMEOUT = 200;
-	private static final int DIAL_HORIZONTAL = 157;
+
 	private static final int SUCCESS_COLOR = Color.GREEN;
 	private static final int FAIL_COLOR = Color.RED;
 

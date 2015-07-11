@@ -17,7 +17,6 @@
 package com.weproov.app.ui.glrender;
 
 import android.graphics.Bitmap;
-import com.android.gallery3d.glrenderer.UploadedTexture;
 import junit.framework.Assert;
 
 // BitmapTexture is a texture whose content is specified by a fixed Bitmap.
